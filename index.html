@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title ng-bind="app.name || 'My Tyto App'">My Tyto App</title>
+
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="format-detection" content="telephone=no" />
+
+  <meta name="viewport" content="user-scalable=0, initial-scale=1.0">
+
+  <!-- iOS based mobile stuff -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="apple-touch-startup-image" href="system/includes/img/splash.jpg">
+  <link rel="shortcut icon" href="favicon.ico">
+
+
+  <!-- Makes your prototype chrome-less once bookmarked to your phone's home screen -->
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+  <!-- Set a shorter title for iOS6 devices when saved to home screen -->
+  <meta name="apple-mobile-web-app-title" content="{{ app.name || 'My Tyto App' }}">
+
+  <!-- Set Apple icons for when prototype is saved to home screen -->
+  <link rel="apple-touch-icon-precomposed" sizes="114x114" href="system/includes/img/Icon_114x114.png">
+  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="system/includes/img/Icon_114x114.png">
+  <link rel="apple-touch-icon-precomposed" sizes="57x57" href="system/includes/img/Icon_114x114.png">
+
+  <style>
+    [ng-cloak] { display: none; }
+  </style>
+  <script src="system/setup/init.js"></script>
+</head>
+<body ng-cloak>
+    <mobile-view></mobile-view>
+    <!-- <ng-view></ng-view> -->
+</body>
+</html>

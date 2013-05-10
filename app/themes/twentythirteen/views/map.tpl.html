@@ -1,0 +1,23 @@
+<!-- 
+	On this page we are using a custom directive made by David Rubert, 
+	(https://github.com/tombatossals/angular-leaflet-directive).
+
+	This directive creates a custom element called <leaflet> which inludes a map 
+	on the page using the leaflet.js library (http://leafletjs.com/)
+
+	This directive takes parameters so that you can customize the map, to view the
+	availible parameters please visit, http://tombatossals.github.io/angular-leaflet-directive/,
+	to see how we're setting these variables pleas look in app/includes/scrips/controllers/controllers.js
+ -->
+<leaflet 
+	id="leaflet"
+	marker="leaflet.marker"
+	message="leaflet.message"
+	center="leaflet.center"
+	zoom="leaflet.zoom"
+	maxZoom="leaflet.maxZoom"
+	minZoom="leaflet.minZoom"
+	tilelayer="leaflet.tiles"
+	draggable="true"
+>
+</leaflet>
