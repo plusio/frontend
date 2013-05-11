@@ -20,6 +20,22 @@ $app.controller('MapCrtl', function($scope){
   $scope.leaflet = {
       center: { lat: 40.094882122321145, lng: -3.8232421874999996 },
       marker: { lat: 40.094882122321145, lng: -3.8232421874999996 },
+      manyMarkers : {
+        Madrid: {
+            lat: 40.095,
+            lng: -3.823,
+            message: "Madrid, not draggable",
+            focus: true,
+            draggable: false
+        },
+        Madrid2: {
+            lat: 60.095,
+            lng: -30.823,
+            message: "Drag me to your position",
+            focus: true,
+            draggable: true
+        }
+      },
       message: "Drag me to your node position",
       zoom: 3,
       maxZoom: 4,
