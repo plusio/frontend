@@ -15,26 +15,28 @@ $app.controller('HomeCrtl', function ($scope, $routeParams) {
 });
 
 
-$app.controller('MapCrtl', function($scope){
+$app.controller('MapCrtl', function($scope, plus){
   // defaulting the settings on the model on the leaflet directive
+  $scope.geoData = plus.getGeoBucket(); 
+
   $scope.leaflet = {
       center: { lat: 40.094882122321145, lng: -3.8232421874999996 },
       marker: { lat: 40.094882122321145, lng: -3.8232421874999996 },
       manyMarkers : {
-        Madrid: {
-            lat: 40.095,
-            lng: -3.823,
-            message: "Madrid, not draggable",
-            focus: true,
-            draggable: false
-        },
-        Madrid2: {
-            lat: 60.095,
-            lng: -30.823,
-            message: "Drag me to your position",
-            focus: true,
-            draggable: true
-        }
+        // Madrid: {
+        //     lat: 40.095,
+        //     lng: -3.823,
+        //     message: "Madrid, not draggable",
+        //     focus: true,
+        //     draggable: false
+        // },
+        // Madrid2: {
+        //     lat: 60.095,
+        //     lng: -30.823,
+        //     message: "Drag me to your position",
+        //     focus: true,
+        //     draggable: true
+        // }
       },
       message: "Drag me to your node position",
       zoom: 3,
@@ -42,6 +44,25 @@ $app.controller('MapCrtl', function($scope){
       minZoom: 0,
       tiles : $scope.app.paths.map + "monochrome-green/{z}/{x}/{y}.png"
   };
+
+  $scope.$watch('geoData', function(data){
+    if(angular.isDefined(data)){
+
+      angular.forEach(data, function(item){
+
+        $scope.leaflet.manyMarkers[item.Key] = {
+          lat : item.Latitude,
+          lng : item.Longitude,
+          message : item.Tag,
+          draggable : true
+        }
+        
+      });
+
+    }
+  });
+
+
 });
 
 $app.controller('GeoCrtl', function($scope, plus) {
