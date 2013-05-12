@@ -17,27 +17,11 @@ $app.controller('HomeCrtl', function ($scope, $routeParams) {
 
 $app.controller('MapCrtl', function($scope, plus){
   // defaulting the settings on the model on the leaflet directive
-  $scope.geoData = plus.getGeoBucket(); 
 
   $scope.leaflet = {
       center: { lat: 40.094882122321145, lng: -3.8232421874999996 },
       marker: { lat: 40.094882122321145, lng: -3.8232421874999996 },
-      manyMarkers : {
-        // Madrid: {
-        //     lat: 40.095,
-        //     lng: -3.823,
-        //     message: "Madrid, not draggable",
-        //     focus: true,
-        //     draggable: false
-        // },
-        // Madrid2: {
-        //     lat: 60.095,
-        //     lng: -30.823,
-        //     message: "Drag me to your position",
-        //     focus: true,
-        //     draggable: true
-        // }
-      },
+      manyMarkers : {},
       message: "Drag me to your node position",
       zoom: 3,
       maxZoom: 4,
@@ -45,6 +29,35 @@ $app.controller('MapCrtl', function($scope, plus){
       tiles : $scope.app.paths.map + "monochrome-green/{z}/{x}/{y}.png"
   };
 
+  console.log($scope.app.id);
+
+  // Check if the application had an id set.
+  if(!_.isEmpty($scope.app.id)){
+    // if there is, get data from plus.io
+    $scope.geoData = plus.getGeoBucket(); 
+
+  }else{
+    // Otherise lets set two example markers so the the map isn't blank
+    $scope.leaflet.manyMarkers =  {       
+      Madrid: {
+          lat: 40.095,
+          lng: -3.823,
+          message: "Madrid, not draggable",
+          focus: true,
+          draggable: false
+      },
+      Madrid2: {
+          lat: 60.095,
+          lng: -30.823,
+          message: "Drag me to your position",
+          focus: true,
+          draggable: true
+      }
+    }
+  }
+
+  // Watch the geoData object on $scope, so that if it pulls data,
+  // it will update the list of markers for leaflet and display teh updated results
   $scope.$watch('geoData', function(data){
     if(angular.isDefined(data)){
 
@@ -56,7 +69,7 @@ $app.controller('MapCrtl', function($scope, plus){
           message : item.Tag,
           draggable : true
         }
-        
+
       });
 
     }
