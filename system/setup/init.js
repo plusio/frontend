@@ -56,6 +56,7 @@ head.js('app/config.js', function(){
 		var ext = appConfig.extensions[i];
 
 		head.js('app/plugins/' + ext + '/config.js', function(){
+
 			if(typeof config !== 'undefined'){
 				/*
 				 * Configuration file loaded for extension
@@ -90,7 +91,7 @@ head.js('app/config.js', function(){
 
 			}else{
 				//no configuration file, log error
-				console.error('no configurationk file', ext);
+				console.error('no configuration file', ext);
 			}
 		});	
 	}

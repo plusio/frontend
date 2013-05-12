@@ -20,16 +20,22 @@ $app.controller('MapCrtl', function($scope, plus){
 
   $scope.leaflet = {
       center: { lat: 40.094882122321145, lng: -3.8232421874999996 },
-      marker: { lat: 40.094882122321145, lng: -3.8232421874999996 },
-      manyMarkers : {},
-      message: "Drag me to your node position",
+      markers : {},
+      path : {
+        latlngs : [
+          {lat:40.719037, lng:-74.003913},
+          {lat:37.775201, lng:-122.419073},
+          {lat:25.788042, lng:-80.225409},
+          {lat:47.60459, lng:-122.334474},
+          {lat:38.89244, lng:-77.032933}
+        ],
+        weight: 2,
+        color: '#3366FF'
+      },
       zoom: 3,
       maxZoom: 4,
-      minZoom: 0,
       tiles : $scope.app.paths.map + "monochrome-green/{z}/{x}/{y}.png"
   };
-
-  console.log($scope.app.id);
 
   // Check if the application had an id set.
   if(!_.isEmpty($scope.app.id)){
@@ -38,7 +44,7 @@ $app.controller('MapCrtl', function($scope, plus){
 
   }else{
     // Otherise lets set two example markers so the the map isn't blank
-    $scope.leaflet.manyMarkers =  {       
+    $scope.leaflet.markers =  {       
       Madrid: {
           lat: 40.095,
           lng: -3.823,
@@ -63,7 +69,7 @@ $app.controller('MapCrtl', function($scope, plus){
 
       angular.forEach(data, function(item){
 
-        $scope.leaflet.manyMarkers[item.Key] = {
+        $scope.leaflet.markers[item.Key] = {
           lat : item.Latitude,
           lng : item.Longitude,
           message : item.Tag,
