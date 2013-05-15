@@ -5,9 +5,9 @@
  * 1) Getting, setting and saving data.
  * 2) What happens on pages events like: button clicks, dropdown selections, etc.
  *   However all visual effects, DOM manipulations, and plugins should be done using angularjs directives.
- *   If you're not sure as to what is going on in most of this file you should consider reading this article:
- *   http://www.yearofmoo.com/2012/08/use-angularjs-to-power-your-web-application.html#controllers-and-scope
- */
+ *   If you're not sure as to what is going on in most of this file you should consider reading this articles:
+ *   1) http://blog.artlogic.com/2013/03/06/angularjs-for-jquery-developers/ 
+ *   2) http://www.yearofmoo.com/2012/08/use-angularjs-to-power-your-web-application.html#controllers-and-scope
 
 /* Variables:
  * 1) $scope: Here we pass in the $scope dependency because this controller needs the two-way databinding functionality of angular.
