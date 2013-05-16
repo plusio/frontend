@@ -16,7 +16,7 @@ var appConfig =
 		"gestures",
 		"iscroll",
 		"plus",
-		"tyto-leaflet"
+		"leaflet"
 	],
 
 	/*
