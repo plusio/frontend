@@ -10,9 +10,9 @@ var appConfig =
 	"themes" : ['twentythirteen'],
 
 	/*
-	 * extensions are modules that add to the functionality of Tyto
+	 * plugins are modules that add to the functionality of Tyto
 	 */
-	"extensions" : [
+	"plugins" : [
 		"gestures",
 		"iscroll",
 		"plus",

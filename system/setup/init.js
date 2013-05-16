@@ -52,8 +52,8 @@ head.js('app/config.js', function(){
 		}
 	}
 
-	for(var i in appConfig.extensions){
-		var ext = appConfig.extensions[i];
+	for(var i in appConfig.plugins){
+		var ext = appConfig.plugins[i];
 
 		head.js('app/plugins/' + ext + '/config.js', function(){
 
@@ -84,7 +84,7 @@ head.js('app/config.js', function(){
 				config = undefined;
 				extCount++;
 
-				if(extCount == appConfig.extensions.length){
+				if(extCount == appConfig.plugins.length){
 					loadFiles();
 				}
 
