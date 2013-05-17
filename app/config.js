@@ -10,7 +10,7 @@ var appConfig =
 	"themes" : ['twentythirteen'],
 
 	/*
-	 * plugins are modules that add to the functionality of Tyto
+	 * plugins add to the functionality of Tyto
 	 */
 	"plugins" : [
 		"gestures",
@@ -23,10 +23,12 @@ var appConfig =
 	 * You shouldn't need to change these unless you split your functions into multiple files
 	 * or rename these files to something other than the default
 	 */
-	"controllers" : ['controllers'],
-	"services" : ['services'],
-	"filters" : ['filters'],
-	"directives" : ['directives'],
+	"scripts" : [
+		'controllers',
+		'services',
+		'filters',
+		'directives'
+	],
 
 	/*
 	 * all system functionality is included by default but you can choose to not include each module individually

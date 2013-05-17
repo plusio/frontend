@@ -44,10 +44,7 @@ head.ready(function(){
  var extCount = 0;
 
 head.js('app/config.js', function(){
-	for(var i in appConfig.controllers){ jsToBeLoaded.push('app/includes/scripts/controllers/' + appConfig.controllers[i] + '.js'); }
-	for(var i in appConfig.services){ jsToBeLoaded.push('app/includes/scripts/services/' + appConfig.services[i] + '.js'); }
-	for(var i in appConfig.filters){ jsToBeLoaded.push('app/includes/scripts/filters/' + appConfig.filters[i] + '.js'); }
-	for(var i in appConfig.directives){ jsToBeLoaded.push('app/includes/scripts/directives/' + appConfig.directives[i] + '.js'); }
+	for(var i in appConfig.scripts){ jsToBeLoaded.push('app/includes/scripts/' + appConfig.scripts[i] + '.js'); }
 	for(var i in appConfig.system){ (appConfig.system[i].substring(0,1) == '+')?addLib(appConfig.system[i]):jsToBeLoaded.push('system/scripts/' + appConfig.system[i] + '.js'); }
 
 	for(var i in appConfig.themes){

@@ -1,5 +1,5 @@
 var config =
 {
 	extName : 'iscroll',
-	files : ['ng-iscroll.js']
+	files : ['scrollable-0.4.0.js']
 }
