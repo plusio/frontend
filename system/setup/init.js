@@ -149,6 +149,7 @@ head.ready('libs', function(){
 	cssToBeLoaded.push('system/vendor/angular-mobile-nav/mobile-nav.css');
 
 	head.js(
+		"system/vendor/jquery/jquery-2.0.0.min.js",
 		"system/vendor/underscore/underscore.js",
 		"system/vendor/angular/angular.js",
 		"system/vendor/angular/angular-resource.js",
