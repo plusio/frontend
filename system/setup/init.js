@@ -53,7 +53,7 @@ head.js('app/config.js', function(){
 	for(var i in appConfig.themes){
 		var themename = appConfig.themes[i];
 
-		head.js('app/themes/' + themename + '/' + themename + '.config', function(){
+		head.js('app/themes/' + themename + '/' + themename + '.config.js', function(){
 			themeConfigs[theme.name] = theme;
 		});
 	}
@@ -72,7 +72,7 @@ head.js('app/config.js', function(){
 	for(var i in appConfig.plugins){
 		var ext = appConfig.plugins[i];
 
-		head.js('app/plugins/' + ext + '/' + ext + '.config', function(){
+		head.js('app/plugins/' + ext + '/' + ext + '.config.js', function(){
 
 			if(typeof config !== 'undefined'){
 				/*
