@@ -17,7 +17,7 @@
 	2) 
 */
 
-angular.directive('myDirective',function($compile) {
+$app.directive('myDirective',function($compile) {
   return {
     templateUrl : '/path/to/some/template.html', //(optional) the contents of this template can be downloaded and constructed into the element
     replace : true, //whether or not to replace the inner data within the element
