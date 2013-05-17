@@ -1,8 +1,22 @@
+/* Directives */
+/*
+  The purpose of directives is essentially teach html "new tricks". 
+  Most jquery style effects, DOM manipulation, any interactions with js plugins on html belongs in this file.
+  Attempting other approaches will often be unnecessarily frustrating otherwise.
+  For further help on directives take a long at these articles:
+  1) http://www.yearofmoo.com/2012/08/use-angularjs-to-power-your-web-application.html#directives
+  2) http://blog.artlogic.com/2013/03/06/angularjs-for-jquery-developers/
+*/
+
+/*
+  This is a data bound menu that automatically reads from the routes from the application selected theme creates a navigation menu.
+*/
+
 $app.directive('tyMenu', function(){
   return {
     // restrict to an attribute (A = attribute, C = class, M = comment)
     restrict: 'AEC',
-    //the template for the directive.
+    //the template (html content) for the directive.
     template: '<ul class="nav"><li class="{{route.class}}" ng-repeat="route in routes"><a hg-tap="$navigate.go(route.path, \'none\')">{{ route.title }}</a></li></ul>',
     //the controller for the directive
     controller: function($scope, $location) {
