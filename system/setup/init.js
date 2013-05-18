@@ -146,15 +146,20 @@ head.ready('libs', function(){
 	cssToBeLoaded.push('system/vendor/angular-mobile-nav/mobile-nav.css');
 
 	head.js(
-		"system/vendor/jquery/jquery-2.0.0.min.js",
-		"system/vendor/underscore/underscore.js",
+		{jquery : "system/vendor/jquery/jquery-2.0.0.min.js" },
+		{underscore : "system/vendor/underscore/underscore.js" },
 		"system/vendor/angular/angular.js",
 		"system/vendor/angular/angular-resource.js",
 		"system/vendor/angular/angular-sanitize.js",
 		"system/vendor/angular/angular-cookies.js",
 		"system/vendor/restangular/restangular.js",
 		"system/vendor/angular-mobile-nav/mobile-nav.js",
-		"system/vendor/angular-retina/angular-retina.js"
+		"system/vendor/angular-retina/angular-retina.js",
+		{system : "system/scripts/directives/tyto-compile.js"},
+		{system : "system/scripts/directives/tyto-template.js"},
+		{system : "system/scripts/directives/tyto-table.js"},
+		{system : "system/scripts/directives/tyto-menu.js"},
+		{system : "system/scripts/directives/tyto-resize.js"}
 	);
 });
 

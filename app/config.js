@@ -28,17 +28,5 @@ var appConfig =
 		'services',
 		'filters',
 		'directives'
-	],
-
-	/*
-	 * all system functionality is included by default but you can choose to not include each module individually
-	 */
-	"system" : [
-		"directives/tyto-compile",
-		"directives/tyto-pages",
-		"directives/tyto-table",
-		"directives/tyto-template",
-		"directives/tyto-menu",
-		"directives/tyto-resize"
 	]
 }
