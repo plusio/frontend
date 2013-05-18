@@ -58,19 +58,40 @@ $app.controller('MapCrtl', function($scope, plus){
   }else{
     // Otherise lets set two example markers so the the map isn't blank
     $scope.leaflet.markers =  {       
-      Madrid: {
-          lat: 40.095,
-          lng: -3.823,
-          message: "Madrid, not draggable",
-          focus: true,
+      NewYork: {
+          lat: 40.719037,
+          lng: -74.003913,
+          message: "New York",
+          focus: false,
           draggable: false
       },
-      Madrid2: {
-          lat: 60.095,
-          lng: -30.823,
-          message: "Drag me to your position",
+      SanFrancisco: {
+          lat:37.775201,
+          lng:-122.419073,
+          message: "San Francisco",
+          focus: false,
+          draggable: false
+      },
+      Miami: {
+          lat:25.788042,
+          lng:-80.225409,
+          message: "Miami",
+          focus: false,
+          draggable: false
+      },
+      Miami2: {
+          lat:47.60459,
+          lng:-122.334474,
+          message: "Miami",
+          focus: false,
+          draggable: false
+      },
+      WashingtonDC: {
+          lat:38.89244,
+          lng:-77.032933,
+          message: "Washington, DC",
           focus: true,
-          draggable: true
+          draggable: false
       }
     }
   }

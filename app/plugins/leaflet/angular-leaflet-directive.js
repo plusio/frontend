@@ -1,3 +1,16 @@
+var defaultIcon = L.icon({
+    iconUrl: 'app/plugins/leaflet/images/marker-icon.png',
+    shadowUrl: 'app/plugins/leaflet/images/marker-shadow.png',
+
+    iconSize:     [25, 41], // size of the icon
+    shadowSize:   [41, 41], // size of the shadow
+    iconAnchor:   [12, 41], // point of the icon which will correspond to marker's location
+    shadowAnchor: [13, 41],  // the same for the shadow
+    popupAnchor:  [1, -34] // point from which the popup should open relative to the iconAnchor
+});
+
+alert(defaultIcon.options.iconUrl);
+
 $app.directive("leaflet", ["$http", "$log", function ($http, $log) {
     return {
         restrict: "E",
@@ -113,7 +126,8 @@ $app.directive("leaflet", ["$http", "$log", function ($http, $log) {
                     var marker = new L.marker(
                         scope.markers[mkey],
                         {
-                            draggable: markerData.draggable ? true:false
+                            draggable: markerData.draggable ? true:false,
+                            icon: defaultIcon
                         }
                     );
 

@@ -1210,13 +1210,13 @@ var scrollable = function($timeout) {
           };
 
           scope.$watch('currPageY', function (newVal, oldVal) {
-            console.log('newVal %s, oldVal %s', newVal, oldVal);
+            //console.log('newVal %s, oldVal %s', newVal, oldVal);
             if (angular.isDefined(newVal)) {
               scroll.scrollToPage(0, newVal, scope.scrollToPageTime);
             }
           });
           scope.$watch('currPageX', function (newVal, oldVal) {
-            console.log('newVal %s, oldVal %s', newVal, oldVal);
+           // console.log('newVal %s, oldVal %s', newVal, oldVal);
             if (angular.isDefined(newVal)) {
               scroll.scrollToPage(newVal, 0, scope.scrollToPageTime);
             }
