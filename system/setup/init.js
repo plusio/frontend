@@ -36,12 +36,19 @@ head.ready(function(){
 /*
  * Load the configuration file
  */
- var jsToBeLoaded = ["system/setup/app.js"];
+ var jsToBeLoaded = [
+ 	"system/setup/app.js",
+	"system/scripts/directives/tyto-compile.js",
+	"system/scripts/directives/tyto-template.js",
+	"system/scripts/directives/tyto-table.js",
+	"system/scripts/directives/tyto-menu.js",
+	"system/scripts/directives/tyto-resize.js"
+];
  var availibleLibs = ['+jquery', '+jquery-ui', '+sock']
  var cssToBeLoaded = [];
- var libsToBeLoaded = [];
  var themeConfigs = {};
  var extCount = 0;
+ var libsToBeLoaded = [];
 
 head.js('app/config.js', function(){
 	for(var i in appConfig.scripts){ jsToBeLoaded.push('app/includes/scripts/' + appConfig.scripts[i] + '.js'); }
@@ -129,7 +136,7 @@ function addLib(lib){
 function loadFiles(){
 	for(var i in libsToBeLoaded){
 		lib = libsToBeLoaded[i].substring(1);
-		head.js({libs : 'system/libraries/' + lib + '/' + lib + '.js'});             																																													
+		head.js({libs : 'system/libraries/' + lib + '/' + lib + '.js'});
 	}
 }
 
@@ -148,23 +155,18 @@ head.ready('libs', function(){
 	head.js(
 		{jquery : "system/vendor/jquery/jquery-2.0.0.min.js" },
 		{underscore : "system/vendor/underscore/underscore.js" },
-		"system/vendor/angular/angular.js",
-		"system/vendor/angular/angular-resource.js",
-		"system/vendor/angular/angular-sanitize.js",
-		"system/vendor/angular/angular-cookies.js",
-		"system/vendor/restangular/restangular.js",
-		"system/vendor/angular-mobile-nav/mobile-nav.js",
-		"system/vendor/angular-retina/angular-retina.js",
-		{system : "system/scripts/directives/tyto-compile.js"},
-		{system : "system/scripts/directives/tyto-template.js"},
-		{system : "system/scripts/directives/tyto-table.js"},
-		{system : "system/scripts/directives/tyto-menu.js"},
-		{system : "system/scripts/directives/tyto-resize.js"}
+		{angular : "system/vendor/angular/angular.js" },
+		{angular : "system/vendor/angular/angular-resource.js" },
+		{angular : "system/vendor/angular/angular-sanitize.js" },
+		{angular : "system/vendor/angular/angular-cookies.js" },
+		{angular : "system/vendor/restangular/restangular.js" },
+		{angular : "system/vendor/angular-mobile-nav/mobile-nav.js" },
+		{angular : "system/vendor/angular-retina/angular-retina.js" }
 	);
 });
 
 
-head.ready('angular.js', function(){
+head.ready('angular', function(){
 	$app = angular.module('app.dependencies', [
 		'ngResource',
 		'ngSanitize',

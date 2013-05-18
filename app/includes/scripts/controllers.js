@@ -79,10 +79,10 @@ $app.controller('MapCrtl', function($scope, plus){
           focus: false,
           draggable: false
       },
-      Miami2: {
+      Seattle: {
           lat:47.60459,
           lng:-122.334474,
-          message: "Miami",
+          message: "Seattle",
           focus: false,
           draggable: false
       },

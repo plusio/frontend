@@ -21,7 +21,7 @@ var appConfig =
 
 	/*
 	 * You shouldn't need to change these unless you split your functions into multiple files
-	 * or rename these files to something other than the default
+	 * or rename these files to something other than the default.
 	 */
 	"scripts" : [
 		'controllers',
