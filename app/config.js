@@ -1,13 +1,13 @@
 var appConfig = 
 {
 	"name" : "",
-	"id" : "", // app key
+	"id" : "4fdab4a1d645c6c75e000001", // app key
 	"environment" : "development", // development / production
 
 	/*
 	 * Specify the name of the selected theme
 	 */
-	"themes" : ['twentythirteen'],
+	"themes" : ['bootstrap'],
 
 	/*
 	 * plugins add to the functionality of Tyto

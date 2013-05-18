@@ -117,6 +117,10 @@ $app.controller('MapCrtl', function($scope, plus){
  * 2) plus: an angularjs service that is used to connect to the Plus.io REST API and get an array of geospatial data json data.
  */
 $app.controller('GeoCrtl', function($scope, plus) {
+  $scope.scroller = {
+    x: 0,
+    y: 0
+  }
  // binds data to the geoData "model" on $scope. The two-way data binding will automatically cause the view (html/css) to be updated once the data returns.
  // Currently no data will return unless an app id is specified in the app's config file (app/config.js).
   $scope.geoData = plus.getGeoBucket(); 

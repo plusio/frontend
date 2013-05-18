@@ -1,0 +1,99 @@
+html, body{
+	height: 100%;
+}
+
+.mb-page{
+	/*position: relative;/* fixes page placement issue */
+	padding-top: 40px;
+}
+
+.mb-modal{
+	z-index:2000;
+}
+
+#wrapper{
+	position: absolute;
+	color: #333;
+	background: #fcfcfc;
+	top: 40px; /* height of header */
+	bottom: 80px; /* height of footer ( x 2?)*/
+	left: 0;right: 0;
+	/*background: url(../img/background.jpg);*/
+}
+
+#wrapper.mb-modal{
+	/*bottom:0;*/
+}
+
+#scroll-area{
+	height: 100%;
+}
+
+.scroller{
+	height: auto;
+	min-height: 100%;
+}
+
+/*.scroller ul{
+	padding: 0; margin:0;
+	list-style-type: none;
+}*/
+
+.iscroll-pages .scroller{
+	height: 100%;
+}
+
+.iscroll-pages ul{
+	width: 300%;
+	height: 100%;
+	margin: 0;
+}
+
+.iscroll-pages li{
+	position: relative;
+	float: left;
+	display: block;
+	height: 100%;
+	/*
+	 * We'll do some magic in the view to set the with of the li
+	 * to the width of the window instead of 300% the width of it
+	 * so that the li's will line up in a neat row, with one on the page at a time.
+	 */
+}
+
+.iscroll-page{
+	position: absolute;
+	display: table;
+	height: 100%;
+	width: 100%;
+}
+
+.iscroll-page > div{
+	display: table-cell;
+	vertical-align: middle;
+	text-align: center;
+}
+
+.iscroll-page .ico-gesture{
+	margin-top: 25px;
+	/*opacity: 0.5;*/
+	/*-webkit-filter: brightness(-10%); */
+}
+
+.nav-stacked .form{
+	padding: 10px 5px;
+}
+
+.nav-stacked .form-search{
+	margin-bottom: 0;
+}
+
+.leaflet-container {
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
+
+.nav-tabs.nav-stacked > li{
+	pointer-events: none;
+}
