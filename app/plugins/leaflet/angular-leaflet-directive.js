@@ -9,8 +9,6 @@ var defaultIcon = L.icon({
     popupAnchor:  [1, -34] // point from which the popup should open relative to the iconAnchor
 });
 
-alert(defaultIcon.options.iconUrl);
-
 $app.directive("leaflet", ["$http", "$log", function ($http, $log) {
     return {
         restrict: "E",
