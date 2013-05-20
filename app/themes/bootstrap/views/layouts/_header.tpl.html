@@ -1,8 +1,8 @@
 <div class="navbar-inner">
 	<div class="container-fluid">
-	    <a class="brand" hg-tap="$navigate.go('/', 'none')">{{ app.name || 'Tyto' }}</a>
-	    <ul class="nav pull-right">
-	      <li><a hg-tap="$navigate.go('/pages/about', 'modal')">About</a></li>
+	    <a class="brand">{{ app.name || 'Tyto' }}</a>
+	    <ul class="nav">
+	      <li><button class="btn" hg-tap="$navigate.go('/pages/about', 'modal')">About</button></li>
 	    </ul>
 	</div>
 </div>

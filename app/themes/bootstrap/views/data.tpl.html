@@ -26,7 +26,7 @@
 			ng-repeat is like a for each loop, and will repeat the content in between the tag and the closing tag, including the tag itself.
 			http://docs.angularjs.org/api/ng.directive:ngRepeat
 	 	-->
-		<li ng-repeat="item in geoData | filter:search">
+		<li ng-repeat="item in geoData | filter:search" class="item">
 			<a>{{item.Tag}} | {{ item.Latitude.substring(0,7) }}, {{ item.Longitude.substring(0,7) }}</a>
 		</li>
 	</ul>
