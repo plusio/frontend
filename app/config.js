@@ -1,7 +1,7 @@
 var appConfig = 
 {
 	"name" : "",
-	"id" : "4fdab4a1d645c6c75e000001", // app key
+	"id" : "", // app key
 	"environment" : "development", // development / production
 
 	/*

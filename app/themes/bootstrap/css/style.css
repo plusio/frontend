@@ -80,6 +80,8 @@ header .navbar-inner .nav{
 
 .iscroll-pages .scroller{
 	height: 100%;
+	font: 18px/27px 'RobotoThin', Arial, sans-serif;
+	
 }
 
 .iscroll-pages ul{

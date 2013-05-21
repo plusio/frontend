@@ -16,7 +16,7 @@ var  theme =
 	 * these paths are relative to the root of your theme directory
 	 */
 	files : {
-		css : ['css/bootstrap', 'css/style'],
+		css : ['css/bootstrap', 'css/fonts/stylesheet', 'css/style'],
 		js : []
 	},
 
