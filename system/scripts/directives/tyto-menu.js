@@ -17,7 +17,7 @@ $app.directive('tyMenu', function(){
     // restrict to an attribute (A = attribute, C = class, M = comment)
     restrict: 'AEC',
     //the template (html content) for the directive.
-    template: '<ul class="nav"><li class="{{route.class}}" ng-repeat="route in routes"><a hg-tap="$navigate.go(route.path, \'none\')">{{ route.title }}</a></li></ul>',
+    template: '<ul class="nav"><li class="{{route.class}}" ng-repeat="route in routes"><a hm-tap="$navigate.go(route.path, \'none\')">{{ route.title }}</a></li></ul>',
     //the controller for the directive
     controller: function($scope, $location) {
       var routes = $scope.app.themes[$scope.app.themenames[0]].routes;

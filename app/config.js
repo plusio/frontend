@@ -12,12 +12,7 @@ var appConfig =
 	/*
 	 * plugins add to the functionality of Tyto
 	 */
-	"plugins" : [
-		"gestures",
-		"iscroll",
-		"plus",
-		"leaflet"
-	],
+	"plugins" : ['plus', 'leaflet'],
 
 	/*
 	 * You shouldn't need to change these unless you split your functions into multiple files

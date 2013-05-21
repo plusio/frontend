@@ -1,13 +1,12 @@
 'use strict';
 
 // Declare app level module which depends on filters, and services
-angular.module('app', ['app.dependencies', 'restangular']).
-  config(['$routeProvider', '$httpProvider', 'RestangularProvider', function($routeProvider, $httpProvider, RestangularProvider) {
+angular.module('app', ['app.dependencies']).
+  config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvider) {
     
     // Setting up rest api (this code or the restangular dependency may need to move elsewhere on the filesystem)
     var theUrl = "http://api.plus.io/{0}".format(appConfig.id);
     //console.log(theUrl);
-    RestangularProvider.setBaseUrl(theUrl);
 
 
     // automagicly generate the angular routes config using the array supplied with the theme
