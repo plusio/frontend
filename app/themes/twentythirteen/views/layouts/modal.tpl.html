@@ -1,5 +1,11 @@
-<header>
-	<a hg-tap="$navigate.back()" class="pull-left">Close</a>
-	<span>Tyto</span>
+<header class="navbar navbar-fixed-top">
+	<div class="navbar-inner">
+		<div class="container-fluid">
+		    <a class="brand">{{ app.name || 'Tyto' }}</a>
+		    <ul class="nav pull-right">
+		      <li><a hg-tap="$navigate.back()">Close</a></li>
+		    </ul>
+		</div>
+	</div>
 </header>
-<div id="wrapper" ty-template></div>
+<div id="wrapper" class="mb-modal" ty-template></div>

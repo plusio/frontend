@@ -7,7 +7,7 @@ var appConfig =
 	/*
 	 * Specify the name of the selected theme
 	 */
-	"themes" : ['bootstrap'],
+	"themes" : ['twentythirteen'],
 
 	/*
 	 * plugins add to the functionality of Tyto

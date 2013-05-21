@@ -3,7 +3,7 @@ var  theme =
 	/*
 	 * Theme name, must be identical to the directory name
 	 */
-	name : 'bootstrap',
+	name : 'twentythirteen',
 	author : 'citizenhub',
 
 	/*
@@ -16,7 +16,7 @@ var  theme =
 	 * these paths are relative to the root of your theme directory
 	 */
 	files : {
-		css : ['css/bootstrap', 'css/fonts/stylesheet', 'css/style'],
+		css : ['css/normalize', 'css/fonts/stylesheet', 'css/style'],
 		js : []
 	},
 
@@ -60,9 +60,9 @@ var  theme =
 			class : 'globe'
 		},
 		{
-			path : '/pages/about',
+			path : '/pages/:name',
 			layout : 'layouts/modal',
-			template : 'about'
+			template : 'pages'
 		},
 		{
 			otherwise : '/home'

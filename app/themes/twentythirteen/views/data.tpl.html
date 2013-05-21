@@ -1,29 +1,33 @@
 <div id="scroll-area" scrollable parameters="{{ {
 	hideScrollbar: true,
-	fadeScrollbar: true
-} }}">
+	fadeScrollbar: true,
+	snap: 'li'
+} }}" curr-page-x="scroller.x" curr-page-y="scroller.y">
 	<!-- 
 		Let's create a search field for the data that we have.
 		ng-model="search" assigns the variable 'search' to the value of the search field.
 		Further down we'll use that value to filter down the list.
 	 -->
-	<div class="search">
-		<input type="search"  placeholder="Search..." class="search-field input-large" ng-model="search" />
-	</div>
+	
 
 	<!-- 
 		putting ng-show="" on any element will show that element when the variables value is truthy,
 		and hide the element if the value is falsey
 		http://docs.angularjs.org/api/ng.directive:ngShow
 	 -->
-	<ul id="geo-data" ng-show="geoData">
+	<ul id="geo-data" class="nav nav-tabs nav-stacked" ng-show="geoData">
+		<li class="form">
+			<form class="form-search">
+				<input type="text" ng-model="search" class="input-block-level search-query" placeholder="Search">
+			</form>
+		</li>
 
 		<!-- 
 			ng-repeat is like a for each loop, and will repeat the content in between the tag and the closing tag, including the tag itself.
 			http://docs.angularjs.org/api/ng.directive:ngRepeat
 	 	-->
-		<li ng-repeat="item in geoData | filter:search">
-			{{item.Tag}} | {{ item.Latitude.substring(0,7) }}, {{ item.Longitude.substring(0,7) }}
+		<li ng-repeat="item in geoData | filter:search" class="item">
+			<a>{{item.Tag}} | {{ item.Latitude.substring(0,7) }}, {{ item.Longitude.substring(0,7) }}</a>
 		</li>
 	</ul>
 
