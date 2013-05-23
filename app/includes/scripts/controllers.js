@@ -127,3 +127,7 @@ $app.controller('GeoCrtl', function($scope, plus) {
     $scope.geoData = plus.getGeoBucket(); 
   }
 });
+
+$app.controller('LoginController', function($scope){
+
+});

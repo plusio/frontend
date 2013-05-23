@@ -1,0 +1,4 @@
+{
+	"extName" : "singlesignon",
+	"files" : [ "directives.js", "singleSignOn.js"] 
+}
