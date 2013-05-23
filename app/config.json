@@ -1,4 +1,3 @@
-var appConfig = 
 {
 	"name" : "",
 	"id" : "", // app key
@@ -7,21 +6,21 @@ var appConfig =
 	/*
 	 * Specify the name of the selected theme
 	 */
-	"themes" : ['twentythirteen'],
+	"theme" : "twentythirteen",
 
 	/*
 	 * plugins add to the functionality of Tyto
 	 */
-	"plugins" : ['plus', 'leaflet'],
+	"plugins" : ["leaflet"],
 
 	/*
 	 * You shouldn't need to change these unless you split your functions into multiple files
 	 * or rename these files to something other than the default.
 	 */
 	"scripts" : [
-		'controllers',
-		'services',
-		'filters',
-		'directives'
+		"controllers",
+		"services",
+		"filters",
+		"directives"
 	]
 }

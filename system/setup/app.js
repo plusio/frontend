@@ -3,19 +3,16 @@
 // Declare app level module which depends on filters, and services
 angular.module('app', ['app.dependencies']).
   config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvider) {
-    
-    // Setting up rest api (this code or the restangular dependency may need to move elsewhere on the filesystem)
-    var theUrl = "http://api.plus.io/{0}".format(appConfig.id);
-    //console.log(theUrl);
 
 
     // automagicly generate the angular routes config using the array supplied with the theme
-  	for(var i in themeConfigs[appConfig.themenames[0]].routes){
-  		var route = themeConfigs[appConfig.themenames[0]].routes[i];
+  	for(var i in settings.theme.routes){
+  		var route = settings.theme.routes[i];
       var template = (_.isUndefined(route.layout))?route.template:route.layout;
-      
+
+
   		if(!_.isUndefined(route.path)){
-  			$routeProvider.when(route.path, {templateUrl: 'app/themes/' + appConfig.themenames[0] + '/views/' + template + '.tpl.html', controller: ((typeof route.controller !== 'undefined')?route.controller:'')});;
+  			$routeProvider.when(route.path, {templateUrl: 'app/themes/' + settings.app.theme + '/views/' + template + '.tpl.html', controller: ((typeof route.controller !== 'undefined')?route.controller:'')});;
   		}else if(!_.isUndefined(route.otherwise)){
     		$routeProvider.otherwise({redirectTo: route.otherwise});
   		}else{
@@ -28,13 +25,13 @@ angular.module('app', ['app.dependencies']).
 
   }]).run(['$rootScope', '$navigate', '$templateCache', '$route', '$http', function($rootScope, $navigate, $templateCache, $route, $http){
     //delete cache on reload / use only in development
-    if (appConfig.environment == "development"){
+    if (settings.app.environment == "development"){
       console.log('Application has been loaded in Development mode.');
 
       // clear the cache on refresh so that template changes will update
       $templateCache.removeAll();
 
-    } else if(appConfig.environment == "production") {
+    } else if(settings.app.environment == "production") {
       // put any unique code for production here, ex: saving plus.io data into local storage
 
     } else {
@@ -50,19 +47,17 @@ angular.module('app', ['app.dependencies']).
       }
     });
 
-    $rootScope.app = {
-      paths : {
+    $rootScope.app = settings.app;
+
+    $rootScope.app.paths = {
         image : 'app/includes/images/',
-        view : 'app/themes/' + appConfig.themenames[0] + '/views/',
+        view : 'app/themes/' + settings.app.theme + '/views/',
         map : 'app/includes/maps/'
-      },
-      themes : themeConfigs
     }
 
+    $rootScope.app.theme = settings.theme;
+
   	$rootScope.$navigate = $navigate;
-  	angular.extend($rootScope.app, appConfig);
-
-
   }]);
 
 

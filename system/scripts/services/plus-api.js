@@ -2,6 +2,11 @@
 
 /* Plus IO Services */
 
+
+// Demonstrate how to register services
+// In this case it is a simple value service.
+$app.value('version', '0.1');
+
 if (!String.prototype.format) {
   String.prototype.format = function() {
     var args = arguments;

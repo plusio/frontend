@@ -97,7 +97,7 @@ $app.controller('MapCrtl', function($scope, plus){
   }
 
   // Watch the geoData object on $scope, so that if it pulls data,
-  // it will update the list of markers for leaflet and display teh updated results
+  // it will update the list of markers for leaflet and display the updated results
   $scope.$watch('geoData', function(data){
     if(angular.isDefined(data)){
       angular.forEach(data, function(item){
@@ -114,7 +114,7 @@ $app.controller('MapCrtl', function($scope, plus){
 
 /* Variables:
  * 1) $scope: Here we pass in the $scope dependency because this controller needs the two-way databinding functionality of angular.
- * 2) plus: an angularjs service that is used to connect to the Plus.io REST API and get an array of geospatial data json data.
+ * 2) plus: an angularjs service that is used to connect to the Plus.io REST API and get an array of geospatial json data json.
  */
 $app.controller('GeoCrtl', function($scope, plus) {
   $scope.scroller = {

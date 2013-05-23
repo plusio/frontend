@@ -6,7 +6,7 @@ $app.directive('tyTemplate', function(){
     template: '<ng-include src="path" autoscroll="false"></ng-include>',
     //the controller for the directive
     controller: function($scope, $location) {
-      var routes = $scope.app.themes[$scope.app.themenames[0]].routes;
+      var routes = $scope.app.theme.routes;
 
       for(var i in routes){
         var route = routes[i];
@@ -28,7 +28,6 @@ $app.directive('tyTemplate', function(){
           if(pathSegments[i] !== routeSegments[i]){
             continue;
           }
-
           $scope.path = $scope.app.paths.view + route.template + '.tpl.html';
           return true;
         };
