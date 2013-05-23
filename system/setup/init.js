@@ -116,7 +116,7 @@ head.ready(function(){
 				lastHeadScript = file;
 				head.js(sprintf('app/plugins/%s/%s', i, file));
 			}else if(_.last(parts) === 'css'){
-				css.load(sprintf('app/plugins/%s/%s', i, file));
+				loadCss(sprintf('app/plugins/%s/%s', i, file));
 			}
 		});
 	});
@@ -132,7 +132,7 @@ head.ready(function(){
 	//Load in theme files
 	head.ready(lastHeadScript, function(){
 		$.each(settings.theme.files.css, function(i, file){
-			css.load(sprintf('app/themes/%s/%s.css', settings.app.theme, file));
+			loadCss(sprintf('app/themes/%s/%s.css', settings.app.theme, file));
 		});
 
 		$.each(settings.theme.files.js, function(i, file) {
@@ -163,14 +163,12 @@ head.ready(function(){
 	);
 });
 
-var css = {
-	load : function(path){
-		var link = document.createElement("link");
-		link.type = "text/css";
-		link.rel = "stylesheet";
-		link.href = path;
-		document.getElementsByTagName("head")[0].appendChild(link);
-	}
+function loadCss(path){
+	var link = document.createElement("link");
+	link.type = "text/css";
+	link.rel = "stylesheet";
+	link.href = path;
+	document.getElementsByTagName("head")[0].appendChild(link);
 }
 
 /*
