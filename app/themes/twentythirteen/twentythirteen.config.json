@@ -59,6 +59,14 @@
 			"class" : "globe"
 		},
 		{
+			"path" : "/login",
+			"layout" : "layouts/main",
+			"template" : "login",
+			"controller" : "LoginController",
+			"title" : "Login",
+			"class" : "globe"
+		},			
+		{
 			"path" : "/pages/about",
 			"layout" : "layouts/modal",
 			"template" : "about"
