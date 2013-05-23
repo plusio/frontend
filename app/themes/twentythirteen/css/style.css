@@ -16,7 +16,7 @@ html, body{
 	color: #333;
 	background: #fcfcfc;
 	top: 51px; /* height of header */
-	bottom: 50px; /* height of footer ( x 2?)*/
+	bottom: 91px; /* height of footer ( x 2?)*/
 	left: 0;right: 0;
 	/*background: url(../img/background.jpg);*/
 }
