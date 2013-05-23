@@ -1,11 +1,11 @@
 <header class="navbar navbar-fixed-top">
 	<div class="navbar-inner">
-		<div class="container-fluid">
-		    <a class="brand">{{ app.name || 'Tyto' }}</a>
-		    <ul class="nav pull-right">
-		      <li><a hm-tap="$navigate.back()">Close</a></li>
-		    </ul>
-		</div>
+	<div class="container-fluid">
+	    <a class="brand" clicker>{{ app.name || 'Tyto' }}</a>
+	    <ul class="nav">
+	      <li><button class="btn" hm-tap="$navigate.back()">Close</button></li>
+	    </ul>
 	</div>
+</div>
 </header>
-<div id="wrapper" class="mb-modal" ty-template></div>
+<div id="wrapper" ty-template></div>

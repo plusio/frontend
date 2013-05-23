@@ -25,6 +25,7 @@ var $app; //inilize the $app variable at a global level
  * angular app.js
  * framework modules
  */
+loadCss ("system/vendor/angular-mobile-nav/mobile-nav.css");
 head.js(
 	"system/vendor/jquery/jquery-2.0.0.min.js",
 	"system/vendor/EightMedia/hammer-1.0.5.min.js",
