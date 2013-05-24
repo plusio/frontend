@@ -1,3 +1,76 @@
+<script>
+	var app = {
+	    // Application Constructor
+	    initialize: function() {
+	        this.bindEvents();
+	    },
+	    // Bind Event Listeners
+	    //
+	    // Bind any events that are required on startup. Common events are:
+	    // 'load', 'deviceready', 'offline', and 'online'.
+	    bindEvents: function() {
+	        document.addEventListener('deviceready', this.onDeviceReady, false);
+	    },
+	    // deviceready Event Handler
+	    //
+	    // The scope of 'this' is the event. In order to call the 'receivedEvent'
+	    // function, we must explicity call 'app.receivedEvent(...);'
+	    onDeviceReady: function() {
+	        app.receivedEvent('deviceready');
+	    },
+	    // Update DOM on a Received Event
+	    receivedEvent: function(id) {
+	        var parentElement = document.getElementById(id);
+	        var listeningElement = parentElement.querySelector('.listening');
+	        var receivedElement = parentElement.querySelector('.received');
+
+	        listeningElement.setAttribute('style', 'display:none;');
+	        receivedElement.setAttribute('style', 'display:block;');
+
+	        console.log('Received Event: ' + id);
+	    }
+	};
+
+    app.initialize();
+</script>
+
+<style>
+	.event {
+    border-radius:4px;
+    -webkit-border-radius:4px;
+    color:#FFFFFF;
+    font-size:12px;
+    margin:0px 30px;
+    padding:2px 0px;
+}
+
+.event.listening {
+    background-color:#333333;
+    display:block;
+}
+
+.event.received {
+    background-color:#4B946A;
+    display:none;
+}
+
+@keyframes fade {
+    from { opacity: 1.0; }
+    50% { opacity: 0.4; }
+    to { opacity: 1.0; }
+}
+ 
+@-webkit-keyframes fade {
+    from { opacity: 1.0; }
+    50% { opacity: 0.4; }
+    to { opacity: 1.0; }
+}
+ 
+.blink {
+    animation:fade 3000ms infinite;
+    -webkit-animation:fade 3000ms infinite;
+}
+</style>
 <div id="scroll-area" class="iscroll-pages" scrollable parameters="{{ {
 	snap: '.iscroll-page',
 	momentum: false,
@@ -14,6 +87,14 @@
 					<h1>
 						{{time | date:'shortTime'|lowercase}}<br />
 						<small>"My first Tyto app."</small>
+
+						<div class="app">
+				            <h1>PhoneGap</h1>
+				            <div id="deviceready" class="blink">
+				                <p class="event listening">Connecting to Device</p>
+				                <p class="event received">Device is Ready</p>
+				            </div>
+				        </div>
 					</h1>
 					<img class="ico-gesture" ng-src="{{app.paths.image}}touch-icons/one-finger-drag-left.png" width="100px" height="59px" />
 				</div>
