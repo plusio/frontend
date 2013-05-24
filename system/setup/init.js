@@ -39,6 +39,7 @@ head.js(
 	"system/vendor/angular-retina/angular-retina.js",
 	"system/vendor/wzr1337/gestures-0.1.0.min.js",
 	"system/vendor/getify/minify.json.js",
+	"system/vendor/sirkitree/google-plus-signin.js",
 	{vendor : "system/vendor/wzr1337/scrollable-4.2.5.min.js" }, //labeling the last of each section so that we can run functions at certain times of the loading process
 	"system/scripts/services/plus-api.js",
 	"system/scripts/directives/tyto-compile.js",
@@ -56,7 +57,8 @@ head.ready('angular', function(){
 		'ajoslin.mobile-navigate',
 		'ngRetina',
 		'angular-momentum-scroll',
-		'angular-gestures'
+		'angular-gestures',
+		'directive.g+signin'
 	]);
 })
 

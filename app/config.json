@@ -13,7 +13,7 @@
 	/*
 	 * plugins add to the functionality of Tyto
 	 */
-	"plugins" : ["leaflet", "singlesignon"],
+	"plugins" : ["leaflet"],
 
 	/*
 	 * You shouldn't need to change these unless you split your functions into multiple files

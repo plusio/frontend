@@ -6,7 +6,8 @@
  * Copying is an act of love. Please copy.
  */
 
-$app.directive('g+signin', function () {
+angular.module('directive.g+signin', []).
+  directive('g+signin', function () {
     return {
       restrict: 'E',
       template: '<span></span>',

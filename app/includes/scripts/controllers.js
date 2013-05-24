@@ -128,6 +128,25 @@ $app.controller('GeoCrtl', function($scope, plus) {
   }
 });
 
+function signinCallback(authResult) {
+
+  console.log(authResult);
+
+}
+
 $app.controller('LoginController', function($scope){
+
+  // Callback for Google+ Sign-In
+  signinCallback = function (authResult) {
+    console.log('controller', authResult);
+
+    $scope.$apply(function(){
+       $scope.auth = {
+        result : authResult,
+        status : (authResult['access_token'])? true : false
+      }
+    });
+  }
+
 
 });
