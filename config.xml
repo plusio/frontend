@@ -51,6 +51,7 @@
         <gap:plugin name="Example" />
         A list of available plugins are available at https://build.phonegap.com/docs/plugins
     -->
+    <gap:plugin name="ChildBrowser" />
 
     <!-- Define app icon for each platform. -->
     <icon src="system/includes/icon/icon.png" />

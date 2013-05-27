@@ -1,6 +1,7 @@
 {
 	"name" : "",
 	"google_id" : "",
+	"id" : "",
 	"google_secret_key" : "",
 	"api_endpoint" : "",
 	"environment" : "development", // development / production
