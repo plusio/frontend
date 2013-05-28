@@ -51,6 +51,22 @@
 			"class" : "list"
 		},	
 		{
+			"path" : "/list",
+			"layout" : "layouts/main",
+			"template" : "list",
+			"controller" : "ListController",
+			"title" : "Data",
+			"class" : "list"
+		},	
+		{
+			"path" : "/list/:id",
+			"layout" : "layouts/main",
+			"template" : "listItem",
+			"controller" : "ListItemController",
+			"title" : "List",
+			"class" : "list"
+		},				
+		{
 			"path" : "/map",
 			"layout" : "layouts/main",
 			"template" : "map",

@@ -1,0 +1,9 @@
+<div>
+	<!-- ng-model specifies the model & model.property that populates the text box below. -->
+	<input ng-model="listItem.name" type="text"> 
+
+	<!-- The ng-click methods are functions on $scope which execute when clicked. Use ng-click in order to have access to angular functionality in a friendly way opposed to the 'normal' onclick event. -->
+	<button ng-click="Save()" class="btn">Save</button> 
+	<button ng-click="RedirectToList()" class="btn" >View List</button>
+	<button ng-click="Delete()" class="btn" ng-hide="listItem.id">Delete</button>
+</div>
