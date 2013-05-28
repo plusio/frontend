@@ -41,6 +41,8 @@ head.js(
 	"system/vendor/getify/minify.json.js",
 	"system/vendor/sirkitree/google-plus-signin.js",
 	{vendor : "system/vendor/wzr1337/scrollable-4.2.5.min.js" }, //labeling the last of each section so that we can run functions at certain times of the loading process
+	"system/scripts/services/plus-cordovaReady.js",
+	"system/scripts/services/plus-geolocation.js",
 	"system/scripts/services/plus-api.js",
 	"system/scripts/directives/tyto-compile.js",
 	"system/scripts/directives/tyto-template.js",
