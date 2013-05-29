@@ -134,19 +134,59 @@ function signinCallback(authResult) {
 
 }
 
-$app.controller('LoginController', function($scope){
+$app.controller('LoginController', function($scope, $routeParams){
 
-  // Callback for Google+ Sign-In
-  signinCallback = function (authResult) {
-    console.log('controller', authResult);
-
-    $scope.$apply(function(){
-       $scope.auth = {
-        result : authResult,
-        status : (authResult['access_token'])? true : false
-      }
-    });
+  var authParams ={
+    client_id : "665784562018-pe58jro7ltlvel1lp831ajoebogdifjr.apps.googleusercontent.com",
+    scope : "https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email",
+    redirect_uri : "http://localhost:8888/tyto.io/system/auth-callback"
   }
 
+  $scope.auth = $routeParams.auth;
+
+  $scope.authUrl = sprintf('https://accounts.google.com/o/oauth2/auth?response_type=token&client_id=%(client_id)s&scope=%(scope)s&redirect_uri=%(redirect_uri)s', authParams);
+  var params = {};
+
+  if(typeof window.plugins !== 'undefined' && typeof window.plugins.childBrowser !== 'undefined'){
+    window.plugins.childBrowser.showWebPage($scope.authUrl, {
+            showLocationBar: false
+        });
+
+    window.plugins.childBrowser.onLocationChange = function(fooUrl) { alert(fooUrl) };
+
+    window.plugins.childBrowser.onLocationChange = function(fooUrl) { 
+      if(fooUrl.search('http://localhost:8888/tyto.io') >= 0 && fooUrl.search('access_token') >= 0){
+        urlParts = fooUrl.split('#');
+        keyValues = urlParts[1].split('&');
+        for(var i = 0; i < keyValues.length; i++){
+            parts = keyValues[i].split('=');
+            params[parts[0]] = parts[1];
+        }
+        window.plugins.childBrowser.close();
+
+        $scope.apply(function(){
+          $scope.auth = params;
+        });
+
+        $.getJSON('https://www.googleapis.com/oauth2/v1/userinfo?access_token=' + params['access_key'], function(data){
+            $scope.user = data;
+        });
+      }
+    }
+  }
+ if($routeParams.auth){
+	var urlParts = $routeParams.auth;
+    var keyValues = urlParts.split('&');
+	for(var i = 0; i < keyValues.length; i++){
+		parts = keyValues[i].split('=');
+		params[parts[0]] = parts[1];
+	}
+
+	$.getJSON('https://www.googleapis.com/oauth2/v1/userinfo?access_token=' + params['access_token'], function(data){
+		console.log(data);
+      $scope.user = data;
+      $scope.$apply();
+    });
+ }
 
 });

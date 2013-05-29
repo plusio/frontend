@@ -31,6 +31,27 @@
     [ng-cloak] { display: none; }
   </style>
   <script src="system/setup/init.js"></script>
+
+  <script>
+  head.ready(function(){
+    $('#cordova').on('click', function(){
+    var ref = window.open('http://google.com', '_self');
+    ref.addEventListener('loadstart', function(event) { alert(event.type + ' - ' + event.url); } );
+    ref.addEventListener('loadstop', function(event) { alert(event.type + ' - ' + event.url); } );
+    ref.addEventListener('loaderror', function(event) { alert(event.type + ' - ' + event.url + ' - ' + event.code + ' - ' + event.message); } );
+    ref.addEventListener('exit', function(event) { alert(event.type); } );
+  });
+
+  $('#inapp').on('click', function(){
+    var ref = window.open('http://google.com', '_blank');
+    ref.addEventListener('loadstart', function(event) { alert(event.type + ' - ' + event.url); } );
+    ref.addEventListener('loadstop', function(event) { alert(event.type + ' - ' + event.url); } );
+    ref.addEventListener('loaderror', function(event) { alert(event.type + ' - ' + event.url + ' - ' + event.code + ' - ' + event.message); } );
+    ref.addEventListener('exit', function(event) { alert(event.type); } );
+  });
+});
+  
+</script>
 </head>
 <body ng-cloak>
     <mobile-view></mobile-view>

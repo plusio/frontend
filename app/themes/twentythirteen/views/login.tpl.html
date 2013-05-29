@@ -1,40 +1,10 @@
 <div>
-  <g+signin clientid="133234632155"></g+signin>
 	<h1 ng-show="auth.status">You have authorized this app with Google</h1>
 	<h1 ng-hide="auth.status">Please sign in with google</h1>
 
-	<script>
-	alert(typeof window.plugins.childBrowser);
-	function getURLParameter(name) {
-	  return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null
-	}
-
-		var authUrl = 'https://accounts.google.com/o/oauth2/auth?response_type=token&client_id=133234632155-h8hfvikj4nuegopdjccq48nq47g80chd.apps.googleusercontent.com&scope=https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/userinfo.email&redirect_uri=http://localhost:8888/tyto.io';
-		var params = {};
-
-		if(typeof window.plugins !== 'undefined' && typeof window.plugins.childBrowser !== 'undefined'){
-			window.plugins.childBrowser.showWebPage(authUrl, {
-	            showLocationBar: false
-	        });
-
-			window.plugins.childBrowser.onLocationChange = function(fooUrl) { 
-				if(fooUrl.search('http://localhost:8888/tyto.io') >= 0 && fooUrl.search('access_token') >= 0){
-					urlParts = fooUrl.split('#');
-					keyValues = urlParts[1].split('&');
-					for(var i = 0; i < keyValues.length; i++){
-					    parts = keyValues[i].split('=');
-					    params[parts[0]] = parts[1];
-					}
-					window.plugins.childBrowser.close();
-
-					$.getJSON('https://www.googleapis.com/oauth2/v1/userinfo?access_token=' + params['access_key'], function(data){
-						for(i = 0; i < data.length; i++){
-							alert(data[i]);
-						}
-					});
-				}
-			}
-		}
-	</script>
-
+	{{ authUrl }}
+<br><br>
+	{{ auth }}
+<br><br>
+	{{ user }}
 </div>

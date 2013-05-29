@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Auth Callback</title>
+
+	<script>
+		function RedirectMe(){
+			if(document.location.href.search("access_token") > -1){
+				document.location ="http://localhost:8888/tyto.io/#/login/"+location.hash.substr(1);					
+			}	
+		}
+	
+	</script>
+</head>
+<body onload="RedirectMe()">
+	<h1>Auth Callback</h1>
+</body>
+</html>

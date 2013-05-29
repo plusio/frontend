@@ -59,4 +59,38 @@
 			 -->
 		</div>
 	</div>
+
+
+
+<script>
+	$('#cordova').on('click', function(){
+		var ref = window.open('http://google.com', '_blank', 'location=no');
+		ref.addEventListener('loadstart', function(event) { alert(event.type + ' - ' + event.url); } );
+		ref.addEventListener('loadstop', function(event) { alert(event.type + ' - ' + event.url); } );
+		ref.addEventListener('loaderror', function(event) { alert(event.type + ' - ' + event.url + ' - ' + event.code + ' - ' + event.message); } );
+		ref.addEventListener('exit', function(event) { alert(event.type); } );
+		return false;
+	});
+
+	$('#inapp').on('click', function(){
+		var ref = window.open('http://google.com', '_blank');
+		ref.addEventListener('loadstart', function(event) { alert(event.type + ' - ' + event.url); } );
+		ref.addEventListener('loadstop', function(event) { alert(event.type + ' - ' + event.url); } );
+		ref.addEventListener('loaderror', function(event) { alert(event.type + ' - ' + event.url + ' - ' + event.code + ' - ' + event.message); } );
+		ref.addEventListener('exit', function(event) { alert(event.type); } );
+		return false;
+	});
+</script>
+	<a href="" id="cordova">In App Browser (no Location bar)</a>
+	<a href="" id="inapp">In App Browser</a>
+	<a href="" onclick="window.plugins.childBrowser.showWebPage('http://google.com');">ChildBrowser</a>
+
+
+
+
+
+
+
+
+
 </div>
