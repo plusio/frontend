@@ -43,13 +43,21 @@
 			"class" : "home"
 		},
 		{
-			"path" : "/data",
+			"path" : "/items",
 			"layout" : "layouts/main",
-			"template" : "data",
-			"controller" : "GeoCrtl",
+			"template" : "list",
+			"controller" : "collectionListController",
 			"title" : "Data",
 			"class" : "list"
 		},	
+		{
+			"path" : "/item/:id",
+			"layout" : "layouts/main",
+			"template" : "single",
+			"controller" : "collectionListController",
+			"title" : "List",
+			"class" : "list"
+		},				
 		{
 			"path" : "/map",
 			"layout" : "layouts/main",

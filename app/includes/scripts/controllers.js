@@ -116,49 +116,104 @@ $app.controller('MapCrtl', function($scope, plus){
  * 1) $scope: Here we pass in the $scope dependency because this controller needs the two-way databinding functionality of angular.
  * 2) plus: an angularjs service that is used to connect to the Plus.io REST API and get an array of geospatial json data json.
  */
-$app.controller('GeoCrtl', function($scope, plus) {
-  $scope.scroller = {
-    x: 0,
-    y: 0
-  }
+$app.controller('collectionListController', function($scope, $routeParams) {
  // binds data to the geoData "model" on $scope. The two-way data binding will automatically cause the view (html/css) to be updated once the data returns.
  // Currently no data will return unless an app id is specified in the app's config file (app/config.js).
-  if(!_.isEmpty($scope.app.id)){
-    $scope.geoData = plus.getGeoBucket(); 
-  }
+  	var collection = 'geo';
+    $scope.collectionData = $scope.plus.getList(collection);
+ 
+    $.ajax({
+		dataType: "jsonp",
+		url: sprintf('http://openplusapp.appspot.com/structure/%s/', collection),
+		success: function(data){
+			$scope.structure = _.difference(data[0], ['id', 'time']);
+
+			$scope.$apply();
+		}
+	});
+
+    if( $routeParams.id === 'new'){
+    	$scope.new = true;
+    	$scope.item = {};
+
+    }else if(Number($routeParams.id)){
+    	//is a number
+    	$scope.item = $scope.plus.getSingle(collection, $routeParams.id)
+    }else if(angular.isDefined($routeParams.id)){
+    	//id is set and not valid, go back to the list
+    	$scope.$navigate.go('/items', 'none');
+    }
+
+    // Evaluates whether record is new or existing and performs insert or update appropriately.
+    $scope.submit = function(){
+        if ($scope.new){
+        	console.log(collection, $scope.item);
+          $scope.plus.add(collection, $scope.item);
+        } else {
+        	console.log(collection, $routeParams.id, $scope.item);
+          $scope.plus.update(collection, $routeParams.id, $scope.item);
+        }
+
+        // go back to to list
+        $scope.$navigate.back();
+    }
+
+    // Deletes existing records only.
+    $scope.delete = function(){
+      if(!$scope.new){
+         $scope.plus.delete(collection, $routeParams.id);
+      }
+
+      // go back to to list
+      $scope.$navigate.back();
+    }
+
 });
 
-function signinCallback(authResult) {
+/* Variables:
+ * 1) $scope: Here we pass in the $scope dependency because this controller needs the two-way databinding functionality of angular.
+ * 2) plus: an angularjs service that is used to connect to the Plus.io REST API and get an array of json data.
+ */
+$app.controller('ListItemController', function($scope, $routeParams, $location, plus) {
+    // binds data to the list's "model" on $scope. The two-way data binding will automatically cause the view (html/css) to be updated once the data returns.
+    // Currently no data will return unless an app id is specified in the app's config file (app/config.js).
 
-  console.log(authResult);
+    $scope.listItem = {};
 
-}
+    // Will update once this REST API method is completed.
+    var newFoodItem = !(Number($routeParams.id));
+    if (newFoodItem == false){
+      $scope.listItem = plus.getSingle("food", $routeParams.id);
+    }
 
-$app.controller('LoginController', function($scope, geolocation){
+    // Evaluates whether record is new or existing and performs insert or update appropriately.
+    $scope.Save = function(){
+        if (newFoodItem){
+          plus.add("food", $scope.listItem);
+        }
+        else {
+          plus.update("food", $routeParams.id, $scope.listItem);
+        }
 
-  geolocation.getCurrentPosition(function (position) {
-    console.log(position);
-    // alert('Latitude: '              + position.coords.latitude          + '\n' +
-    //       'Longitude: '             + position.coords.longitude         + '\n' +
-    //       'Altitude: '              + position.coords.altitude          + '\n' +
-    //       'Accuracy: '              + position.coords.accuracy          + '\n' +
-    //       'Altitude Accuracy: '     + position.coords.altitudeAccuracy  + '\n' +
-    //       'Heading: '               + position.coords.heading           + '\n' +
-    //       'Speed: '                 + position.coords.speed             + '\n' +
-    //       'Timestamp: '             + position.timestamp                + '\n');
-  });
+        // go back to to list
+        $scope.RedirectToList();
+    };
 
-  // Callback for Google+ Sign-In
-  signinCallback = function (authResult) {
-    console.log('controller', authResult);
-
-    $scope.$apply(function(){
-       $scope.auth = {
-        result : authResult,
-        status : (authResult['access_token'])? true : false
+    // Deletes existing records only.
+    $scope.Delete = function(){
+      if(newFoodItem == false){
+         plus.delete("food", $routeParams.id);
       }
-    });
-  }
 
+      // go back to to list
+      $scope.RedirectToList();
+    };
+    $scope.RedirectToList = function(){
+      $location.path("/list");
+    };
+});
+
+
+$app.controller('LoginController', function($scope){
 
 });

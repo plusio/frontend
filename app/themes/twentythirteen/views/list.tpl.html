@@ -1,29 +1,37 @@
 <div id="scroll-area" scrollable parameters="{{ {
 	hideScrollbar: true,
-	fadeScrollbar: true
-} }}">
+	fadeScrollbar: true,
+	snap: 'li'
+} }}" curr-page-x="scroller.x" curr-page-y="scroller.y">
 	<!-- 
 		Let's create a search field for the data that we have.
 		ng-model="search" assigns the variable 'search' to the value of the search field.
 		Further down we'll use that value to filter down the list.
 	 -->
-	<div class="search">
-		<input type="search"  placeholder="Search..." class="search-field input-large" ng-model="search" />
-	</div>
+	
 
 	<!-- 
 		putting ng-show="" on any element will show that element when the variables value is truthy,
 		and hide the element if the value is falsey
 		http://docs.angularjs.org/api/ng.directive:ngShow
 	 -->
-	<ul id="geo-data" ng-show="geoData">
+	<ul id="geo-data" class="nav nav-tabs nav-stacked" ng-show="collectionData">
+		<li class="form">
+			<form class="form-search">
+				<input type="text" ng-model="search" class="input-block-level search-query" placeholder="Search">
+			</form>
+		</li>
+
+		<li>
+			<button class="btn btn-large" hm-tap="$navigate.go('/item/new')">Create New</button>
+		</li>
 
 		<!-- 
 			ng-repeat is like a for each loop, and will repeat the content in between the tag and the closing tag, including the tag itself.
 			http://docs.angularjs.org/api/ng.directive:ngRepeat
 	 	-->
-		<li ng-repeat="item in geoData | filter:search">
-			{{item.Tag}} | {{ item.Latitude.substring(0,7) }}, {{ item.Longitude.substring(0,7) }}
+		<li ng-repeat="item in collectionData | filter:search" class="item" hm-tap="$navigate.go('/item/{{ item.id }}')">
+			<a><span ng-repeat="key in structure">{{ item[key] }}<span ng-hide="$last"> | </span></span></a>
 		</li>
 	</ul>
 
@@ -33,7 +41,7 @@
 		there we no items that matched the filter, so we will show a notification that indicates that there
 		 were no search results matched.
 	-->
-	<div ng-show="(geoData | filter:search).length==0">
+	<div ng-show="(collectionData | filter:search).length==0">
 		There are no results for given query
 		<!-- No search results image goes here -->
 	</div>
@@ -41,10 +49,10 @@
 	<!-- 
 		ng-hide is the opposite of of ng-show where it will hide the element if the value is truthy and show if it is falsey.
 
-		In this instance we are going to show that no data was retrieved from the server if geoData is empty but if the app Id is not set
+		In this instance we are going to show that no data was retrieved from the server if collectionData is empty but if the app Id is not set
 		we'll continue to hide this div and show another div with specific information about the app Id.
 	 -->
-	<div ng-hide="geoData">
+	<div ng-hide="collectionData">
 		No Data loaded :(
 		<!-- No data found image goes here -->
 		<div ng-hide="app.id">

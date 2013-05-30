@@ -1,8 +1,8 @@
 {
 	"name" : "",
-	"google_id" : "",
-	"google_secret_key" : "",
-	"api_endpoint" : "",
+	"client_id" : "",
+	"client_secret" : "",
+	"server_url" : "",
 	"environment" : "development", // development / production
 
 	/*

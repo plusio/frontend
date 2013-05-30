@@ -136,7 +136,7 @@ header .navbar-inner .nav{
 }
 
 .nav-tabs.nav-stacked > li.item{
-	pointer-events: none;
+	/*pointer-events: none;*/
 }
 
 footer .navbar-inner{
