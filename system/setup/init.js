@@ -27,6 +27,7 @@ var $app; //inilize the $app variable at a global level
  */
 loadCss ("system/vendor/angular-mobile-nav/mobile-nav.css");
 head.js(
+	"phonegap.js",
 	"system/vendor/jquery/jquery-2.0.0.min.js",
 	"system/vendor/EightMedia/hammer-1.0.5.min.js",
 	"system/vendor/underscore/underscore.js",
@@ -40,6 +41,10 @@ head.js(
 	"system/vendor/wzr1337/gestures-0.1.0.min.js",
 	"system/vendor/getify/minify.json.js",
 	"system/vendor/sirkitree/google-plus-signin.js",
+	"system/vendor/btford/angular-phonegap-ready.0.0.1.js",
+	"system/vendor/btford/angular-phonegap-geolocation.0.0.1.js",
+	"system/vendor/btford/angular-phonegap-accelerometer.0.0.1.js",
+	"system/vendor/btford/angular-phonegap-notification.0.0.1.js",
 	{vendor : "system/vendor/wzr1337/scrollable-4.2.5.min.js" }, //labeling the last of each section so that we can run functions at certain times of the loading process
 	"system/scripts/services/plus-api.js",
 	"system/scripts/directives/plus-compile.js",
@@ -58,7 +63,11 @@ head.ready('angular', function(){
 		'ngRetina',
 		'angular-momentum-scroll',
 		'angular-gestures',
-		'directive.g+signin'
+		'directive.g+signin',
+		'btford.phonegap.ready',
+		'btford.phonegap.geolocation',
+		'btford.phonegap.accelerometer',
+		'btford.phonegap.notification',
 	]);
 })
 

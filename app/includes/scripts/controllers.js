@@ -218,6 +218,37 @@ $app.controller('ListItemController', function($scope, $routeParams, $location, 
 });
 
 
-$app.controller('LoginController', function($scope){
+$app.controller('phonegapController', function($scope, geolocation, accelerometer, notification){
+  var functions = {
+    geolocation : function(){
+      geolocation.getCurrentPosition(function (position) {
+        alert('Latitude: '              + position.coords.latitude          + '\n' +
+              'Longitude: '             + position.coords.longitude         + '\n' +
+              'Altitude: '              + position.coords.altitude          + '\n' +
+              'Accuracy: '              + position.coords.accuracy          + '\n' +
+              'Altitude Accuracy: '     + position.coords.altitudeAccuracy  + '\n' +
+              'Heading: '               + position.coords.heading           + '\n' +
+              'Speed: '                 + position.coords.speed             + '\n' +
+              'Timestamp: '             + position.timestamp                + '\n');
+      });
+    },
+    accelerometer : function(){
+      accelerometer.getCurrentAcceleration(function (acceleration) {
+        alert(acceleration);
+      });
+    },
+    notification : function(){
+      var message = 'Alert Message',
+          title = 'Alert Title',
+          buttonName = 'Alert Button';
+      notification.alert(message, alertCallback, title, buttonName);
 
+      function alertCallback() {
+        alert('alert completed');
+      }
+    }
+  }
+
+
+  angular.extend($scope, functions);
 });

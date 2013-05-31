@@ -67,12 +67,12 @@
 			"class" : "globe"
 		},
 		{
-			"path" : "/login",
+			"path" : "/phonegap",
 			"layout" : "layouts/main",
-			"template" : "login",
-			"controller" : "LoginController",
-			"title" : "Login",
-			"class" : "globe"
+			"template" : "phonegap",
+			"controller" : "phonegapController",
+			"title" : "Phonegap",
+			"class" : "list"
 		},			
 		{
 			"path" : "/pages/about",
