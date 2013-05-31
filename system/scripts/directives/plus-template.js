@@ -1,4 +1,4 @@
-$app.directive('tyTemplate', function(){
+$app.directive('plusTemplate', function(){
   return {
     // restrict to an attribute (A = attribute, C = class, M = comment)
     restrict: 'AEC',

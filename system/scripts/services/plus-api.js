@@ -2,11 +2,6 @@
 
 /* Plus IO Services */
 
-
-// Demonstrate how to register services
-// In this case it is a simple value service.
-$app.value('version', '0.1');
-
 if (!String.prototype.format) {
   String.prototype.format = function() {
     var args = arguments;
@@ -88,13 +83,13 @@ var serviceDeleteFn = function($http, theUrl, params){
 // Gotten from: http://www.benlesh.com/2013/02/angularjs-creating-service-with-http.html
 // plus data service
 $app.factory('plus', function($http, $q, $rootScope) { 
-   var theUrl = "http://openplusapp.appspot.com/collection/";
+   var theUrl = settings.app.server_url;
    return {
-             getList: function(syncKey) {
+             collection: function(syncKey) {
                 // // Check localstorage first before doing REST call
                 var data = localStorage.getItem(syncKey);
                 if (data != undefined && data != "") { 
-                  return JSON.parse(data); 
+                  return angular.fromJson(data); 
                 }
                 else {
                   // No data found, so do REST call and then store data in local storage for later.
@@ -103,11 +98,11 @@ $app.factory('plus', function($http, $q, $rootScope) {
                    return serviceDataPullFn($http, $q, theUrl + updatedUrl, syncKey);
                }
              },    
-             getSingle: function(syncKey, id) {
+             get: function(syncKey, id) {
                 // Check localstorage first before doing REST call
                 var data = localStorage.getItem(syncKey + "_" + id);
                 if (data != undefined && data != "") { 
-                  return JSON.parse(data); 
+                  return angular.fromJson(data); 
                 }
                 else {
                   // No data found, so do REST call and then store data in local storage for later.
@@ -133,81 +128,3 @@ $app.factory('plus', function($http, $q, $rootScope) {
              }                                                                                    
    }
 });
-
-// socket service
-$app.factory('socket', function($rootScope) {
-  var socket = io.connect('http://localhost:1337/'); // server needs to be moved to a proper config property.
-  return {
-    on: function(eventName, callback) {
-      console.log('Glass Event received: ', eventName, callback);
-
-      socket.on(eventName, function() {
-        var args = arguments;
-        //console.log(args[0].fn);
-        //var x = JSON.parse(args[0]);
-        $rootScope.socketEventFn = args[0].fn;
-        $rootScope.$apply($rootScope.socketEventFn);
-
-        $rootScope.$apply(function() {
-          callback.apply(socket, args);
-          //callback.apply(args[0].fn);
-        });
-      });
-    },
-    emit: function(eventName, data, callback) {
-      console.log('Mobile event emitted: ', eventName, data);
-
-      socket.emit(eventName, data, function() {
-        var args = arguments;
-        $rootScope.$apply(function() {
-          if(callback) {
-            callback.apply(socket, args);
-          }
-        });
-      });
-    }
-  };
-});
-
-// socket service
-// $app.factory('sockjs', function($rootScope) {
-//  var sockjs_url = 'http://localhost:9999/';
-//  var sockjs = new SockJS(sockjs_url); // server needs to be moved to a proper config property.
-
-//  return {
-//    onopen: function(callback) {
-//      console.log('Glass Event received: ', callback);
-
-//      sockjs.onopen(eventName, function() {
-//        console.log('on open called in service.', sockjs.protocol)
-//        var args = arguments;
-//        //console.log(args[0].fn);
-//        //var x = JSON.parse(args[0]);
-//        $rootScope.socketEventFn = args[0].fn;
-//        $rootScope.$apply($rootScope.socketEventFn);
-
-//        $rootScope.$apply(function() {
-//          callback.apply(sockjs, args);
-//          //callback.apply(args[0].fn);
-//        });
-//      });
-//    },
-//    onmessage: function(data, callback) {
-//      console.log('Mobile event emitted: ', data);
-
-//      sockjs.onmessage(data, function() {
-//        var args = arguments;
-//        $rootScope.$apply(function() {
-//          if(callback) {
-//            callback.apply(sockjs, args);
-//          }
-//        });
-//      });
-//    },
-//    onclose: function(data, callback){
-//      sockjs.onclose(data, function(){
-//        alert('closed');
-//      })
-//    }
-//  };
-// });

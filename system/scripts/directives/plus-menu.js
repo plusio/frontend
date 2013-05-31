@@ -12,7 +12,7 @@
   This is a data bound menu that automatically reads from the routes from the application selected theme creates a navigation menu.
 */
 
-$app.directive('tyMenu', function(){
+$app.directive('plusMenu', function(){
   return {
     // restrict to an attribute (A = attribute, C = class, M = comment)
     restrict: 'AEC',

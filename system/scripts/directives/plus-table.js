@@ -1,4 +1,4 @@
-$app.directive('tyTable', function(){
+$app.directive('plusTable', function(){
   return {
     // restrict to an attribute (A = attribute, C = class, M = comment)
     restrict: 'A',

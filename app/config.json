@@ -2,7 +2,7 @@
 	"name" : "",
 	"client_id" : "",
 	"client_secret" : "",
-	"server_url" : "",
+	"server_url" : "http://openplusapp.appspot.com/collection/",
 	"environment" : "development", // development / production
 
 	/*

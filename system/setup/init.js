@@ -41,14 +41,12 @@ head.js(
 	"system/vendor/getify/minify.json.js",
 	"system/vendor/sirkitree/google-plus-signin.js",
 	{vendor : "system/vendor/wzr1337/scrollable-4.2.5.min.js" }, //labeling the last of each section so that we can run functions at certain times of the loading process
-	"system/scripts/services/plus-cordovaReady.js",
-	"system/scripts/services/plus-geolocation.js",
 	"system/scripts/services/plus-api.js",
-	"system/scripts/directives/tyto-compile.js",
-	"system/scripts/directives/tyto-template.js",
-	"system/scripts/directives/tyto-table.js",
-	"system/scripts/directives/tyto-menu.js",
-	{system : "system/scripts/directives/tyto-resize.js" }
+	"system/scripts/directives/plus-compile.js",
+	"system/scripts/directives/plus-template.js",
+	"system/scripts/directives/plus-table.js",
+	"system/scripts/directives/plus-menu.js",
+	{system : "system/scripts/directives/plus-resize.js" }
 );
 
 head.ready('angular', function(){

@@ -1,5 +1,5 @@
 // http://jsfiddle.net/bY5qe/
-$app.directive('tyResize', function ($window) {
+$app.directive('plusResize', function ($window) {
     return function (scope) {
         angular.extend(scope, {
             window : {

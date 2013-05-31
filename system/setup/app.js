@@ -58,8 +58,6 @@ angular.module('app', ['app.dependencies']).
     $rootScope.app.theme = settings.theme;
 
   	$rootScope.$navigate = $navigate;
-
-    $rootScope.plus = plus;
   }]);
 
 

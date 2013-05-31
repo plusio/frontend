@@ -1,4 +1,4 @@
-$app.directive('tyCompile', function($compile) {
+$app.directive('plusCompile', function($compile) {
     // directive factory creates a link function
     return function(scope, element, attrs) {
       scope.$watch(

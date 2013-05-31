@@ -29,8 +29,8 @@
 	 * layout: layouts are files that include page templates within them, layouts include any reusable structure through your application. Such as header, footer, and navigation.
 	 * template: templates are the structure for individual pages, note that layouts and template files must use the extension .tpl.html which you don not include in the path the files here.
 	 * controller : controllers are javascript functions that add functionality and link any resources the view requires. Controllers can be created by a js file included with a theme, or in the application's controllers file.
-	 * title: titles are plain text that currently show up in your navigation if you use the <ty-menu> directive, they can also be accessed by a template or layout to show the title of the current page.
-	 * class: class contains a string of a class name to be applied to the li in the navigation to use for styling when using the <ty-menu> directive
+	 * title: titles are plain text that currently show up in your navigation if you use the <plus-menu> directive, they can also be accessed by a template or layout to show the title of the current page.
+	 * class: class contains a string of a class name to be applied to the li in the navigation to use for styling when using the <plus-menu> directive
 	 * otherwise: when this attribute is specified, only the otherwise attribute can be present. This tells the application what path to redirect to if the user navigates to a route that doesn't exist.
 	 */
 	"routes" : [

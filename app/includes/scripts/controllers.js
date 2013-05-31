@@ -116,18 +116,19 @@ $app.controller('MapCrtl', function($scope, plus){
  * 1) $scope: Here we pass in the $scope dependency because this controller needs the two-way databinding functionality of angular.
  * 2) plus: an angularjs service that is used to connect to the Plus.io REST API and get an array of geospatial json data json.
  */
-$app.controller('collectionListController', function($scope, $routeParams) {
+$app.controller('collectionListController', function($scope, $routeParams, $http, plus) {
  // binds data to the geoData "model" on $scope. The two-way data binding will automatically cause the view (html/css) to be updated once the data returns.
  // Currently no data will return unless an app id is specified in the app's config file (app/config.js).
-  	var collection = 'geo';
-    $scope.collectionData = $scope.plus.getList(collection);
+  	var collection = 'food';
+    plus.collection(collection).then(function(data){
+    	$scope.collectionData = data;
+    });
  
     $.ajax({
 		dataType: "jsonp",
 		url: sprintf('http://openplusapp.appspot.com/structure/%s/', collection),
 		success: function(data){
 			$scope.structure = _.difference(data[0], ['id', 'time']);
-
 			$scope.$apply();
 		}
 	});
@@ -138,7 +139,9 @@ $app.controller('collectionListController', function($scope, $routeParams) {
 
     }else if(Number($routeParams.id)){
     	//is a number
-    	$scope.item = $scope.plus.getSingle(collection, $routeParams.id)
+    	plus.get(collection, $routeParams.id).then(function(data){
+	    		$scope.item = data;
+	    	});
     }else if(angular.isDefined($routeParams.id)){
     	//id is set and not valid, go back to the list
     	$scope.$navigate.go('/items', 'none');
@@ -146,12 +149,13 @@ $app.controller('collectionListController', function($scope, $routeParams) {
 
     // Evaluates whether record is new or existing and performs insert or update appropriately.
     $scope.submit = function(){
+    	console.log($scope.item);
         if ($scope.new){
         	console.log(collection, $scope.item);
-          $scope.plus.add(collection, $scope.item);
+          plus.add(collection, $scope.item);
         } else {
         	console.log(collection, $routeParams.id, $scope.item);
-          $scope.plus.update(collection, $routeParams.id, $scope.item);
+          plus.update(collection, $routeParams.id, $scope.item);
         }
 
         // go back to to list
@@ -161,7 +165,7 @@ $app.controller('collectionListController', function($scope, $routeParams) {
     // Deletes existing records only.
     $scope.delete = function(){
       if(!$scope.new){
-         $scope.plus.delete(collection, $routeParams.id);
+         plus.delete(collection, $routeParams.id);
       }
 
       // go back to to list
