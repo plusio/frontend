@@ -51,9 +51,21 @@ $app.controller('MapCrtl', function($scope, plus){
   };
 
   // Check if the application had an id set.
-  if(!_.isEmpty($scope.app.id)){
+  if(!_.isEmpty($scope.app.server_url)){
     // if there is, get data from plus.io
-    $scope.geoData = plus.getGeoBucket(); 
+    plus.collection('geo').then(function(data){
+      $scope.geoData = data;
+      console.log(data);
+
+      angular.forEach(data, function(item){
+        $scope.leaflet.markers[item.id] = {
+          lat : item.latitude,
+          lng : item.longitude,
+          message : item.tag,
+          draggable : false
+        }
+      });
+    }); 
 
   }else{
     // Otherise lets set two example markers so the the map isn't blank
@@ -95,21 +107,6 @@ $app.controller('MapCrtl', function($scope, plus){
       }
     }
   }
-
-  // Watch the geoData object on $scope, so that if it pulls data,
-  // it will update the list of markers for leaflet and display the updated results
-  $scope.$watch('geoData', function(data){
-    if(angular.isDefined(data)){
-      angular.forEach(data, function(item){
-        $scope.leaflet.markers[item.Key] = {
-          lat : item.Latitude,
-          lng : item.Longitude,
-          message : item.Tag,
-          draggable : true
-        }
-      });
-    }
-  });
 });
 
 /* Variables:
@@ -120,9 +117,7 @@ $app.controller('collectionListController', function($scope, $routeParams, $http
  // binds data to the geoData "model" on $scope. The two-way data binding will automatically cause the view (html/css) to be updated once the data returns.
  // Currently no data will return unless an app id is specified in the app's config file (app/config.js).
   	var collection = 'food';
-    plus.collection(collection).then(function(data){
-    	$scope.collectionData = data;
-    });
+    $scope.collectionData = plus.collection(collection);
  
     $.ajax({
 		dataType: "jsonp",
@@ -174,81 +169,100 @@ $app.controller('collectionListController', function($scope, $routeParams, $http
 
 });
 
-/* Variables:
- * 1) $scope: Here we pass in the $scope dependency because this controller needs the two-way databinding functionality of angular.
- * 2) plus: an angularjs service that is used to connect to the Plus.io REST API and get an array of json data.
- */
-$app.controller('ListItemController', function($scope, $routeParams, $location, plus) {
-    // binds data to the list's "model" on $scope. The two-way data binding will automatically cause the view (html/css) to be updated once the data returns.
-    // Currently no data will return unless an app id is specified in the app's config file (app/config.js).
-
-    $scope.listItem = {};
-
-    // Will update once this REST API method is completed.
-    var newFoodItem = !(Number($routeParams.id));
-    if (newFoodItem == false){
-      $scope.listItem = plus.getSingle("food", $routeParams.id);
-    }
-
-    // Evaluates whether record is new or existing and performs insert or update appropriately.
-    $scope.Save = function(){
-        if (newFoodItem){
-          plus.add("food", $scope.listItem);
-        }
-        else {
-          plus.update("food", $routeParams.id, $scope.listItem);
-        }
-
-        // go back to to list
-        $scope.RedirectToList();
-    };
-
-    // Deletes existing records only.
-    $scope.Delete = function(){
-      if(newFoodItem == false){
-         plus.delete("food", $routeParams.id);
-      }
-
-      // go back to to list
-      $scope.RedirectToList();
-    };
-    $scope.RedirectToList = function(){
-      $location.path("/list");
-    };
-});
 
 
 $app.controller('phonegapController', function($scope, geolocation, accelerometer, notification){
   var functions = {
     geolocation : function(){
-      geolocation.getCurrentPosition(function (position) {
-        alert('Latitude: '              + position.coords.latitude          + '\n' +
-              'Longitude: '             + position.coords.longitude         + '\n' +
-              'Altitude: '              + position.coords.altitude          + '\n' +
-              'Accuracy: '              + position.coords.accuracy          + '\n' +
-              'Altitude Accuracy: '     + position.coords.altitudeAccuracy  + '\n' +
-              'Heading: '               + position.coords.heading           + '\n' +
-              'Speed: '                 + position.coords.speed             + '\n' +
-              'Timestamp: '             + position.timestamp                + '\n');
-      });
+        $scope.interval = setInterval(function(){
+          geolocation.getCurrentPosition(function (position) {
+              $scope.position = position;
+              $scope.$apply();
+          });
+        }, 500);
     },
     accelerometer : function(){
-      accelerometer.getCurrentAcceleration(function (acceleration) {
-        alert(acceleration);
-      });
+      $scope.interval = setInterval(function(){
+        accelerometer.getCurrentAcceleration(function (acceleration) {
+            $scope.acceleration = acceleration;
+            $scope.$apply();
+        });
+      }, 500);
+      
     },
     notification : function(){
       var message = 'Alert Message',
           title = 'Alert Title',
           buttonName = 'Alert Button';
+
       notification.alert(message, alertCallback, title, buttonName);
 
       function alertCallback() {
         alert('alert completed');
       }
+    },
+    stopInterval : function(){
+      clearInterval($scope.interval);
+      $scope.interval = false;
+    }
+  };
+
+    angular.extend($scope, functions);
+});
+
+$app.controller('LoginController', function($scope, $routeParams){
+
+  var authParams ={
+    client_id : "665784562018-pe58jro7ltlvel1lp831ajoebogdifjr.apps.googleusercontent.com",
+    scope : "https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email",
+    redirect_uri : "http://localhost:8888/tyto.io/system/auth-callback"
+  }
+
+  $scope.auth = $routeParams.auth;
+
+  $scope.authUrl = sprintf('https://accounts.google.com/o/oauth2/auth?response_type=token&client_id=%(client_id)s&scope=%(scope)s&redirect_uri=%(redirect_uri)s', authParams);
+  var params = {};
+
+  if(typeof window.plugins !== 'undefined' && typeof window.plugins.childBrowser !== 'undefined'){
+    window.plugins.childBrowser.showWebPage($scope.authUrl, {
+            showLocationBar: false
+        });
+
+    window.plugins.childBrowser.onLocationChange = function(fooUrl) { alert(fooUrl) };
+
+    window.plugins.childBrowser.onLocationChange = function(fooUrl) { 
+      if(fooUrl.search('http://localhost:8888/tyto.io') >= 0 && fooUrl.search('access_token') >= 0){
+        urlParts = fooUrl.split('#');
+        keyValues = urlParts[1].split('&');
+        for(var i = 0; i < keyValues.length; i++){
+            parts = keyValues[i].split('=');
+            params[parts[0]] = parts[1];
+        }
+        window.plugins.childBrowser.close();
+
+        $scope.apply(function(){
+          $scope.auth = params;
+        });
+
+        $.getJSON('https://www.googleapis.com/oauth2/v1/userinfo?access_token=' + params['access_key'], function(data){
+            $scope.user = data;
+        });
+      }
     }
   }
 
+ if($routeParams.auth){
+	var urlParts = $routeParams.auth;
+    var keyValues = urlParts.split('&');
+	for(var i = 0; i < keyValues.length; i++){
+		parts = keyValues[i].split('=');
+		params[parts[0]] = parts[1];
+	}
 
-  angular.extend($scope, functions);
+	$.getJSON('https://www.googleapis.com/oauth2/v1/userinfo?access_token=' + params['access_token'], function(data){
+		console.log(data);
+      $scope.user = data;
+      $scope.$apply();
+    });
+ }
 });

@@ -143,6 +143,7 @@ head.ready(function(){
 
 	//Load in theme files
 	head.ready(lastHeadScript, function(){
+		console.log(settings);
 		$.each(settings.theme.files.css, function(i, file){
 			loadCss(sprintf('app/themes/%s/%s.css', settings.app.theme, file));
 		});
@@ -162,7 +163,7 @@ head.ready(function(){
 
 
 	/*
-	 * Disable 'elastic scrolling' on ios to make your webapp feel more a native.
+	 * Disable 'elastic scrolling' on ios to make your app feel more native.
 	 * This javascript soulution is for ios devices,
 	 * look at style.css for OSX Lion solution.
 	 *

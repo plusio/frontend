@@ -1,3 +1,23 @@
 <a href="" class="btn" ng-click="geolocation()">Geolocation</a>
 <a href="" class="btn" ng-click="accelerometer()">Accelerometer</a>
 <a href="" class="btn" ng-click="notification()">Notification</a>
+
+<div id="accelerometer">
+	Acceleration X: {{ acceleration.x }} <br>
+    Acceleration Y: {{ acceleration.y }} <br>
+    Acceleration Z: {{ acceleration.z }} <br>
+    Timestamp: {{ acceleration.timestamp | date:'mediumTime' }} <br>
+</div>
+<br>
+<div id="geolocation">
+	Latitude: {{ position.coords.latitude }} <br>
+	Longitude: {{ position.coords.longitude }} <br>
+	Altitude: {{ position.coords.altitude }} <br>
+	Accuracy: {{ position.coords.accuracy }} <br>
+	Altitude Accuracy: {{ position.coords.altitudeAccuracy }} <br>
+	Heading: {{ position.coords.heading }} <br>
+	Speed: {{ position.coords.speed }} <br>
+	Timestamp: {{ position.timestamp | date:'mediumTime' }} <br>
+</div>
+
+<button class="btn" ng-click="stopInterval()" ng-show="interval">Clear Interval</button>

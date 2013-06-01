@@ -54,9 +54,7 @@
 			"path" : "/item/:id",
 			"layout" : "layouts/main",
 			"template" : "single",
-			"controller" : "collectionListController",
-			"title" : "List",
-			"class" : "list"
+			"controller" : "collectionListController"
 		},				
 		{
 			"path" : "/map",
@@ -73,11 +71,23 @@
 			"controller" : "phonegapController",
 			"title" : "Phonegap",
 			"class" : "list"
-		},			
+		},
+		{			
+			"path" : "/pages/login",
+			"layout" : "layouts/main",
+			"template" : "login",
+			"controller" : "LoginController"
+		},
 		{
 			"path" : "/pages/about",
 			"layout" : "layouts/modal",
 			"template" : "about"
+		},
+		{
+			"path" : "/pages/protected",
+			"layout" : "layouts/main",
+			"template" : "protected",
+			"protected" : true
 		},
 		{
 			"otherwise" : "/home"

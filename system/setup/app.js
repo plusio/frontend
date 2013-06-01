@@ -2,8 +2,7 @@
 
 // Declare app level module which depends on filters, and services
 angular.module('app', ['app.dependencies']).
-  config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvider) {
-
+  config(['$routeProvider', '$httpProvider', '$locationProvider', function($routeProvider, $httpProvider, $locationProvider) {
 
     // automagicly generate the angular routes config using the array supplied with the theme
   	for(var i in settings.theme.routes){
@@ -19,6 +18,7 @@ angular.module('app', ['app.dependencies']).
         console.error('unspecified route at index ' + i);
       }
   	}
+
 
     // Allow Cross Origin Domain requests
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
@@ -39,13 +39,14 @@ angular.module('app', ['app.dependencies']).
       // possibly throw application error here.
     }
 
+
     //preload all templates and store them in cache upon first loading the application, I assume for application performance
-    angular.forEach($route.routes, function(r) {
-      if(_.isUndefined)
-      if (r.templateUrl) { 
-        $http.get(r.templateUrl, {cache: $templateCache});
-      }
-    });
+    // angular.forEach($route.routes, function(r) {
+    //   if(_.isUndefined)
+    //   if (r.templateUrl) { 
+    //     $http.get(r.templateUrl, {cache: $templateCache});
+    //   }
+    // });
 
     $rootScope.app = settings.app;
 
