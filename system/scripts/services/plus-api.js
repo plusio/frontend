@@ -21,7 +21,7 @@ var serviceDataPullFn = function($http, $q, theUrl, params){
    var deferred = $q.defer();
 
    //make the call.
-   $http({method: "jsonp", url: theUrl}).success(function(data) {
+   $http({method: "jsonp", url: theUrl, cache:true}).success(function(data) {
       //when data is returned resolve the deferment.
      deferred.resolve(data);
 
