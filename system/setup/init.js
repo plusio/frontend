@@ -40,8 +40,10 @@ head.js(
 	"system/vendor/wzr1337/gestures-0.1.0.min.js",
 	"system/vendor/getify/minify.json.js",
 	"system/vendor/sirkitree/google-plus-signin.js",
+	"system/vendor/localStorageDB/localstoragedb.js",
 	{vendor : "system/vendor/wzr1337/scrollable-4.2.5.min.js" }, //labeling the last of each section so that we can run functions at certain times of the loading process
 	"system/scripts/services/plus-api.js",
+	"system/scripts/services/datasync.js",
 	"system/scripts/directives/plus-compile.js",
 	"system/scripts/directives/plus-template.js",
 	"system/scripts/directives/plus-table.js",

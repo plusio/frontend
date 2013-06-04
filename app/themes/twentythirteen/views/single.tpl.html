@@ -1,6 +1,8 @@
 <div>
-	<a href="" hm-tap="$navigate.back()">Back</a>
+	<a href="" hm-tap="$navigate.go('/items', 'slide', true)">Back</a>
 	<!-- ng-model specifies the model & model.property that populates the text box below. -->
+
+<!-- 	<input type="text" ng-model="item.name"> -->
 
 	<p ng-repeat="field in structure">
 		<label class="pull-left" for="{{ field }}">{{ field }}: </label>&nbsp;
@@ -12,5 +14,4 @@
 	<button ng-click="delete()" class="btn" ng-hide="new">Delete</button>
 
 	<br>
-	{{ item }}
 </div>

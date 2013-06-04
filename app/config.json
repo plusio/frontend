@@ -11,6 +11,13 @@
 	"theme" : "twentythirteen",
 
 	/*
+	 * The data collections this application will be interacting with. 
+	 * This is used while syncing data between local storage & rest-based backend 
+	 * for previously failed attempts to store create/update/delete based requests.
+	 */
+	"restEntities" : ["food"],
+
+	/*
 	 * plugins add to the functionality of Tyto
 	 */
 	"plugins" : ["leaflet"],

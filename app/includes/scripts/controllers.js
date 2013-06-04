@@ -122,18 +122,24 @@ $app.controller('collectionListController', function($scope, $routeParams, $http
   	var collection = 'food';
     plus.collection(collection).then(function(data){
     	$scope.collectionData = data;
+      console.log('data food in collection', data);
     });
  
-    $.ajax({
-		dataType: "jsonp",
-		url: sprintf('http://openplusapp.appspot.com/structure/%s/', collection),
-		success: function(data){
-			$scope.structure = _.difference(data[0], ['id', 'time']);
-			$scope.$apply();
-		}
-	});
+  //   $.ajax({
+		// dataType: "jsonp",
+		// url: sprintf('http://openplusapp.appspot.com/structure/%s/', collection),
+		// success: function(data){
+		// 	$scope.structure = _.difference(data[0], ['id', 'time']);
+		// 	$scope.$apply();
+  // 		}
+  // 	});
 
-    if( $routeParams.id === 'new'){
+    plus.structure(collection).then(function(data){
+      $scope.structure = _.difference(data[0], ['id', 'time']);
+      console.log('data food in collection', data);
+    });
+
+    if($routeParams.id === 'new'){
     	$scope.new = true;
     	$scope.item = {};
 
