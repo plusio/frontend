@@ -38,39 +38,49 @@ var serviceDataPullFn = function($http, $q, theUrl, params){
    //return the promise that work will be done (kinda like a data-IOU)
    return deferred.promise;
 };
-var serviceDataSendFn = function($http, theUrl, params){
-   $http.defaults.useXDomain = true   
+var serviceDataSendFn = function($http, $q, theUrl, params){
+   $http.defaults.useXDomain = true;   
+
+   //create our deferred object.
+   var deferred = $q.defer();
 
    //make the call.
-   //console.log('data about to be sent:', params);
    $http.post(theUrl, params).success(function(data) {
-     var item = localStorage.getItem(params);
-     // delete item if exists
-     if (item != undefined || item == "" ){ localStorage.removeItem(params); }
-     
-     // store item in local storage
-     localStorage.setItem(params, JSON.stringify(data));
+     //when data is returned resolve the deferment.
+     deferred.resolve(data);
+
    }).error(function(){
       //or reject it if there's a problem.
       console.log('an error occurred during save');
-   });
-};
-var serviceDeleteFn = function($http, theUrl, params){
-   $http.defaults.useXDomain = true   
 
-   //delete item if exists
-   // if (item != undefined || item == "" ){ 
-   //    localStorage.removeItem(params);  
-   //    console.log('Record deleted from localstorage', params)
-   // }
+      //or reject it if there's a problem.
+      deferred.reject();
+   });
+
+   //return the promise that work will be done (kinda like a data-IOU)
+   return deferred.promise;
+};
+var serviceDeleteFn = function($http, $q, theUrl, params){
+   $http.defaults.useXDomain = true;   
+
+   //create our deferred object.
+   var deferred = $q.defer();
 
    //make the call.
    $http({method: "delete", url: theUrl}).success(function(data) {     
-      console.log('Record Deleted from server', params);
+     //when data is returned resolve the deferment.
+     deferred.resolve(data);
    }).error(function(){
       //or reject it if there's a problem.
-      console.log('an error occurred during save');
+      console.log('an error occurred during delete');
+
+      //or reject it if there's a problem.
+      deferred.reject();
    });
+
+
+   //return the promise that work will be done (kinda like a data-IOU)
+   return deferred.promise;
 };
 
 
@@ -116,15 +126,16 @@ $app.factory('plus', function($http, $q, $rootScope) {
              //     return serviceDataPullFn($http, $q, theUrl + updatedUrl);
              // }, 
              add: function(syncKey, data){
-                var content = {content: data};
-                return serviceDataSendFn($http, theUrl + syncKey + "/", angular.toJson(content));
+                var content = {content: _.omit(data, ['id'])};
+                return serviceDataSendFn($http, $q, theUrl + syncKey + "/", angular.toJson(content));
             },
              update: function (syncKey, id, data){
-               return serviceDataSendFn($http, theUrl + syncKey + "/" + id + "/",  angular.toJson(data));
+               var content = _.omit(data, ['id']);
+               return serviceDataSendFn($http, $q, theUrl + syncKey + "/" + id + "/",  angular.toJson(content));
              },
              delete: function (syncKey, id){
                 console.log(theUrl + syncKey + "/" + id + "/");
-                return serviceDeleteFn($http, theUrl + syncKey + "/" + id + "/", syncKey + "_" + id);
+                return serviceDeleteFn($http, $q, theUrl + syncKey + "/" + id + "/", syncKey + "_" + id);
              }                                                                                    
    }
 });
