@@ -103,7 +103,7 @@ $app.factory('plus', function($http, $q, $rootScope) {
                 }
                 else {
                   // No data found, so do REST call and then store data in local storage for later.
-                   var updatedUrl = syncKey + "/?callback=JSON_CALLBACK";
+                   var updatedUrl = syncKey + "?callback=JSON_CALLBACK";
                    //console.log('url used to list data:', theUrl + updatedUrl);
                    return serviceDataPullFn($http, $q, theUrl + updatedUrl, syncKey);
                }
@@ -116,13 +116,13 @@ $app.factory('plus', function($http, $q, $rootScope) {
                 }
                 else {
                   // No data found, so do REST call and then store data in local storage for later.
-                   var updatedUrl = syncKey + "/" + id + "/?callback=JSON_CALLBACK";
+                   var updatedUrl = syncKey + "/" + id + "?callback=JSON_CALLBACK";
                    //console.log('url used to single record:', theUrl);
                    return serviceDataPullFn($http, $q, theUrl + updatedUrl, syncKey + "_" + id);
                 }
              },                         
              // query: function(syncKey, data) {
-             //     var updatedUrl = "/?callback=JSON_CALLBACK".format(syncKey, angular.toJson(data));
+             //     var updatedUrl = "?callback=JSON_CALLBACK".format(syncKey, angular.toJson(data));
              //     return serviceDataPullFn($http, $q, theUrl + updatedUrl);
              // }, 
              add: function(syncKey, data){

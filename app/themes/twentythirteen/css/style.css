@@ -1,5 +1,6 @@
 html, body{
 	height: 100%;
+	background: #444;
 }
 
 .mb-page{
@@ -14,10 +15,11 @@ html, body{
 #wrapper{
 	position: absolute;
 	color: #333;
-	background: #fcfcfc;
+	background: #444;
 	top: 51px; /* height of header */
 	bottom: 50px; /* height of footer ( x 2?)*/
-	left: 0;right: 0;
+	left: 0;
+	right: 0;
 	/*background: url(../img/background.jpg);*/
 }
 
@@ -26,12 +28,18 @@ html, body{
 }
 
 header .navbar-inner{
-	background: #eee; 
-	padding-top: 5px;
-	padding-bottom: 5px;
+	background: #333;
+	height: 60px;
+	border: none;
 }
 
 header .navbar-inner .brand{
+	position: relative;
+	top: 14px;
+	text-shadow: none;
+	font-family: "RobotoThin";
+	color: #ccc;
+	font-size: 18px;
 	display: block;
 	float: none;
 	text-align: center;
@@ -45,23 +53,24 @@ header .navbar-inner .nav{
 	left: auto;
 }
 
-.btn, .btn:hover {
-	background: #ffffff; /* Old browsers */
-	background: -moz-linear-gradient(top,  #ffffff 0%, #f3f3f3 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#f3f3f3)); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top,  #ffffff 0%,#f3f3f3 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top,  #ffffff 0%,#f3f3f3 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top,  #ffffff 0%,#f3f3f3 100%); /* IE10+ */
-	background: linear-gradient(to bottom,  #ffffff 0%,#f3f3f3 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f3f3f3',GradientType=0 ); /* IE6-9 */
-	font-size: 10px;
+.about {
+	position: absolute;
+	background: transparent;
 	width: 80px;
-	padding: 4px 0px;
+	text-align: right;
+	top: 5px;
+	right: -25px;
 	color: #999;
-	border-radius: 4px;
 	font-family: arial;
-	border: 1px solid #bbb;
-	text-shadow: 1px 1px 1px #fff;
+	border: none;
+	box-shadow: none;
+	opacity: .1;
+	z-index: 10;
+}
+
+.about img {
+	width: 25px !important;
+	height: 25px;
 }
 
 #scroll-area{
@@ -141,6 +150,9 @@ header .navbar-inner .nav{
 
 footer .navbar-inner{
 	background: #eee;
+	height: 70px;
+	background: #333;
+	border: none;
 }
 
 footer.navbar .nav{
@@ -154,7 +166,7 @@ footer.navbar .nav li {
 	display: table-cell;
 	height: 100%;
 	float: none;
-	height: 50px;
+	height: 70px;
 	text-align: center;
 	list-style-type: none;
 
@@ -173,9 +185,15 @@ footer.navbar .nav li a{
 	opacity: .3;
 }
 
+footer.navbar .nav li:hover {
+ background-color: #333;
+}
+
 footer .navbar-inner .nav li.active a{
 	cursor: pointer;
 	opacity: 1;
+	background-color: #333;
+	box-shadow: none;
 }
 
 footer .navbar-inner .nav li.home a{ background-image: url('../img/ico_home.png'); }
