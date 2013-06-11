@@ -2,9 +2,9 @@
  * 1) To allow application to continue functioning when network connectivity is broken
  */
 $app.factory('dataSync', function() { 
-    var dirtyNewKeyName = "_dirty";
-    var dirtyUpdateKeyName = "_dirty";
-    var deletedKeyName = "_deleted";   
+    var dirtyNewKeyName = "_dirtyNew";
+    var dirtyUpdateKeyName = "_dirtyUpdate";
+    var deletedKeyName = "_dirtyDeleted";   
 
     // Initialise. If the database doesn't exist, it is created
     var localDb = new localStorageDB("datasync", localStorage);
@@ -30,12 +30,27 @@ $app.factory('dataSync', function() {
     }
 
    return {
+             getPersistanceDatabase: function (){
+                return new localStorageDB("datasync", localStorage);
+             },
+             setNeedDataSync: function(val){
+                var intVal = 0; 
+                if (val){ intVal = 1};
+                var db = this.getPersistanceDatabase();
+                db.update("localConfiguration", {key: "needsDataSync", value: "0"}, function(row) {
+                    row.value = intVal;
+                    
+                    // the update callback function returns to the modified record
+                    return row;
+                });
+                db.commit();
+             },
              getDirtyKey: function(syncKey, type){
                 switch(type.toLowerCase())
                 {
-                    case "update": { return syncKey + "_" + dirtyUpdateKeyName; }
-                    case "new": { return syncKey + "_" + dirtyNewKeyName; }
-                    case "deleted": { return syncKey + "_" + deletedKeyName; }
+                    case "update": { return syncKey + dirtyUpdateKeyName; }
+                    case "new": { return syncKey + dirtyNewKeyName; }
+                    case "delete": { return syncKey + deletedKeyName; }
                     case "config": { return "localConfiguration"; }
                     default:
                     {
@@ -58,154 +73,99 @@ $app.factory('dataSync', function() {
              }, 
              add: function(syncKey, data){
              	// Only attempt to store valid json objects
-                var isValidJson = angular.isObject(angular.fromJson(angular.toJson(data)));
+                var theData = angular.fromJson(data).content;
+                var isValidJson = angular.isObject(theData);
                 if (isValidJson == false) { 
                    console.log("Invalid object passed. Must be json object in order to store.");
                    return;
                 }
 
                 // create local storage table if it doesn't already exists
-                createTableIfNotExists(syncKey, data);
+                createTableIfNotExists(syncKey, theData);
 
                 // store object for usage later.
-                localDb.insert(syncKey, data);
+                localDb.insert(syncKey, theData);
 
                 //persist changes locally
                 localDb.commit();
                 //localStorage.setItem(syncKey + "_" + Math.random(), angular.toJson(data));
             },
-             update: function (syncKey, id, data){
-                var dirtyNewTable = getDirtyKey(syncKey, "new");// syncKey + "_" + dirtyNewKeyName;
-                var dirtyUpdateTable = getDirtyKey(syncKey, "update"); //syncKey + "_" + dirtyUpdateKeyName;                
-                // update local existing records, to keep it up to data. (clean)
-                var isValidJson = angular.isObject(angular.fromJson(angular.toJson(data)));
+             update: function (syncKey, data){
+                //var dirtyNewTable = this.getDirtyKey(syncKey, "new");// syncKey + "_" + dirtyNewKeyName;
+                //var dirtyUpdateTable = this.getDirtyKey(syncKey, "update"); //syncKey + "_" + dirtyUpdateKeyName;                
+                
+                // Only attempt to store valid json objects
+                var theData = angular.fromJson(data);
+                var isValidJson = angular.isObject(theData);
                 if (isValidJson == false) { 
                    console.log("Invalid object passed. Must be json object in order to store.");
                    return;
                 }
 
                 // create virtual update table if it doesn't exist
-                createTableIfNotExists(syncKey, data);
-                localDb.update(syncKey, {id:id}, function(row) {
-                    row = data;
+                createTableIfNotExists(syncKey, theData);
+                localDb.insertOrUpdate(syncKey, {id:theData.id}, theData);
+
+                // localDb.update(syncKey, {id:theData.id}, function(row) {
+                //     row = theData;
                     
-                    // the update callback function returns to the modified record
-                    return row;
-                });
+                //     // the update callback function returns to the modified record
+                //     return row;
+                // });
 
                 /* This is here in case the user lost network connection and then created a new record, and is now trying to update that record. 
                  * We need to track that so that the update can be persisted to the server later.
                  */
-                createTableIfNotExists(dirtyNewTable, data);
-                // update local dirty records (records not yet uploaded to server, but now theres another update to same data.)
-                localDb.update(dirtyNewTable, {id:id}, function(row) {
-                    row = data;
+                // createTableIfNotExists(dirtyNewTable, theData);
+                // // update local dirty records (records not yet uploaded to server, but now theres another update to same data.)
+                // localDb.update(dirtyNewTable, {id:theData.id}, function(row) {
+                //     row = theData;
                     
-                    // the update callback function returns to the modified record
-                    return row;
-                }); 
+                //     // the update callback function returns to the modified record
+                //     return row;
+                // }); 
                 
                 /* This is here in case the user lost network connection and is now trying to update an existing record (already on server). 
                  * We need to track that so that the update can be persisted to the server later.
                  */
-                createTableIfNotExists(dirtyUpdateTable, data);
-                // update local dirty records (records not yet uploaded to server, but now theres another update to same data.)
-                localDb.update(dirtyUpdateTable, {id:id}, function(row) {
-                    row = data;
+                // createTableIfNotExists(dirtyUpdateTable, theData);
+                // // update local dirty records (records not yet uploaded to server, but now theres another update to same data.)
+                // localDb.update(dirtyUpdateTable, {id:theData.id}, function(row) {
+                //     row = theData;
                     
-                    // the update callback function returns to the modified record
-                    return row;
-                });  
+                //     // the update callback function returns to the modified record
+                //     return row;
+                // });  
                 
 
                 // persist changes locally
                 localDb.commit();
-
-
-    //          	// Need to have data pools:
-    //          	// 1) Records already existing (stored sync keys arrays)
-				// var staleRecords = localStorage.getItem(syncKey);
-				// var hasStaleRecords = angular.isArray(staleRecords);
-				// // 2) Records queued to be uploaded (stored in 1 array per list (sync key))
-				// var dirtyRecords = localStorage.getItem(syncKey + dirtyKeyName);
-				// var hasDirtyRecords = angular.isArray(dirtyRecords);
-
-    //             var existignRecord;
-
-    //             // Check first if there is a queued version that needs to be updated.
-    //             // If yes, update that first, then copy to existing.
-    //             if(hasStaleRecords){
-    //             	// find stale record
-    //                 $.each(function(i, record){
-    //                     if(record.id == id){ 
-    //                         existignRecord = angular.fromJson(record); 
-    //                     }
-    //                     return false; 
-    //                 });
-    //             	// if exists update it
-    //                 if(angular.isDefined(existignRecord)){
-
-    //                 }
-    //             }
-
-    //             if(hasDirtyRecords){
-    //             	// find dirty record
-    //             	// if exists, update it
-    //             }
              },
-             delete: function (syncKey, id, data){
-                var dirtyNewTable = syncKey + "_" + dirtyNewKeyName;
-                var dirtyUpdateTable = syncKey + + "_" + dirtyUpdateKeyName;    
+             delete: function (syncKey, id){
+                //var dirtyNewTable = syncKey + "_" + dirtyNewKeyName;
+                //var dirtyUpdateTable = syncKey + + "_" + dirtyUpdateKeyName;    
                             
                 // delete local existing records, to keep it up to data. (clean)
-                localDb.deleteRows(syncKey, {id:id});
+                // create virtual 'delete' table if it doesn't exist
+                createTableIfNotExists(syncKey, {id:0});
+                localDb.insertOrUpdate(syncKey, {id:id}, {id:id});
 
                 /* This is here in case the user lost network connection and then created a new record, and is now trying to delete that record. 
                  * We need to track that so that the update can be persisted to the server later.
                  */
-                createTableIfNotExists(dirtyNewTable, data);
+                // createTableIfNotExists(dirtyNewTable, data);
                 // delete local existing records, to keep it up to data. (clean)
-                localDb.deleteRows(dirtyNewTable, {id:id});
+                // localDb.deleteRows(dirtyNewTable, {id:id});
 
                 /* This is here in case the user lost network connection and is now trying to update an existing record (already on server). 
                  * We need to track that so that the update can be persisted to the server later.
                  */
-                createTableIfNotExists(dirtyUpdateTable, data);
+                // createTableIfNotExists(dirtyUpdateTable, data);
                 // delete local existing records, to keep it up to data. (clean)
-                localDb.deleteRows(dirtyUpdateTable, {id:id});
+                // localDb.deleteRows(dirtyUpdateTable, {id:id});
 
                 // persist changes locally
                 localDb.commit();
-                               
-    //          	// Need to have data pools:
-    //          	// 1) Records queued to be deleted (stored by sync key)
-				// var deletedRecords = localStorage.getItem(syncKey + deletedKeyName);
-				// var hasDeletedRecords = angular.isArray(deletedRecords);
-
-				// // Not sure I should even load other data pools if the record is meant to be deleted. 
-				// // Too tired now. Think thru tomorrow & continue. 
-				// if (hasDeletedRecords){
-
-				// }
-
-    //             // 2) Records already existing (stored sync keys arrays)
-    //             var staleRecords = localStorage.getItem(syncKey);
-    //             var hasStaleRecords = angular.isArray(staleRecords);
-    //             // 3) Records queued to be uploaded (stored in 1 array per list (sync key))
-    //             var dirtyRecords = localStorage.getItem(syncKey + dirtyKeyName);
-    //             var hasDirtyRecords = angular.isArray(dirtyRecords);
-
-    //             // Check first if there is a queued version that needs to be updated.
-    //             // If yes, update that first, then copy to existing.
-    //             if(hasStaleRecords){
-    //             	// find stale record
-    //             	// if exists delete it
-    //             }
-
-    //             if(hasDirtyRecords){
-    //             	// find dirty record
-    //             	// if exists, delete it
-    //             }
              }                                                                                    
    }
 });  

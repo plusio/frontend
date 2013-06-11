@@ -136,7 +136,8 @@ $app.controller('collectionListController', function($scope, $routeParams, $http
 
     plus.structure(collection).then(function(data){
       $scope.structure = _.difference(data[0], ['id', 'time']);
-      console.log('data food in collection', data);
+      //console.log('data food in collection', data);
+      $scope.structure = _.difference(data[0], ['id', 'time']);
     });
 
     if($routeParams.id === 'new'){
@@ -146,6 +147,7 @@ $app.controller('collectionListController', function($scope, $routeParams, $http
     }else if(Number($routeParams.id)){
     	//is a number
     	plus.get(collection, $routeParams.id).then(function(data){
+          data.id = Number($routeParams.id);
 	    		$scope.item = data;
 	    	});
     }else if(angular.isDefined($routeParams.id)){
@@ -155,17 +157,14 @@ $app.controller('collectionListController', function($scope, $routeParams, $http
 
     // Evaluates whether record is new or existing and performs insert or update appropriately.
     $scope.submit = function(){
-    	console.log($scope.item);
         if ($scope.new){
-        	console.log(collection, $scope.item);
           plus.add(collection, $scope.item);
         } else {
-        	console.log(collection, $routeParams.id, $scope.item);
           plus.update(collection, $routeParams.id, $scope.item);
         }
 
         // go back to to list
-        $scope.$navigate.back();
+        //$scope.$navigate.back();
     }
 
     // Deletes existing records only.
