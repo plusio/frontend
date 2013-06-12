@@ -1,2 +1,254 @@
-/*! angular-leaflet-directive 03-06-2013 */
-$app.directive("leaflet",["$http","$log",function(a,b){var c={maxZoom:14,tileLayer:"http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",icon:{url:"http://cdn.leafletjs.com/leaflet-0.5.1/images/marker-icon.png",retinaUrl:"http://cdn.leafletjs.com/leaflet-0.5.1/images/marker-icon@2x.png",size:[25,41],anchor:[12,40],popup:[0,-40],shadow:{url:"http://cdn.leafletjs.com/leaflet-0.5.1/images/marker-shadow.png",retinaUrl:"http://cdn.leafletjs.com/leaflet-0.5.1/images/marker-shadow.png",size:[41,41],anchor:[12,40]}},path:{weight:10,opacity:1}};return{restrict:"E",replace:!0,transclude:!0,scope:{center:"=center",maxBounds:"=maxbounds",markers:"=markers",defaults:"=defaults",path:"=path"},template:'<div class="angular-leaflet-map"></div>',link:function(a,d,e){function f(){a.maxBounds&&a.maxBounds&&a.maxBounds.southWest&&a.maxBounds.southWest.lat&&a.maxBounds.southWest.lng&&a.maxBounds.northEast&&a.maxBounds.northEast.lat&&a.maxBounds.northEast.lng&&(m.setMaxBounds(new L.LatLngBounds(new L.LatLng(a.maxBounds.southWest.lat,a.maxBounds.southWest.lng),new L.LatLng(a.maxBounds.northEast.lat,a.maxBounds.northEast.lng))),a.$watch("maxBounds",function(a){a.southWest&&a.northEast&&a.southWest.lat&&a.southWest.lng&&a.northEast.lat&&a.northEast.lng&&m.setMaxBounds(new L.LatLngBounds(new L.LatLng(a.southWest.lat,a.southWest.lng),new L.LatLng(a.northEast.lat,a.northEast.lng)))}))}function g(){a.center&&(a.center.lat&&a.center.lng&&a.center.zoom?m.setView([a.center.lat,a.center.lng],a.center.zoom):a.center.autoDiscover===!0&&m.locate({setView:!0,maxZoom:a.leaflet.maxZoom}),m.on("dragend",function(){a.$apply(function(a){a.center.lat=m.getCenter().lat,a.center.lng=m.getCenter().lng})}),m.on("zoomend",function(){a.center.zoom!==m.getZoom()&&a.$apply(function(a){a.center.zoom=m.getZoom()})}),a.$watch("center",function(a){a.lat&&a.lng&&a.zoom&&m.setView([a.lat,a.lng],a.zoom)},!0))}function h(){var b={};if(a.leaflet.markers=e.testing?b:'Add testing="testing" to <leaflet> tag to inspect this object',a.markers){for(var c in a.markers)b[c]=i(c,a.markers[c],m);a.$watch("markers",function(a){for(var c in a)void 0===b[c]&&(b[c]=i(c,a[c],m));for(var d in b)void 0===a[d]&&delete b[d]},!0)}}function i(b,c,d){var e=j(b,c);return d.addLayer(e),c.focus===!0&&e.openPopup(),e.on("dragend",function(){a.$apply(function(){c.lat=e.getLatLng().lat,c.lng=e.getLatLng().lng}),c.message&&e.openPopup()}),a.$watch("markers."+b,function(a,b){return a?(b&&(void 0!==a.draggable&&a.draggable!==b.draggable&&(a.draggable===!0?e.dragging.enable():e.dragging.disable()),void 0!==a.focus&&a.focus!==b.focus&&(a.focus===!0?e.openPopup():e.closePopup()),void 0!==a.message&&a.message!==b.message&&e.bindPopup(a),(a.lat!==b.lat||a.lng!==b.lng)&&e.setLatLng(new L.LatLng(a.lat,a.lng))),void 0):(d.removeLayer(e),void 0)},!0),e}function j(b,c){var d=new L.marker(a.markers[b],{icon:k(),draggable:c.draggable?!0:!1});return c.message&&d.bindPopup(c.message),d}function k(){return L.icon({iconUrl:c.icon.url,iconRetinaUrl:c.icon.retinaUrl,iconSize:c.icon.size,iconAnchor:c.icon.anchor,popupAnchor:c.icon.popup,shadowUrl:c.icon.shadow.url,shadowRetinaUrl:c.icon.shadow.retinaUrl,shadowSize:c.icon.shadow.size,shadowAnchor:c.icon.shadow.anchor})}function l(){if(a.path){b.warn("[AngularJS - Leaflet] Creating polylines and adding them to the map will break the directive's scope's inspection in AngularJS Batarang");var d=new L.Polyline([],{weight:c.path.weight,opacity:c.path.opacity});a.leaflet.path=e.testing?d:'Add testing="testing" to <leaflet> tag to inspect this object',m.addLayer(d),a.$watch("path.latlngs",function(a){var b=a.filter(function(a){return!!a.lat&&!!a.lng}).map(function(a){return new L.LatLng(a.lat,a.lng)});d.setLatLngs(b)},!0),a.$watch("path.weight",function(a){d.setStyle({weight:a})},!0),a.$watch("path.color",function(a){d.setStyle({color:a})},!0)}}var m=new L.Map(d[0]);m.setView([0,0],1),a.leaflet={},a.leaflet.map=e.testing?m:'Add testing="testing" to <leaflet> tag to inspect this object',a.leaflet.maxZoom=e.defaults&&a.defaults&&a.defaults.maxZoom?parseInt(a.defaults.maxZoom,10):c.maxZoom,a.leaflet.tileLayer=e.defaults&&a.defaults&&a.defaults.tileLayer?a.defaults.tileLayer:c.tileLayer,L.tileLayer(a.leaflet.tileLayer,{maxZoom:a.leaflet.maxZoom}).addTo(m),g(),f(),h(),l()}}}]);
+var leafletDirective = angular.module("leaflet-directive", []);
+
+$app.directive("leaflet", ["$http", "$log", function ($http, $log) {
+
+    var defaults = {
+        maxZoom: 14,
+        tileLayer: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        icon: {
+            url: 'http://cdn.leafletjs.com/leaflet-0.5.1/images/marker-icon.png',
+            retinaUrl: 'http://cdn.leafletjs.com/leaflet-0.5.1/images/marker-icon@2x.png',
+            size: [25, 41],
+            anchor: [12, 40],
+            popup: [0, -40],
+            shadow: {
+                url: 'http://cdn.leafletjs.com/leaflet-0.5.1/images/marker-shadow.png',
+                retinaUrl: 'http://cdn.leafletjs.com/leaflet-0.5.1/images/marker-shadow.png',
+                size: [41, 41],
+                anchor: [12, 40]
+            }
+        },
+        path: {
+            weight: 10,
+            opacity: 1
+        }
+    };
+
+    return {
+        restrict: "E",
+        replace: true,
+        transclude: true,
+        scope: {
+            center: '=center',
+            maxBounds: '=maxbounds',
+            markers: '=markers',
+            defaults: '=defaults',
+            path: '=path'
+        },
+        template: '<div class="angular-leaflet-map"></div>',
+        link: function ($scope, element, attrs /*, ctrl */) {
+            var map = new L.Map(element[0]);
+            map.setView([0, 0], 1);
+
+            $scope.leaflet = {};
+            $scope.leaflet.map = !!attrs.testing ? map : 'Add testing="testing" to <leaflet> tag to inspect this object';
+            $scope.leaflet.maxZoom = !!(attrs.defaults && $scope.defaults && $scope.defaults.maxZoom) ? parseInt($scope.defaults.maxZoom, 10) : defaults.maxZoom;
+            $scope.leaflet.tileLayer = !!(attrs.defaults && $scope.defaults && $scope.defaults.tileLayer) ? $scope.defaults.tileLayer : defaults.tileLayer;
+            L.tileLayer($scope.leaflet.tileLayer, { maxZoom: $scope.leaflet.maxZoom, detectRetina : true }).addTo(map);
+
+            setupCenter();
+            setupMaxBounds();
+            setupMarkers();
+            setupPath();
+
+            function setupMaxBounds() {
+                if (!$scope.maxBounds) {
+                    return;
+                }
+                if ($scope.maxBounds && $scope.maxBounds.southWest && $scope.maxBounds.southWest.lat && $scope.maxBounds.southWest.lng && $scope.maxBounds.northEast && $scope.maxBounds.northEast.lat && $scope.maxBounds.northEast.lng ) {
+                    map.setMaxBounds(
+                        new L.LatLngBounds(
+                            new L.LatLng($scope.maxBounds.southWest.lat, $scope.maxBounds.southWest.lng),
+                            new L.LatLng($scope.maxBounds.northEast.lat, $scope.maxBounds.northEast.lng)
+                        )
+                    );
+
+                    $scope.$watch("maxBounds", function (maxBounds /*, oldValue */) {
+                        if (maxBounds.southWest && maxBounds.northEast && maxBounds.southWest.lat && maxBounds.southWest.lng && maxBounds.northEast.lat && maxBounds.northEast.lng) {
+                            map.setMaxBounds(
+                                new L.LatLngBounds(
+                                    new L.LatLng(maxBounds.southWest.lat, maxBounds.southWest.lng),
+                                    new L.LatLng(maxBounds.northEast.lat, maxBounds.northEast.lng)
+                                )
+                            );
+                        }
+                    });
+                }
+            }
+
+            function setupCenter() {
+                $scope.$watch("center", function (center /*, oldValue */) {
+                    if (!center) {
+                        return;
+                    }
+
+                    if (center.lat && center.lng && center.zoom) {
+                        map.setView([center.lat, center.lng], center.zoom);
+                    } else if (center.autoDiscover === true) {
+                        map.locate({ setView: true, maxZoom: $scope.leaflet.maxZoom });
+                    }
+                }, true);
+
+                map.on("dragend", function (/* event */) {
+                    $scope.$apply(function (scope) {
+                        scope.center.lat = map.getCenter().lat;
+                        scope.center.lng = map.getCenter().lng;
+                    });
+                });
+
+                map.on("zoomend", function (/* event */) {
+                    if ($scope.center.zoom !== map.getZoom()) {
+                        $scope.$apply(function (s) {
+                            s.center.zoom = map.getZoom();
+                            s.center.lat = map.getCenter().lat;
+                            s.center.lng = map.getCenter().lng;
+                        });
+                    }
+                });
+            }
+
+            function setupMarkers() {
+                var markers = {};
+                $scope.leaflet.markers = !!attrs.testing ? markers : 'Add testing="testing" to <leaflet> tag to inspect this object';
+
+                if (!$scope.markers) {
+                    return;
+                }
+
+                for (var name in $scope.markers) {
+                    markers[name] = createMarker(name, $scope.markers[name], map);
+                }
+
+                $scope.$watch("markers", function (newMarkers /*, oldMarkers*/) {
+                    for (var new_name in newMarkers) {
+                        if (markers[new_name] === undefined) {
+                            markers[new_name] = createMarker(new_name, newMarkers[new_name], map);
+                        }
+                    }
+
+                    // Delete markers from the array
+                    for (var name in markers) {
+                        if (newMarkers[name] === undefined) {
+                            delete markers[name];
+                        }
+                    }
+
+                }, true);
+            }
+
+            function createMarker(name, scopeMarker, map) {
+                var marker = buildMarker(name, scopeMarker);
+                map.addLayer(marker);
+
+                if (scopeMarker.focus === true) {
+                    marker.openPopup();
+                }
+
+                marker.on("dragend", function () {
+                    $scope.$apply(function (scope) {
+                        scopeMarker.lat = marker.getLatLng().lat;
+                        scopeMarker.lng = marker.getLatLng().lng;
+                    });
+                    if (scopeMarker.message) {
+                        marker.openPopup();
+                    }
+                });
+
+                $scope.$watch('markers.' + name, function (data, oldData) {
+                    if (!data) {
+                        map.removeLayer(marker);
+                        return;
+                    }
+
+                    if (oldData) {
+                        if (data.draggable !== undefined && data.draggable !== oldData.draggable) {
+                            if (data.draggable === true) {
+                                marker.dragging.enable();
+                            } else {
+                                marker.dragging.disable();
+                            }
+                        }
+
+                        if (data.focus !== undefined && data.focus !== oldData.focus) {
+                            if (data.focus === true) {
+                                marker.openPopup();
+                            } else {
+                                marker.closePopup();
+                            }
+                        }
+
+                        if (data.message !== undefined && data.message !== oldData.message) {
+                            marker.bindPopup(data);
+                        }
+
+                        if (data.lat !== oldData.lat || data.lng !== oldData.lng) {
+                            marker.setLatLng(new L.LatLng(data.lat, data.lng));
+                        }
+                    }
+                }, true);
+                return marker;
+            }
+
+            function buildMarker(name, data) {
+                var marker = new L.marker($scope.markers[name],
+                        {
+                            icon: buildIcon(),
+                            draggable: data.draggable ? true : false
+                        }
+                );
+                if (data.message) {
+                    marker.bindPopup(data.message);
+                }
+                return marker;
+            }
+
+            function buildIcon() {
+                return L.icon({
+                    iconUrl: defaults.icon.url,
+                    iconRetinaUrl: defaults.icon.retinaUrl,
+                    iconSize: defaults.icon.size,
+                    iconAnchor: defaults.icon.anchor,
+                    popupAnchor: defaults.icon.popup,
+                    shadowUrl: defaults.icon.shadow.url,
+                    shadowRetinaUrl: defaults.icon.shadow.retinaUrl,
+                    shadowSize: defaults.icon.shadow.size,
+                    shadowAnchor: defaults.icon.shadow.anchor
+                });
+            }
+
+            function setupPath() {
+                // TODO Create as many polylines as paths defined in model
+                // TODO Manage opacity changes with another $watch block
+                if (!$scope.path) {
+                    return;
+                }
+
+                $log.warn("[AngularJS - Leaflet] Creating polylines and adding them to the map will break the directive's scope's inspection in AngularJS Batarang");
+
+                var polyline = new L.Polyline([], { weight: defaults.path.weight, opacity: defaults.path.opacity});
+                $scope.leaflet.path = !!attrs.testing ? polyline : 'Add testing="testing" to <leaflet> tag to inspect this object';
+
+                map.addLayer(polyline);
+
+                $scope.$watch("path.latlngs", function (latlngs) {
+                    var leafletLatLngs = latlngs
+                            .filter(function (latlng) {
+                                return !!latlng.lat && !!latlng.lng;
+                            })
+                            .map(function (latlng) {
+                                return new L.LatLng(latlng.lat, latlng.lng);
+                            });
+                    polyline.setLatLngs(leafletLatLngs);
+                }, true);
+
+                $scope.$watch("path.weight", function (weight) {
+                    polyline.setStyle({ weight: weight });
+                }, true);
+
+                $scope.$watch("path.color", function (color) {
+                    polyline.setStyle({ color: color });
+                }, true);
+            }
+        }
+    };
+}]);
