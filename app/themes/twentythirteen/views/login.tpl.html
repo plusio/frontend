@@ -1,10 +1,17 @@
-<div>
-	<h1 ng-show="auth.status">You have authorized this app with Google</h1>
-	<h1 ng-hide="auth.status">Please sign in with google</h1>
+ <button id="authorize-button" ng-click="authenticate()">authenticate</button>
+ <button id="authorize-button" ng-click="logout()">logout</button>
+<br>
 
-	{{ authUrl }}
-<br><br>
-	{{ auth }}
-<br><br>
-	{{ user }}
-</div>
+  {{ user }}
+
+  <br>
+
+  {{ users }}
+
+<logged-in>
+	Super Secret Data!
+</logged-in>
+
+<logged-out>
+	Only for anonymous users!
+</logged-out>

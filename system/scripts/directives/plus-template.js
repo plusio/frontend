@@ -45,6 +45,7 @@ $app.directive('plusTemplate', function(){
     replace: false,
     //the link method does the work of setting the directive
     // up, things like bindings, jquery calls, etc are done in here
-    link: ''
+    link: '',
+    transclude : true
   }
 });

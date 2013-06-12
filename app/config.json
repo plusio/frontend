@@ -1,7 +1,9 @@
 {
 	"name" : "",
-	"client_id" : "",
-	"client_secret" : "",
+	"client_id" : "665784562018-pe58jro7ltlvel1lp831ajoebogdifjr.apps.googleusercontent.com",
+	"client_secret" : "v5sScAapEfhrz8MYsb7S0cy-",
+	"client_scope" : "https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email",
+	"client_redirect" : "http://localhost:8888/tyto.io/",
 	"server_url" : "http://openplusapp.appspot.com/collection/",
 	"environment" : "development", // development / production
 

@@ -2,6 +2,14 @@
  * init.js Initialize the tyto framework and load in configuration file then load in all necessary scripts
  */
 
+
+// if the url is a callback from google signon redirect to a system controller to get the values into angular and run the use service.
+if(document.location.href.search("access_token=") > -1 && document.location.href.search("token_type=") > -1 && document.location.href.search("expires_in=") > -1){
+	document.location ="#/BqeQVHV/"+location.hash.substr(1);
+}else if(document.location.href.search('error=') > -1 && document.location.href.search("error_description=") > -1){
+	document.location ="#/BqeQVHV/"+location.hash.substr(1);
+}
+
  // Include a third party loader script to load in files
 /*!
  * HeadJS     The only script in your <HEAD>    
@@ -36,6 +44,7 @@ head.js(
 	"system/vendor/angular/angular-resource.js",
 	"system/vendor/angular/angular-sanitize.js",
 	"system/vendor/angular/angular-cookies.js",
+	"system/vendor/mgonto/restangular.js",
 	"system/vendor/angular-mobile-nav/mobile-nav.js",
 	"system/vendor/angular-retina/angular-retina.js",
 	"system/vendor/wzr1337/gestures-0.1.0.min.js",
@@ -46,11 +55,13 @@ head.js(
 	"system/vendor/btford/angular-phonegap-accelerometer.0.0.1.js",
 	"system/vendor/btford/angular-phonegap-notification.0.0.1.js",
 	{vendor : "system/vendor/wzr1337/scrollable-4.2.5.min.js" }, //labeling the last of each section so that we can run functions at certain times of the loading process
+	"system/scripts/services/plus-google-signon.js",
 	"system/scripts/services/plus-api.js",
 	"system/scripts/directives/plus-compile.js",
 	"system/scripts/directives/plus-template.js",
 	"system/scripts/directives/plus-table.js",
 	"system/scripts/directives/plus-menu.js",
+	"system/scripts/directives/plus-auth.js",
 	{system : "system/scripts/directives/plus-resize.js" }
 );
 
@@ -68,6 +79,7 @@ head.ready('angular', function(){
 		'btford.phonegap.geolocation',
 		'btford.phonegap.accelerometer',
 		'btford.phonegap.notification',
+		'restangular',
 	]);
 })
 
@@ -120,7 +132,6 @@ head.ready(function(){
 	});
 
 	//Load in plug in files
-	var lastHeadScript = 'system'; //last section to be loaded with head.js
 	$.each(settings.plugins, function(i, plugin) {
 		$.each(plugin.files, function(j, file) {
 			parts = file.split('.');
@@ -134,28 +145,25 @@ head.ready(function(){
 	});
 
 	//Load app files
-	head.ready(lastHeadScript, function(){
+	head.ready( function(){
 		$.each(settings.app.scripts, function(i, val) {
-			lastHeadScript = val + '.js';
 			head.js('app/includes/scripts/' + val + '.js');
 		});
 	});
 
 	//Load in theme files
-	head.ready(lastHeadScript, function(){
-		console.log(settings);
+	head.ready( function(){
 		$.each(settings.theme.files.css, function(i, file){
 			loadCss(sprintf('app/themes/%s/%s.css', settings.app.theme, file));
 		});
 
 		$.each(settings.theme.files.js, function(i, file) {
-			lastHeadScript = file + '.js';
 			head.js(sprintf('app/themes/%s/%s.js', settings.app.theme, file));
 		});
 	});
 
 	//bootstrap angular
-	head.ready(lastHeadScript, function(){
+	head.ready( function(){
 		head.js("system/setup/app.js", function(){
 			angular.bootstrap(document, ['app']);
 		});

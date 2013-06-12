@@ -9,15 +9,16 @@
  *   1) http://blog.artlogic.com/2013/03/06/angularjs-for-jquery-developers/ 
  *   2) http://www.yearofmoo.com/2012/08/use-angularjs-to-power-your-web-application.html#controllers-and-scope
 
+
 /* Variables:
  * 1) $scope: Here we pass in the $scope dependency because this controller needs the two-way databinding functionality of angular.
  */
-$app.controller('HomeCrtl', function ($scope, $routeParams) {
+$app.controller('HomeCrtl', function ($scope) {
   // defaulting the time on Angular's model variable.
-	$scope.time = Date.now();
+  $scope.time = Date.now();
 
   // updating the time based on a javascript interval
-	setInterval(function(){
+  setInterval(function(){
         // this $.apply() function needs to be called on $scope because the setInterval javascript function itself 
         // is not a function that is connected to angular (literally connected, as in not a $scope.DoSomething style function()
         $scope.$apply(function() {
@@ -26,28 +27,41 @@ $app.controller('HomeCrtl', function ($scope, $routeParams) {
     }, 5000);
 });
 
+
+
 /* Variables:
  * 1) $scope: Here we pass in the $scope dependency because this controller needs the two-way databinding functionality of angular.
  */
 $app.controller('MapCrtl', function($scope, plus){
   // defaulting the settings on the model on the leaflet directive
   $scope.leaflet = {
-      center: { lat: 40.094882122321145, lng: -3.8232421874999996 },
-      markers : {},
-      path : {
-        latlngs : [
-          {lat:40.719037, lng:-74.003913},
-          {lat:37.775201, lng:-122.419073},
-          {lat:25.788042, lng:-80.225409},
-          {lat:47.60459, lng:-122.334474},
-          {lat:38.89244, lng:-77.032933}
-        ],
-        weight: 2,
-        color: '#3366FF'
+    defaults: {
+          tileLayer: $scope.app.paths.map + "plusdark/{z}/{x}/{y}.png",
+          maxZoom: 4
+    },
+    center: { lat: 40.094882122321145, lng: -3.8232421874999996 },
+    markers : {},
+    path : {
+      latlngs : [
+        {lat:40.719037, lng:-74.003913},
+        {lat:37.775201, lng:-122.419073},
+        {lat:25.788042, lng:-80.225409},
+        {lat:47.60459, lng:-122.334474},
+        {lat:38.89244, lng:-77.032933}
+      ],
+      weight: 2,
+      color: '#3366FF'
+    },
+    maxbounds: {
+      southWest : {
+        lat : 0, 
+        lng : 0
       },
-      zoom: 3,
-      maxZoom: 4,
-      tiles : $scope.app.paths.map + "monochrome-green/{z}/{x}/{y}.png"
+      northEast : {
+        lat : 4096,
+        lng : 4096
+      }
+    }
   };
 
   // Check if the application had an id set.
@@ -55,7 +69,6 @@ $app.controller('MapCrtl', function($scope, plus){
     // if there is, get data from plus.io
     plus.collection('geo').then(function(data){
       $scope.geoData = data;
-      console.log(data);
 
       angular.forEach(data, function(item){
         $scope.leaflet.markers[item.id] = {
@@ -118,10 +131,13 @@ $app.controller('collectionListController', function($scope, $routeParams, $http
  // Currently no data will return unless an app id is specified in the app's config file (app/config.js).
   	var collection = 'food';
     $scope.collectionData = plus.collection(collection);
+    $scope.element = {
+      name : 'loop'
+    }
  
     $.ajax({
 		dataType: "jsonp",
-		url: sprintf('http://openplusapp.appspot.com/structure/%s/', collection),
+		url: sprintf('http://openplusapp.appspot.com/structure/%s', collection),
 		success: function(data){
 			$scope.structure = _.difference(data[0], ['id', 'time']);
 			$scope.$apply();
@@ -174,6 +190,8 @@ $app.controller('collectionListController', function($scope, $routeParams, $http
 $app.controller('phonegapController', function($scope, geolocation, accelerometer, notification){
   var functions = {
     geolocation : function(){
+        $scope.position = {};
+        clearInterval($scope.interval);
         $scope.interval = setInterval(function(){
           geolocation.getCurrentPosition(function (position) {
               $scope.position = position;
@@ -182,6 +200,8 @@ $app.controller('phonegapController', function($scope, geolocation, acceleromete
         }, 500);
     },
     accelerometer : function(){
+      $scope.acceleration = {};
+      clearInterval($scope.interval);
       $scope.interval = setInterval(function(){
         accelerometer.getCurrentAcceleration(function (acceleration) {
             $scope.acceleration = acceleration;
@@ -210,59 +230,29 @@ $app.controller('phonegapController', function($scope, geolocation, acceleromete
     angular.extend($scope, functions);
 });
 
-$app.controller('LoginController', function($scope, $routeParams){
-
-  var authParams ={
-    client_id : "665784562018-pe58jro7ltlvel1lp831ajoebogdifjr.apps.googleusercontent.com",
-    scope : "https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email",
-    redirect_uri : "http://localhost:8888/tyto.io/system/auth-callback"
-  }
-
-  $scope.auth = $routeParams.auth;
-
-  $scope.authUrl = sprintf('https://accounts.google.com/o/oauth2/auth?response_type=token&client_id=%(client_id)s&scope=%(scope)s&redirect_uri=%(redirect_uri)s', authParams);
+$app.controller('LoginController', function($scope, $routeParams, auth, plus){
+  //alert(auth.isLoggedIn());
+  //$scope.authUrl = sprintf('https://accounts.google.com/o/oauth2/auth?response_type=token&client_id=%(client_id)s&scope=%(scope)s&redirect_uri=%(redirect_uri)s', authParams);
   var params = {};
 
-  if(typeof window.plugins !== 'undefined' && typeof window.plugins.childBrowser !== 'undefined'){
-    window.plugins.childBrowser.showWebPage($scope.authUrl, {
-            showLocationBar: false
-        });
+  $scope.user = auth.get();
+  console.log(auth.isTokenValid());
 
-    window.plugins.childBrowser.onLocationChange = function(fooUrl) { alert(fooUrl) };
+  $scope.$on('authUpdated', function(event, data){
+    $scope.user = auth.get();
+  $scope.user.token = auth.isTokenValid();
 
-    window.plugins.childBrowser.onLocationChange = function(fooUrl) { 
-      if(fooUrl.search('http://localhost:8888/tyto.io') >= 0 && fooUrl.search('access_token') >= 0){
-        urlParts = fooUrl.split('#');
-        keyValues = urlParts[1].split('&');
-        for(var i = 0; i < keyValues.length; i++){
-            parts = keyValues[i].split('=');
-            params[parts[0]] = parts[1];
-        }
-        window.plugins.childBrowser.close();
-
-        $scope.apply(function(){
-          $scope.auth = params;
-        });
-
-        $.getJSON('https://www.googleapis.com/oauth2/v1/userinfo?access_token=' + params['access_key'], function(data){
-            $scope.user = data;
-        });
-      }
+    if(!$scope.$$phase){
+      $scope.$apply();
     }
+  });
+
+  $scope.logout = function(){
+    auth.logout();
   }
 
- if($routeParams.auth){
-	var urlParts = $routeParams.auth;
-    var keyValues = urlParts.split('&');
-	for(var i = 0; i < keyValues.length; i++){
-		parts = keyValues[i].split('=');
-		params[parts[0]] = parts[1];
-	}
+  $scope.authenticate = function(){
+    auth.login();
+  }
 
-	$.getJSON('https://www.googleapis.com/oauth2/v1/userinfo?access_token=' + params['access_token'], function(data){
-		console.log(data);
-      $scope.user = data;
-      $scope.$apply();
-    });
- }
-});
+ });

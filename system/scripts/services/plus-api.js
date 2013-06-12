@@ -49,7 +49,7 @@ var serviceDataSendFn = function($http, theUrl, params){
      if (item != undefined || item == "" ){ localStorage.removeItem(params); }
      
      // store item in local storage
-     localStorage.setItem(params, JSON.stringify(data));
+     //localStorage.setItem(params, JSON.stringify(data));
    }).error(function(){
       //or reject it if there's a problem.
       console.log('an error occurred during save');
@@ -93,7 +93,7 @@ $app.factory('plus', function($http, $q, $rootScope) {
                 }
                 else {
                   // No data found, so do REST call and then store data in local storage for later.
-                   var updatedUrl = syncKey + "/?callback=JSON_CALLBACK";
+                   var updatedUrl = syncKey + "?callback=JSON_CALLBACK";
                    //console.log('url used to list data:', theUrl + updatedUrl);
                    return serviceDataPullFn($http, $q, theUrl + updatedUrl, syncKey);
                }
@@ -106,25 +106,25 @@ $app.factory('plus', function($http, $q, $rootScope) {
                 }
                 else {
                   // No data found, so do REST call and then store data in local storage for later.
-                   var updatedUrl = syncKey + "/" + id + "/?callback=JSON_CALLBACK";
+                   var updatedUrl = syncKey + "/" + id + "?callback=JSON_CALLBACK";
                    //console.log('url used to single record:', theUrl);
                    return serviceDataPullFn($http, $q, theUrl + updatedUrl, syncKey + "_" + id);
                 }
              },                         
              // query: function(syncKey, data) {
-             //     var updatedUrl = "/?callback=JSON_CALLBACK".format(syncKey, angular.toJson(data));
+             //     var updatedUrl = "?callback=JSON_CALLBACK".format(syncKey, angular.toJson(data));
              //     return serviceDataPullFn($http, $q, theUrl + updatedUrl);
              // }, 
              add: function(syncKey, data){
-                var content = {content: data};
-                return serviceDataSendFn($http, theUrl + syncKey + "/", angular.toJson(content));
+                //var content = data;
+                return serviceDataSendFn($http, theUrl + syncKey, angular.toJson(data));
             },
              update: function (syncKey, id, data){
-               return serviceDataSendFn($http, theUrl + syncKey + "/" + id + "/",  angular.toJson(data));
+               return serviceDataSendFn($http, theUrl + syncKey + "/" + id,  angular.toJson(data));
              },
              delete: function (syncKey, id){
-                console.log(theUrl + syncKey + "/" + id + "/");
-                return serviceDeleteFn($http, theUrl + syncKey + "/" + id + "/", syncKey + "_" + id);
+                console.log(theUrl + syncKey + "/" + id);
+                return serviceDeleteFn($http, theUrl + syncKey + "/" + id, syncKey + "_" + id);
              }                                                                                    
    }
 });

@@ -34,63 +34,12 @@
 	 * otherwise: when this attribute is specified, only the otherwise attribute can be present. This tells the application what path to redirect to if the user navigates to a route that doesn't exist.
 	 */
 	"routes" : [
-		{
-			"path" : "/home",
-			"layout" : "layouts/main",
-			"template" : "home",
-			"controller" : "HomeCrtl",
-			"title" : "Home",
-			"class" : "home"
-		},
-		{
-			"path" : "/items",
-			"layout" : "layouts/main",
-			"template" : "list",
-			"controller" : "collectionListController",
-			"title" : "Data",
-			"class" : "list"
-		},	
-		{
-			"path" : "/item/:id",
-			"layout" : "layouts/main",
-			"template" : "single",
-			"controller" : "collectionListController"
-		},				
-		{
-			"path" : "/map",
-			"layout" : "layouts/main",
-			"template" : "map",
-			"controller" : "MapCrtl",
-			"title" : "Map",
-			"class" : "globe"
-		},
-		{
-			"path" : "/phonegap",
-			"layout" : "layouts/main",
-			"template" : "phonegap",
-			"controller" : "phonegapController",
-			"title" : "Phonegap",
-			"class" : "list"
-		},
-		{			
-			"path" : "/pages/login",
-			"layout" : "layouts/main",
-			"template" : "login",
-			"controller" : "LoginController"
-		},
-		{
-			"path" : "/pages/about",
-			"layout" : "layouts/modal",
-			"template" : "about"
-		},
-		{
-			"path" : "/pages/protected",
-			"layout" : "layouts/main",
-			"template" : "protected",
-			"protected" : true
-		},
-		{
-			"otherwise" : "/home"
-		}
+		{ "path" : "/home",			"layout" : "layouts/main",		"template" : "home",		"controller" : "HomeCrtl",					"title" : "Home",	"class" : "home" },
+		{ "path" : "/items",		"layout" : "layouts/main",		"template" : "list",		"controller" : "collectionListController",	"title" : "Data",	"class" : "list" },	
+		{ "path" : "/item/:id",		"layout" : "layouts/main",		"template" : "single",		"controller" : "collectionListController",	"title" : "List",	"class" : "list" },				
+		{ "path" : "/map",			"layout" : "layouts/main",		"template" : "map",			"controller" : "MapCrtl",					"title" : "Map",	"class" : "globe" },
+		{ "path" : "/login",		"layout" : "layouts/main",		"template" : "login",		"controller" : "LoginController",			"title" : "Login",	"class" : "globe" },			
+		{ "path" : "/pages/about",	"layout" : "layouts/modal",		"template" : "about" },
+		{ "otherwise" : "/home" }
 	]
 }
