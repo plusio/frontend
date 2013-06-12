@@ -119,7 +119,7 @@ $app.controller('MapCrtl', function($scope, plus){
 $app.controller('collectionListController', function($scope, $routeParams, $http, plus) {
  // binds data to the geoData "model" on $scope. The two-way data binding will automatically cause the view (html/css) to be updated once the data returns.
  // Currently no data will return unless an app id is specified in the app's config file (app/config.js).
-  	var collection = 'food';
+  	var collection = 'newfood';
     plus.collection(collection).then(function(data){
     	$scope.collectionData = data;
       console.log('data food in collection', data);
@@ -164,7 +164,7 @@ $app.controller('collectionListController', function($scope, $routeParams, $http
         }
 
         // go back to to list
-        //$scope.$navigate.back();
+        $scope.$navigate.back();
     }
 
     // Deletes existing records only.

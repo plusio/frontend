@@ -2,7 +2,7 @@
 	"name" : "",
 	"client_id" : "",
 	"client_secret" : "",
-	"server_url" : "http://openplusapp.appspot.com/collection/",
+	"server_url" : "http://openplusapp.appspot.com/collection/", //"http://swift-library-244.appspot.com/collection/"
 	"environment" : "development", // development / production
 
 	/*
@@ -15,7 +15,7 @@
 	 * This is used while syncing data between local storage & rest-based backend 
 	 * for previously failed attempts to store create/update/delete based requests.
 	 */
-	"restEntities" : ["food"],
+	"restEntities" : ["newfood"],
 
 	/*
 	 * plugins add to the functionality of Tyto

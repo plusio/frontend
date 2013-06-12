@@ -2,12 +2,12 @@
 	<a href="" hm-tap="$navigate.go('/items', 'slide', true)">Back</a>
 	<!-- ng-model specifies the model & model.property that populates the text box below. -->
 
-<!-- 	<input type="text" ng-model="item.name"> -->
+<input type="text" ng-model="item.name"> 
 
-	<p ng-repeat="field in structure">
+<!-- 	<p ng-repeat="field in structure">
 		<label class="pull-left" for="{{ field }}">{{ field }}: </label>&nbsp;
 		<input type="text" name="{{ field }}" id="{{ field }}" ng-model="item[field]">
-	</p>
+	</p> -->
 
 	<!-- The ng-click methods are functions on $scope which execute when clicked. Use ng-click in order to have access to angular functionality in a friendly way opposed to the 'normal' onclick event. -->
 	<button ng-click="submit()" class="btn">{{ (new) && 'Create' || 'Update' }}</button> 
