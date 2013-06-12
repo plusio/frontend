@@ -1,10 +1,10 @@
 {
 	"name" : "",
-	"client_id" : "665784562018-pe58jro7ltlvel1lp831ajoebogdifjr.apps.googleusercontent.com",
-	"client_secret" : "v5sScAapEfhrz8MYsb7S0cy-",
-	"client_scope" : "https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email",
-	"client_redirect" : "http://localhost:8888/tyto.io/",
-	"server_url" : "http://openplusapp.appspot.com/collection/",
+	"client_id" : "",
+	"client_secret" : "",
+	"client_scope" : "",
+	"client_redirect" : "",
+	"server_url" : "",
 	"environment" : "development", // development / production
 
 	/*
@@ -21,10 +21,5 @@
 	 * You shouldn't need to change these unless you split your functions into multiple files
 	 * or rename these files to something other than the default.
 	 */
-	"scripts" : [
-		"controllers",
-		"services",
-		"filters",
-		"directives"
-	]
+	"scripts" : ["controllers"]
 }

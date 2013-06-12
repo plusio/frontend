@@ -146,7 +146,7 @@ $app.factory('auth', ['$http', 'plus', '$location', '$rootScope', '$timeout', fu
 
 	var config = {
 		client_id : settings.app.client_id,
-		scope : settings.app.client_scope,
+		scope : "https://www.googleapis.com/auth/userinfo.email " + settings.app.client_scope,
 		redirect_uri : settings.app.client_redirect,
 		email : (functions.isLoggedIn())?functions.get('email'):((!_.isUndefined(functions.get('hint')))?functions.get('hint'):'')
 	}

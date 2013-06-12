@@ -28,7 +28,7 @@ $app.directive('plusTemplate', function(){
           if(pathSegments[i] !== routeSegments[i]){
             continue;
           }
-          $scope.path = $scope.app.paths.view + route.template + '.tpl.html';
+          $scope.path = $scope.app.paths.view(route.template);
           return true;
         };
 

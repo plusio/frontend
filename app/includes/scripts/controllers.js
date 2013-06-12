@@ -36,7 +36,7 @@ $app.controller('MapCrtl', function($scope, plus){
   // defaulting the settings on the model on the leaflet directive
   $scope.leaflet = {
     defaults: {
-          tileLayer: $scope.app.paths.map + "plusdark/{z}/{x}/{y}.png",
+          tileLayer: $scope.app.paths.map("plusdark"),
           maxZoom: 4
     },
     center: { lat: 40.094882122321145, lng: -3.8232421874999996 },

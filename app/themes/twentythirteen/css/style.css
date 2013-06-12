@@ -142,6 +142,7 @@ header .navbar-inner .nav{
 	position: relative;
 	width: 100%;
 	height: 100%;
+	background: #1c1c1c;
 }
 
 .nav-tabs.nav-stacked > li.item{

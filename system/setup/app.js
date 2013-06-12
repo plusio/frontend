@@ -42,13 +42,19 @@ angular.module('app', ['app.dependencies']).
 
     $rootScope.app = settings.app;
 
+    console.log(typeof settings.app.theme);
+
     $rootScope.app.paths = {
-        image : 'app/includes/images/',
-        view : 'app/themes/' + settings.app.theme + '/views/',
-        map : 'app/includes/maps/',
+        view : function(view){
+          return sprintf('app/themes/%s/views/%s.tpl.html', settings.app.theme.title , view);
+        },
+        map : function(title){
+          return sprintf('app/includes/maps/%s/{z}/{x}/{y}.png', title);
+        },
         element : function(title){
           return sprintf('app/includes/elements/%s.element.html', title);
-        }
+        },
+        theme : function(file){ return sprintf('app/themes/%s/%s', settings.app.theme.title, file); }
     }
 
     $rootScope.app.theme = settings.theme;
