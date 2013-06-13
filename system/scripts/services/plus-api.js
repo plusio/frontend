@@ -123,7 +123,7 @@ $app.factory('plus', function($http, $q, $rootScope, dataSync) {
        return deferred.promise;
     };
 
-    var addFn = function(syncKey, data, isSyncing){
+    var addFn = function(syncKey, data){
         if (isSyncing == undefined){ isSyncing = true; }
         var content = _.omit(data, ['id', 'ID']);
         console.log('original is: ', content, 'data is: ', data);
@@ -178,7 +178,7 @@ $app.factory('plus', function($http, $q, $rootScope, dataSync) {
                 // loop thru each new record & send to rest api to create
                 angular.forEach(newData, function(record, j){
                     console.log('record is being sent to rest-api from localstorage');
-                    addFn(entity, record, true).then(function(){
+                    addFn(entity, record).then(function(){
                     // success
                     console.log('record successfully added to rest api. delete from local storage.');
                     localDb.deleteRows(tableName, record);
@@ -195,7 +195,7 @@ $app.factory('plus', function($http, $q, $rootScope, dataSync) {
           }          
           case "update":
           {
-            var tableName = dataSync.getDirtyKey(entity, "new");
+            var tableName = dataSync.getDirtyKey(entity, "update");
             var updateTableExists = localDb.tableExists(tableName)
             if (updateTableExists){
               // Find existing records that need to be updated thru rest api
@@ -203,7 +203,7 @@ $app.factory('plus', function($http, $q, $rootScope, dataSync) {
               if (angular.isArray(existingData) && existingData.length > 0){
                 // loop thru each new record & send to rest api to create
                 angular.forEach(existingData, function(record, j){
-                  addFn(entity, record).then(function(){
+                  updateFn(entity, record.id, record).then(function(){
                     // success
                     console.log('record successfully added to rest api. delete from local storage.');
                     localDb.deleteRows(tableName, record);
@@ -239,6 +239,7 @@ $app.factory('plus', function($http, $q, $rootScope, dataSync) {
                 // success
                 console.log('record successfully added to rest api. delete from local storage.');
                 localDb.deleteRows(tableName, record);
+                localDb.commit();
                 //dataSync.removeFromQueue(tableName, record);
               }, function(){
                 // error
@@ -263,29 +264,29 @@ $app.factory('plus', function($http, $q, $rootScope, dataSync) {
               // Get all the rest based entities that the application uses
               var restEntities = settings.app.restEntities;
               var localDb = new localStorageDB("datasync", localStorage);
-              var localConfig = localDb.query("localConfiguration", {key:"needsDataSync"}); 
-              if (localConfig.length <= 0){
-                console.log('Need Data Sync configuration value is missing.');
-                return;
-              }
+              // var localConfig = localDb.query("localConfiguration", {key:"needsDataSync"}); 
+              // if (localConfig.length <= 0){
+              //   console.log('Need Data Sync configuration value is missing.');
+              //   return;
+              // }
 
               // Check if the sync service claims that records are ready to be uploaded to service
-              var needsDataSync = localConfig[0].value;
+              var needsDataSync = localStorage.getItem("needsDataSync"); //localConfig[0].value;
               var readyToSync = ((restServerIsDown == false) && (needsDataSync == "1") && (angular.isArray(restEntities)) && (restEntities.length > 0))
               if (readyToSync){
                 // loop thru each rest entity (data collection) & look for dirty records
                 angular.forEach(restEntities, function(entity, iterator){
                   console.log('syncing add for: ', entity);
                   // perform all adds for this entity
-                  syncDataCreateUpdate(entity, "add", localDb, this);
+                  syncDataCreateUpdate(entity, "add", localDb);
                   
                   console.log('syncing updates for: ', entity);
                   // perform all updates for this entity
                   syncDataCreateUpdate(entity, "update", localDb);
                 
-                  syncDataDelete(entity, localDb);
                   // perform all deletes for this entity
-                  console.log('syncing deletes for: ', entity);
+                  console.log('syncing deletes for: ', entity);                
+                  syncDataDelete(entity, localDb);
                 });
 
                 // var data = localDb.query(syncKey);

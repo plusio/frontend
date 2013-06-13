@@ -5,17 +5,16 @@ $app.factory('dataSync', function() {
     // Initialise. If the database doesn't exist, it is created
     var localDb = new localStorageDB("datasync", localStorage);
 
-    // Check if the database was just created. Useful for initial database setup
-    if(localDb.isNew()) {
-        // create the "configuration" table
-        localDb.createTable("localConfiguration", ["key", "value"]);
-        localDb.insert("localConfiguration", {key: "needsDataSync", value:"0"});
+    var createLocalConfigTable = function(){
+        var localConfigTableName = "localConfiguration";
+        if (localDb.tableExists(localConfigTableName) == false){
+            localDb.createTable(localConfigTableName, ["prop", "val"]);
+            localDb.insert(localConfigTableName, {prop: "needsDataSync", val:"0"});
 
-        // commit the database to localStorage
-        // all create/drop/insert/update/delete operations should be committed
-        localDb.commit();
-    }   
-
+            // commit the database to localStorage
+            localDb.commit();
+        }
+    }
     var createTableIfNotExists = function(syncKey, data){
         if(localDb.tableExists(syncKey) == false){
             // create virtual table with columns representing each property 
@@ -24,6 +23,12 @@ $app.factory('dataSync', function() {
             localDb.commit();
         }
     }
+
+    // Check if the database was just created. Useful for initial database setup
+    if(localDb.isNew()) {
+        // create the "configuration" table
+        createLocalConfigTable();
+    }   
 
    return {  
              // removeFromQueue: function(syncKey, data) {
@@ -39,19 +44,31 @@ $app.factory('dataSync', function() {
              //    // }
              // },  
              getPersistanceDatabase: function (){
+                createLocalConfigTable();
                 return new localStorageDB("datasync", localStorage);
              },
              setNeedDataSync: function(val){
                 var intVal = 0; 
                 if (val){ intVal = 1};
-                //var db = this.getPersistanceDatabase();
-                localDb.update("localConfiguration", {key: "needsDataSync", value: "0"}, function(row) {
-                    row.value = intVal;
+                localStorage.setItem("needsDataSync", intVal);
+                // var db = this.getPersistanceDatabase();
+                // var config = {prop: "needsDataSync", val: intVal};
+                // var x = db.query("localConfiguration", {prop: "needsDataSync"});
+                // db.deleteRows("localConfiguration", {prop: "needsDataSync"});
+                // db.commit();
+
+                // db.insert("localConfiguration", config);
+
+                // // db.update("localConfiguration", {ID: x.ID}, function(row) {
+                // //     row.value = config.val;
+                // //     console.log('updating config', config);
                     
-                    // the update callback function returns to the modified record
-                    return row;
-                });
-                localDb.commit();
+                // //     // the update callback function returns to the modified record
+                // //     return row;
+                // // });
+                // db.commit();
+                
+                // console.log('local config value:', x);
              },
              getDirtyKey: function(syncKey, type){
                 var dirtyNewKeyName = "_dirtyNew";
