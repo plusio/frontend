@@ -39,29 +39,7 @@ $app.controller('MapCrtl', function($scope, plus){
           tileLayer: $scope.app.paths.map("plusdark"),
           maxZoom: 4
     },
-    center: { lat: 40.094882122321145, lng: -3.8232421874999996 },
-    markers : {},
-    path : {
-      latlngs : [
-        {lat:40.719037, lng:-74.003913},
-        {lat:37.775201, lng:-122.419073},
-        {lat:25.788042, lng:-80.225409},
-        {lat:47.60459, lng:-122.334474},
-        {lat:38.89244, lng:-77.032933}
-      ],
-      weight: 2,
-      color: '#3366FF'
-    },
-    maxbounds: {
-      southWest : {
-        lat : 0, 
-        lng : 0
-      },
-      northEast : {
-        lat : 4096,
-        lng : 4096
-      }
-    }
+    center: { lat: 40.094882122321145, lng: -3.8232421874999996 }
   };
 
   // Check if the application had an id set.

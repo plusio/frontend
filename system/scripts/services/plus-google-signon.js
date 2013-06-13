@@ -104,6 +104,7 @@ $app.factory('auth', ['$http', 'plus', '$location', '$rootScope', '$timeout', fu
 							toUpdate = true;
 							plus.update('users', value.id, _.omit(userInfo, 'expires', 'loggedIn'));
 							//console.log('update');
+
 							setTimeout(function(){
 								window.close()
 							}, 500);
@@ -120,7 +121,7 @@ $app.factory('auth', ['$http', 'plus', '$location', '$rootScope', '$timeout', fu
 						}, 500);
 					}
 
-					checkToken();
+					broadcastUserData(); // Only fires on the phone
 				});
 			}).error(function(data){
 				console.log('error', data);
