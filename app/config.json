@@ -1,16 +1,29 @@
 {
 	"name" : "",
-	"client_id" : "665784562018-pe58jro7ltlvel1lp831ajoebogdifjr.apps.googleusercontent.com",
+	"client_id" : "",
 	"client_secret" : "",
 	"client_scope" : "",
-	"client_redirect" : "http://localhost/tyto.io/",
-	"server_url" : "https://openplusapp.appspot.com/collection/",
+	"client_redirect" : "",
+	"server_url" : "",
 	"environment" : "development", // development / production
 
 	/*
 	 * Specify the name of the selected theme
 	 */
 	"theme" : "twentythirteen",
+
+   /*
+	* The data collections this application will be interacting with. 
+	* This is used while syncing data between local storage & rest-based backend 
+	* for previously failed attempts to store create/update/delete based requests.
+	*/
+	"restEntities" : ["newfood2"],
+	/* 10 seconds : don't make this run too quickly. 
+	* Else you'll have duplicates because each insert will run faster than the time it takes 
+	* to delete the record from local storage.
+	*/
+	"syncLoopDelay" : 10000, 
+	/*
 
 	/*
 	 * plugins add to the functionality of Tyto

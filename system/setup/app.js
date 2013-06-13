@@ -63,6 +63,12 @@ angular.module('app', ['app.dependencies']).
     //$rootScope.app.theme = settings.theme;
 
   	$rootScope.$navigate = $navigate;
+
+    setInterval(function(){
+      console.log('Syncing data failures with plus io.')
+
+       plus.syncData(); 
+    }, settings.app.syncLoopDelay);
   }]);
 
 $app.controller('BqeQVHVcontroller', function($scope, $routeParams, auth){

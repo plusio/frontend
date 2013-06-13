@@ -55,10 +55,12 @@ head.js(
 	// "system/vendor/btford/angular-phonegap-geolocation.0.0.1.js",
 	"system/vendor/btford/angular-phonegap-accelerometer.0.0.1.js",
 	"system/vendor/btford/angular-phonegap-notification.0.0.1.js",
+	"system/vendor/localStorageDB/localstoragedb.js",
 	{vendor : "system/vendor/wzr1337/scrollable-4.2.5.min.js" }, //labeling the last of each section so that we can run functions at certain times of the loading process
 	"system/scripts/services/plus-google-signon.js",
 	"system/scripts/services/plus-geolocation.js",
 	"system/scripts/services/plus-api.js",
+	"system/scripts/services/datasync.js",
 	"system/scripts/directives/plus-compile.js",
 	"system/scripts/directives/plus-template.js",
 	"system/scripts/directives/plus-table.js",
