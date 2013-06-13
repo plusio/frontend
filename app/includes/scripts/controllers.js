@@ -107,20 +107,24 @@ $app.controller('MapCrtl', function($scope, plus){
 $app.controller('collectionListController', function($scope, $routeParams, $http, plus) {
  // binds data to the geoData "model" on $scope. The two-way data binding will automatically cause the view (html/css) to be updated once the data returns.
  // Currently no data will return unless an app id is specified in the app's config file (app/config.js).
-  	var collection = 'food';
-    $scope.collectionData = plus.collection(collection);
-    $scope.element = {
-      name : 'loop'
-    }
- 
-    $.ajax({
-		dataType: "jsonp",
-		url: sprintf('http://openplusapp.appspot.com/structure/%s', collection),
-		success: function(data){
-			$scope.structure = _.difference(data[0], ['id', 'time']);
-			$scope.$apply();
-		}
-	});
+   var collection = 'newfood2';
+    //plus.limit(collection, 3, 1).then(function(data){
+    //plus.filter(collection, "name", "test").then(function(data){  
+    plus.collection(collection).then(function(data){    
+       $scope.collectionData = data;
+      console.log('collection data:', data);
+
+      // clean collection
+      angular.forEach(data, function(record, j){
+        //console.log(record.id)
+        //plus.delete(collection, record.id);
+      });
+    });
+
+    plus.structure(collection).then(function(data){
+      $scope.structure = _.difference(data[0], ['id', 'time']);
+      //console.log('data food in collection', data);
+     });
 
     if( $routeParams.id === 'new'){
     	$scope.new = true;
@@ -129,6 +133,8 @@ $app.controller('collectionListController', function($scope, $routeParams, $http
     }else if(Number($routeParams.id)){
     	//is a number
     	plus.get(collection, $routeParams.id).then(function(data){
+          // this is necessary to set the id on the record being posted to the server
+          data.id = Number($routeParams.id);
 	    		$scope.item = data;
 	    	});
     }else if(angular.isDefined($routeParams.id)){
@@ -138,12 +144,9 @@ $app.controller('collectionListController', function($scope, $routeParams, $http
 
     // Evaluates whether record is new or existing and performs insert or update appropriately.
     $scope.submit = function(){
-    	console.log($scope.item);
-        if ($scope.new){
-        	console.log(collection, $scope.item);
+        if ($scope.new){ 
           plus.add(collection, $scope.item);
-        } else {
-        	console.log(collection, $routeParams.id, $scope.item);
+        } else { 
           plus.update(collection, $routeParams.id, $scope.item);
         }
 
@@ -160,10 +163,7 @@ $app.controller('collectionListController', function($scope, $routeParams, $http
       // go back to to list
       $scope.$navigate.back();
     }
-
 });
-
-
 
 $app.controller('phonegapController', function($scope, geolocation, accelerometer, notification){
   var functions = {
