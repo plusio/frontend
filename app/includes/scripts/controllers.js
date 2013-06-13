@@ -218,7 +218,8 @@ $app.controller('LoginController', function($scope, $routeParams, auth, plus){
 
   $scope.$on('authUpdated', function(event, data){
     $scope.user = auth.get();
-  $scope.user.token = auth.isTokenValid();
+    $scope.user.token = auth.isTokenValid();
+
 
     if(!$scope.$$phase){
       $scope.$apply();

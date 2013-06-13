@@ -2,6 +2,8 @@
  * init.js Initialize the tyto framework and load in configuration file then load in all necessary scripts
  */
 
+ window.phonegap = (document.URL.indexOf("http://") == -1);
+
 
 // if the url is a callback from google signon redirect to a system controller to get the values into angular and run the use service.
 if(document.location.href.search("access_token=") > -1 && document.location.href.search("token_type=") > -1 && document.location.href.search("expires_in=") > -1){
@@ -49,7 +51,6 @@ head.js(
 	"system/vendor/angular-retina/angular-retina.js",
 	"system/vendor/wzr1337/gestures-0.1.0.min.js",
 	"system/vendor/getify/minify.json.js",
-	"system/vendor/sirkitree/google-plus-signin.js",
 	"system/vendor/btford/angular-phonegap-ready.0.0.1.js",
 	"system/vendor/btford/angular-phonegap-geolocation.0.0.1.js",
 	"system/vendor/btford/angular-phonegap-accelerometer.0.0.1.js",
@@ -74,7 +75,6 @@ head.ready('angular', function(){
 		'ngRetina',
 		'angular-momentum-scroll',
 		'angular-gestures',
-		'directive.g+signin',
 		'btford.phonegap.ready',
 		'btford.phonegap.geolocation',
 		'btford.phonegap.accelerometer',

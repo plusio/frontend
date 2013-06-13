@@ -1,15 +1,10 @@
- <button id="authorize-button" ng-click="authenticate()">authenticate</button>
- <button id="authorize-button" ng-click="logout()">logout</button>
-<br>
-
-  {{ user }}
-
-  <br>
-
-  {{ users }}
+ <button id="authorize-button" logged-out ng-click="authenticate()">authenticate</button>
+ <button id="authorize-button" logged-in ng-click="logout()">logout</button>
 
 <logged-in>
 	Super Secret Data!
+
+	{{ user.email }}
 </logged-in>
 
 <logged-out>

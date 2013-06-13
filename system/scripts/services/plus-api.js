@@ -132,11 +132,11 @@ $app.factory('plus', function($http, $q, $rootScope) {
             },
              update: function (syncKey, id, data){
                var content = _.omit(data, ['id']);
-               return serviceDataSendFn($http, $q, theUrl + syncKey + "/" + id + "/",  angular.toJson(content));
+               return serviceDataSendFn($http, $q, theUrl + syncKey + "/" + id,  angular.toJson(content));
              },
              delete: function (syncKey, id){
-                console.log(theUrl + syncKey + "/" + id + "/");
-                return serviceDeleteFn($http, $q, theUrl + syncKey + "/" + id + "/", syncKey + "_" + id);
+                console.log(theUrl + syncKey + "/" + id);
+                return serviceDeleteFn($http, $q, theUrl + syncKey + "/" + id, syncKey + "_" + id);
              }                                                                                    
    }
 });

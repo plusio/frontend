@@ -42,7 +42,6 @@ angular.module('app', ['app.dependencies']).
 
     $rootScope.app = settings.app;
 
-    console.log(typeof settings.app.theme);
 
     $rootScope.app.paths = {
         view : function(view){

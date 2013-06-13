@@ -1,25 +1,10 @@
-$app.factory('auth', ['$http', 'plus', '$location', '$rootScope', '$timeout', function($http, plus, $location, $rootScope, $timeout) {
+$app.factory('auth', ['$http', 'plus', '$location', '$rootScope', function($http, plus, $location, $rootScope) {
 
 	if (window.addEventListener) {
 	  window.addEventListener("storage", handle_storage, false);
 	} else {
 	  window.attachEvent("onstorage", handle_storage);
 	};
-
-	// var tokenTimeout;
-	// function checkToken() {
-	// 	console.log(functions.isTokenValid());
-	// 	if(functions.isTokenValid()){
-	// 		//yes continue checking untill it's not
-	// 		tokenTimeout = $timeout(function(){
-	// 			//check token every 5 minutes
-	// 			checkToken();
-	// 		}, 1000);
-	// 	}else{
-	// 		$timeout.cancel(tokenTimeout);
-	// 		functions.logout();
-	// 	}
-	// }
 
 	function handle_storage(e) {
 	  if (!e) { e = window.event; }
@@ -61,7 +46,7 @@ $app.factory('auth', ['$http', 'plus', '$location', '$rootScope', '$timeout', fu
 				var now = new Date().getTime();
 				var remainder = ((this.get('expires') - now) / 1000) / 60;
 
-				alert('no need to check for antoher ' + remainder + ' minutes');
+				console.log('no need to check for antoher ' + remainder + ' minutes');
 				return true;
 			}
 
@@ -88,13 +73,16 @@ $app.factory('auth', ['$http', 'plus', '$location', '$rootScope', '$timeout', fu
 
 		},
 		verify : function(access_token){
+			console.log(access_token);
 			$http.get('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=' + access_token).success(function(data){
-				userInfo = _.pick(data, 'email', 'user_id', 'verified_email');
+				userInfo = data;
 				_.extend(userInfo, {
 					loggedIn : true,
 					expires : new Date().getTime() + (data.expires_in * 1000),
-					time : new Date().getTime().toString()
+					time : new Date().getTime().toString(),
+					access_token : access_token
 				});
+
 				setUserSession(userInfo);
 				plus.collection('users').then(function(data){
 					var toUpdate = false;
@@ -102,9 +90,8 @@ $app.factory('auth', ['$http', 'plus', '$location', '$rootScope', '$timeout', fu
 						if(value.user_id === userInfo.user_id){
 							//update
 							toUpdate = true;
-							plus.update('users', value.id, _.omit(userInfo, 'expires', 'loggedIn'));
-							//console.log('update');
-
+							plus.update('users', value.id, _.pick(data, 'email', 'user_id', 'verified_email', 'time'));
+							
 							setTimeout(function(){
 								window.close()
 							}, 500);
