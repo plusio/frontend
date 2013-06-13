@@ -119,21 +119,19 @@ $app.controller('MapCrtl', function($scope, plus){
 $app.controller('collectionListController', function($scope, $routeParams, $http, plus) {
  // binds data to the geoData "model" on $scope. The two-way data binding will automatically cause the view (html/css) to be updated once the data returns.
  // Currently no data will return unless an app id is specified in the app's config file (app/config.js).
-  	var collection = 'newfood';
+  	var collection = 'newfood2';
     //plus.limit(collection, 3, 1).then(function(data){
-    plus.filter(collection, "name", "test").then(function(data){  
+    //plus.filter(collection, "name", "test").then(function(data){  
+    plus.collection(collection).then(function(data){    
     	$scope.collectionData = data;
-      console.log('data food in collection', data);
+      console.log('collection data:', data);
+
+      // clean collection
+      angular.forEach(data, function(record, j){
+        //console.log(record.id)
+        //plus.delete(collection, record.id);
+      });
     });
- 
-  //   $.ajax({
-		// dataType: "jsonp",
-		// url: sprintf('http://openplusapp.appspot.com/structure/%s/', collection),
-		// success: function(data){
-		// 	$scope.structure = _.difference(data[0], ['id', 'time']);
-		// 	$scope.$apply();
-  // 		}
-  // 	});
 
     plus.structure(collection).then(function(data){
       $scope.structure = _.difference(data[0], ['id', 'time']);
@@ -178,50 +176,6 @@ $app.controller('collectionListController', function($scope, $routeParams, $http
     }
 
 });
-
-/* Variables:
- * 1) $scope: Here we pass in the $scope dependency because this controller needs the two-way databinding functionality of angular.
- * 2) plus: an angularjs service that is used to connect to the Plus.io REST API and get an array of json data.
- */
-$app.controller('ListItemController', function($scope, $routeParams, $location, plus) {
-    // binds data to the list's "model" on $scope. The two-way data binding will automatically cause the view (html/css) to be updated once the data returns.
-    // Currently no data will return unless an app id is specified in the app's config file (app/config.js).
-
-    $scope.listItem = {};
-
-    // Will update once this REST API method is completed.
-    var newFoodItem = !(Number($routeParams.id));
-    if (newFoodItem == false){
-      $scope.listItem = plus.getSingle("food", $routeParams.id);
-    }
-
-    // Evaluates whether record is new or existing and performs insert or update appropriately.
-    $scope.Save = function(){
-        if (newFoodItem){
-          plus.add("food", $scope.listItem);
-        }
-        else {
-          plus.update("food", $routeParams.id, $scope.listItem);
-        }
-
-        // go back to to list
-        $scope.RedirectToList();
-    };
-
-    // Deletes existing records only.
-    $scope.Delete = function(){
-      if(newFoodItem == false){
-         plus.delete("food", $routeParams.id);
-      }
-
-      // go back to to list
-      $scope.RedirectToList();
-    };
-    $scope.RedirectToList = function(){
-      $location.path("/list");
-    };
-});
-
 
 $app.controller('LoginController', function($scope){
 

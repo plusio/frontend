@@ -95,6 +95,7 @@ $app.factory('plus', function($http, $q, $rootScope, dataSync) {
       var deferred = $q.defer();
 
       //make the call.
+      console.log('the delete url:', theUrl);
       $http({method: "delete", url: theUrl}).success(function(data) {     
          //when data is returned resolve the deferment.
          deferred.resolve(data);
@@ -316,28 +317,13 @@ $app.factory('plus', function($http, $q, $rootScope, dataSync) {
                 return serviceDataPullFn($http, $q, theUrl + updatedUrl, syncKey);
              },
              add: function(syncKey, data, isSyncing){
-                var promisedData = addFn(syncKey, data, isSyncing);
-                
-                // sync all data.
-                if (restServerIsDown == false){ this.syncData(); }
-
-                return promisedData;
+                return addFn(syncKey, data, isSyncing);
              },
              update: function (syncKey, id, data){
-                var promisedData = updateFn(syncKey, id, data);
-
-                // sync all data.
-                if (restServerIsDown == false){ this.syncData(); }
-
-                return promisedData;
+                return updateFn(syncKey, id, data);
              },
              delete: function (syncKey, id){
-                var promisedData = deleteFn(syncKey, id);
-
-                // sync all data.
-                if (restServerIsDown == false){ this.syncData(); }
-
-                return promisedData;
+                return deleteFn(syncKey, id);
              }                                                                                    
    }
 });

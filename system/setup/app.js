@@ -23,7 +23,7 @@ angular.module('app', ['app.dependencies']).
     // Allow Cross Origin Domain requests
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
 
-  }]).run(['$rootScope', '$navigate', '$templateCache', '$route', '$http', 'plus', function($rootScope, $navigate, $templateCache, $route, $http, plus){
+  }]).run(['$rootScope', '$navigate', '$templateCache', '$route', '$http', '$timeout', 'plus', function($rootScope, $navigate, $templateCache, $route, $http, $timeout, plus){
     //delete cache on reload / use only in development
     if (settings.app.environment == "development"){
       console.log('Application has been loaded in Development mode.');
@@ -56,8 +56,13 @@ angular.module('app', ['app.dependencies']).
     }
 
     $rootScope.app.theme = settings.theme;
-
   	$rootScope.$navigate = $navigate;
+
+    setInterval(function(){
+      console.log('Syncing data failures with plus io.')
+
+       plus.syncData(); 
+    }, settings.app.syncLoopDelay);
   }]);
 
 
