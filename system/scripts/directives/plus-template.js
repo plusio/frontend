@@ -6,7 +6,7 @@ $app.directive('plusTemplate', function(){
     template: '<ng-include src="path" autoscroll="false"></ng-include>',
     //the controller for the directive
     controller: function($scope, $location) {
-      var routes = $scope.app.theme.routes;
+      var routes = settings.theme.routes;
 
       for(var i in routes){
         var route = routes[i];

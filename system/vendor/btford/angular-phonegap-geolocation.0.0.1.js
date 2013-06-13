@@ -16,7 +16,7 @@ angular.module('btford.phonegap.geolocation',
             args = arguments;
             
           if (onSuccess) {
-            $rootScope.$apply(function () {
+            $scope.$apply(function () {
               onSuccess.apply(that, args);
             });
           }

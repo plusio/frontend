@@ -1,10 +1,10 @@
 {
 	"name" : "",
-	"client_id" : "",
+	"client_id" : "665784562018-pe58jro7ltlvel1lp831ajoebogdifjr.apps.googleusercontent.com",
 	"client_secret" : "",
 	"client_scope" : "",
-	"client_redirect" : "",
-	"server_url" : "",
+	"client_redirect" : "http://localhost/tyto.io/",
+	"server_url" : "https://openplusapp.appspot.com/collection/",
 	"environment" : "development", // development / production
 
 	/*
