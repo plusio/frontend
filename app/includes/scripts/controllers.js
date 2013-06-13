@@ -120,7 +120,8 @@ $app.controller('collectionListController', function($scope, $routeParams, $http
  // binds data to the geoData "model" on $scope. The two-way data binding will automatically cause the view (html/css) to be updated once the data returns.
  // Currently no data will return unless an app id is specified in the app's config file (app/config.js).
   	var collection = 'newfood';
-    plus.collection(collection).then(function(data){
+    //plus.limit(collection, 3, 1).then(function(data){
+    plus.filter(collection, "name", "test").then(function(data){  
     	$scope.collectionData = data;
       console.log('data food in collection', data);
     });
@@ -137,7 +138,6 @@ $app.controller('collectionListController', function($scope, $routeParams, $http
     plus.structure(collection).then(function(data){
       $scope.structure = _.difference(data[0], ['id', 'time']);
       //console.log('data food in collection', data);
-      $scope.structure = _.difference(data[0], ['id', 'time']);
     });
 
     if($routeParams.id === 'new'){

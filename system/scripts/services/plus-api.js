@@ -307,15 +307,12 @@ $app.factory('plus', function($http, $q, $rootScope, dataSync) {
                 var updatedUrl = syncKey + "/" + id + "?callback=JSON_CALLBACK";
                 return serviceDataPullFn($http, $q, theUrl + updatedUrl, syncKey + "_" + id, syncKey);
              },                         
-             query: function(syncKey, data) {
-                return //TODO: implement this ... syncKey + "filter/filter" 
-
-                // incomplete. look into filter by url or by sent json data. 
-                // var updatedUrl = syncKey + "/?callback=JSON_CALLBACK";// angular.toJson(data));
-                // return serviceDataPullFn($http, $q, theUrl + updatedUrl, syncKey);
+             filter: function(syncKey, filter, value) {
+                var updatedUrl = syncKey + "/filter/" + filter + "/" + value + "?callback=JSON_CALLBACK";// angular.toJson(data));
+                return serviceDataPullFn($http, $q, theUrl + updatedUrl, syncKey);
              }, 
              limit: function(syncKey, limit, offset){
-                var updatedUrl = syncKey + "/" + limit + "/" + offset + "?callback=JSON_CALLBACK";
+                var updatedUrl = syncKey + "/limit/" + limit + "/" + offset + "?callback=JSON_CALLBACK";
                 return serviceDataPullFn($http, $q, theUrl + updatedUrl, syncKey);
              },
              add: function(syncKey, data, isSyncing){
