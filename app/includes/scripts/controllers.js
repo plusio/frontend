@@ -13,91 +13,19 @@
 /* Variables:
  * 1) $scope: Here we pass in the $scope dependency because this controller needs the two-way databinding functionality of angular.
  */
-$app.controller('HomeCrtl', function ($scope) {
+$app.controller('HomeCrtl', function ($scope, $timeout) {
   // defaulting the time on Angular's model variable.
   $scope.time = Date.now();
 
-  // updating the time based on a javascript interval
-  setInterval(function(){
-        // this $.apply() function needs to be called on $scope because the setInterval javascript function itself 
-        // is not a function that is connected to angular (literally connected, as in not a $scope.DoSomething style function()
-        $scope.$apply(function() {
-            $scope.time = Date.now();
-        });
-    }, 5000);
-});
-
-
-
-/* Variables:
- * 1) $scope: Here we pass in the $scope dependency because this controller needs the two-way databinding functionality of angular.
- */
-$app.controller('MapCrtl', function($scope, plus){
-  // defaulting the settings on the model on the leaflet directive
-  $scope.leaflet = {
-    defaults: {
-          tileLayer: $scope.app.paths.map("plusdark"),
-          maxZoom: 4
-    },
-    center: { lat: 40.094882122321145, lng: -3.8232421874999996 }
-  };
-
-  // Check if the application had an id set.
-  if(!_.isEmpty($scope.app.server_url)){
-    // if there is, get data from plus.io
-    plus.collection('geo').then(function(data){
-      $scope.geoData = data;
-
-      angular.forEach(data, function(item){
-        $scope.leaflet.markers[item.id] = {
-          lat : item.latitude,
-          lng : item.longitude,
-          message : item.tag,
-          draggable : false
-        }
-      });
-    }); 
-
-  }else{
-    // Otherise lets set two example markers so the the map isn't blank
-    $scope.leaflet.markers =  {       
-      NewYork: {
-          lat: 40.719037,
-          lng: -74.003913,
-          message: "New York",
-          focus: false,
-          draggable: false
-      },
-      SanFrancisco: {
-          lat:37.775201,
-          lng:-122.419073,
-          message: "San Francisco",
-          focus: false,
-          draggable: false
-      },
-      Miami: {
-          lat:25.788042,
-          lng:-80.225409,
-          message: "Miami",
-          focus: false,
-          draggable: false
-      },
-      Seattle: {
-          lat:47.60459,
-          lng:-122.334474,
-          message: "Seattle",
-          focus: false,
-          draggable: false
-      },
-      WashingtonDC: {
-          lat:38.89244,
-          lng:-77.032933,
-          message: "Washington, DC",
-          focus: true,
-          draggable: false
-      }
-    }
+  function updateTime(){
+    $timeout(function(){
+      $scope.time = Date.now();
+      updateTime();
+    }, 1000);
   }
+
+  updateTime();
+
 });
 
 /* Variables:
@@ -198,28 +126,13 @@ $app.controller('phonegapController', function($scope, geolocation, acceleromete
     angular.extend($scope, functions);
 });
 
-$app.controller('LoginController', function($scope, $routeParams, auth, plus){
-  //alert(auth.isLoggedIn());
-  //$scope.authUrl = sprintf('https://accounts.google.com/o/oauth2/auth?response_type=token&client_id=%(client_id)s&scope=%(scope)s&redirect_uri=%(redirect_uri)s', authParams);
-  var params = {};
-
-  $scope.user = auth.get();
-  console.log(auth.isTokenValid());
-
-  $scope.$on('authUpdated', function(event, data){
-    $scope.user = auth.get();
-  $scope.user.token = auth.isTokenValid();
-
-    if(!$scope.$$phase){
-      $scope.$apply();
-    }
-  });
+$app.controller('LoginController', function($scope, $routeParams, auth){
 
   $scope.logout = function(){
     auth.logout();
   }
 
-  $scope.authenticate = function(){
+  $scope.login = function(){
     auth.login();
   }
 

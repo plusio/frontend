@@ -2,7 +2,7 @@
 	/*
 	 * Theme name, must be identical to the directory name
 	 */
-	"title" : "twentythirteen",
+	"title" : "Twenty Thirteen",
 	"author" : "citizenhub",
 
 	/*
@@ -16,7 +16,7 @@
 	 */
 	"files" : {
 		"css" : ["css/bootstrap", "css/fonts/stylesheet", "css/style"],
-		"js" : []
+		"js" : ["js/theme_controllers"]
 	},
 
 	/*
@@ -27,7 +27,7 @@
 	 * Definitions
 	 * path: the url path ex: /home will map to http:localhost/tyto/home, IF you are working on your local machine with your application in a folder named tyto.
 	 * layout: layouts are files that include page templates within them, layouts include any reusable structure through your application. Such as header, footer, and navigation.
-	 * template: templates are the structure for individual pages, note that layouts and template files must use the extension .tpl.html which you don not include in the path the files here.
+	 * template: templates are the structure for indi vidual pages, note that layouts and template files must use the extension .tpl.html which you don not include in the path the files here.
 	 * controller : controllers are javascript functions that add functionality and link any resources the view requires. Controllers can be created by a js file included with a theme, or in the application's controllers file.
 	 * title: titles are plain text that currently show up in your navigation if you use the <plus-menu> directive, they can also be accessed by a template or layout to show the title of the current page.
 	 * class: class contains a string of a class name to be applied to the li in the navigation to use for styling when using the <plus-menu> directive
@@ -36,10 +36,10 @@
 	"routes" : [
 		{ "path" : "/home",			"layout" : "layouts/main",		"template" : "home",		"controller" : "HomeCrtl",					"title" : "Home",	"class" : "home" },
 		{ "path" : "/items",		"layout" : "layouts/main",		"template" : "list",		"controller" : "collectionListController",	"title" : "Data",	"class" : "list" },	
-		{ "path" : "/item/:id",		"layout" : "layouts/main",		"template" : "single",		"controller" : "collectionListController",	"title" : "List",	"class" : "list" },				
-		{ "path" : "/map",			"layout" : "layouts/main",		"template" : "map",			"controller" : "MapCrtl",					"title" : "Map",	"class" : "globe" },
-		{ "path" : "/login",		"layout" : "layouts/main",		"template" : "login",		"controller" : "LoginController",			"title" : "Login",	"class" : "globe" },			
+		{ "path" : "/item/:id",		"layout" : "layouts/main",		"template" : "single",	   	"controller" : "collectionListController",	"title" : "List",	"class" : "list" },				
+		{ "path" : "/map",			"layout" : "layouts/main",		"template" : "map",			"controller" : "mapController",				"title" : "Map",	"class" : "globe" },
 		{ "path" : "/pages/about",	"layout" : "layouts/modal",		"template" : "about" },
+		{ "path" : "/pages/test",	"layout" : "layouts/modal",		"template" : "home" },
 		{ "otherwise" : "/home" }
 	]
 }

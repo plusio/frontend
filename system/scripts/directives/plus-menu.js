@@ -20,7 +20,7 @@ $app.directive('plusMenu', function(){
     template: '<ul class="nav"><li class="{{route.class}}" ng-repeat="route in routes"><a hm-tap="$navigate.go(route.path, \'none\')">{{ route.title }}</a></li></ul>',
     //the controller for the directive
     controller: function($scope, $location) {
-      var routes = $scope.app.theme.routes;
+      var routes = settings.theme.routes;
       $scope.routes = [];
 
       //check for top level routes only

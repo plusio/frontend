@@ -1,5 +1,6 @@
 'use strict';
 
+var testVar;
 // Declare app level module which depends on filters, and services
 angular.module('app', ['app.dependencies']).
   config(['$routeProvider', '$httpProvider', '$locationProvider', 'RestangularProvider', function($routeProvider, $httpProvider, $locationProvider, RestangularProvider) {
@@ -40,13 +41,12 @@ angular.module('app', ['app.dependencies']).
       // possibly throw application error here.
     }
 
-    $rootScope.app = settings.app;
-
-    console.log(typeof settings.app.theme);
-
-    $rootScope.app.paths = {
+    $rootScope.app = {
+      name : settings.app.name,
+      theme : settings.theme,
+      paths : {
         view : function(view){
-          return sprintf('app/themes/%s/views/%s.tpl.html', settings.app.theme.title , view);
+          return sprintf('app/themes/%s/views/%s.tpl.html', settings.app.theme , view);
         },
         map : function(title){
           return sprintf('app/includes/maps/%s/{z}/{x}/{y}.png', title);
@@ -54,10 +54,13 @@ angular.module('app', ['app.dependencies']).
         element : function(title){
           return sprintf('app/includes/elements/%s.element.html', title);
         },
-        theme : function(file){ return sprintf('app/themes/%s/%s', settings.app.theme.title, file); }
+        theme : function(file){ return sprintf('app/themes/%s/%s', settings.app.theme, file); }
+      }
     }
 
-    $rootScope.app.theme = settings.theme;
+    console.log($rootScope.app)
+
+    //$rootScope.app.theme = settings.theme;
 
   	$rootScope.$navigate = $navigate;
 

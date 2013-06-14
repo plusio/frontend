@@ -274,10 +274,11 @@ $app.factory('plus', function($http, $q, $rootScope, dataSync) {
                 return addFn(syncKey, data, isSyncing);
              },
              update: function (syncKey, id, data){
-                return updateFn(syncKey, id, data);
+               var content = _.omit(data, ['id']);
+               return serviceDataSendFn($http, $q, collectionUrl + syncKey + "/" + id,  angular.toJson(content));
              },
              delete: function (syncKey, id){
-                return deleteFn(syncKey, id);
+                return serviceDeleteFn($http, $q, collectionUrl + syncKey + "/" + id, syncKey + "_" + id);
              }                                                                                    
    }
 });
