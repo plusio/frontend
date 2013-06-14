@@ -18,11 +18,9 @@
 	* for previously failed attempts to store create/update/delete based requests.
 	*/
 	"restEntities" : ["newfood2"],
-	/* 10 seconds : don't make this run too quickly. 
-	* Else you'll have duplicates because each insert will run faster than the time it takes 
-	* to delete the record from local storage.
-	*/
-	"syncLoopDelay" : 10000, 
+	/*  This defines in milliseconds, how often the queue should attempt to "sync" the data with rest backend.
+	 * The current default is 10 minutes */
+	"syncLoopDelay" : 600000, 
 	/*
 
 	/*

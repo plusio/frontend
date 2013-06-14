@@ -34,7 +34,7 @@ $app.controller('HomeCrtl', function ($scope, $timeout) {
  */
 $app.controller('collectionListController', function($scope, $routeParams, $http, plus) {
  // Currently no data will return unless an app id is specified in the app's config file (app/config.js).
-    var collection = 'newfood2';
+    var collection = 'newfood';
 
     plus.collection(collection).then(function(data){     
       $scope.collectionData = data;

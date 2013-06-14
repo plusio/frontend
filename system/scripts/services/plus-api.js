@@ -255,7 +255,7 @@ $app.factory('plus', function($http, $q, $rootScope, dataSync) {
                 return serviceDataPullFn($http, $q, structureUrl + updatedUrl, syncKey);
              },       
              collection: function(syncKey, params) {
-                var limit=""; var offset=""; var filter=""; var value="";
+                var limit="20"; var offset="0"; var filter=""; var value="";
                 if(angular.isObject(params)) {
                     limit = params.hasOwnProperty('limit') ? params.limit : 20;
                     offset = params.hasOwnProperty('offset') ? params.offset : 0;
@@ -270,8 +270,8 @@ $app.factory('plus', function($http, $q, $rootScope, dataSync) {
                 var updatedUrl = syncKey + "/" + id + "?callback=JSON_CALLBACK";
                 return serviceDataPullFn($http, $q, collectionUrl + updatedUrl, syncKey + "_" + id, syncKey);
              },                         
-             add: function(syncKey, data, isSyncing){
-                return addFn(syncKey, data, isSyncing);
+             add: function(syncKey, data){
+                return addFn(syncKey, data);
              },
              update: function (syncKey, id, data){
                var content = _.omit(data, ['id']);
