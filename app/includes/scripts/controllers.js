@@ -105,25 +105,15 @@ $app.controller('MapCrtl', function($scope, plus){
  * 2) plus: an angularjs service that is used to connect to the Plus.io REST API and get an array of geospatial json data json.
  */
 $app.controller('collectionListController', function($scope, $routeParams, $http, plus) {
- // binds data to the geoData "model" on $scope. The two-way data binding will automatically cause the view (html/css) to be updated once the data returns.
  // Currently no data will return unless an app id is specified in the app's config file (app/config.js).
-   var collection = 'newfood2';
-    //plus.limit(collection, 3, 1).then(function(data){
-    //plus.filter(collection, "name", "test").then(function(data){  
-    plus.collection(collection).then(function(data){    
-       $scope.collectionData = data;
-      console.log('collection data:', data);
+    var collection = 'newfood2';
 
-      // clean collection
-      angular.forEach(data, function(record, j){
-        //console.log(record.id)
-        //plus.delete(collection, record.id);
-      });
+    plus.collection(collection).then(function(data){     
+      $scope.collectionData = data;
     });
 
     plus.structure(collection).then(function(data){
       $scope.structure = _.difference(data[0], ['id', 'time']);
-      //console.log('data food in collection', data);
      });
 
     if( $routeParams.id === 'new'){

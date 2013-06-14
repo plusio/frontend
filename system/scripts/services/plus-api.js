@@ -2,17 +2,17 @@
 
 /* Plus IO Services */
 
-if (!String.prototype.format) {
-  String.prototype.format = function() {
-    var args = arguments;
-    return this.replace(/{(\d+)}/g, function(match, number) { 
-      return typeof args[number] != 'undefined'
-        ? args[number]
-        : 'undefined'//match
-      ;
-    });
-  };
-}
+// if (!String.prototype.format) {
+//   String.prototype.format = function() {
+//     var args = arguments;
+//     return this.replace(/{(\d+)}/g, function(match, number) { 
+//       return typeof args[number] != 'undefined'
+//         ? args[number]
+//         : 'undefined'//match
+//       ;
+//     });
+//   };
+// }
 
 
 /* Currently we're experiencing some issues with CORS on App Engine but only for browsers. You must disable web security within chrome for these methods to work.
@@ -23,19 +23,20 @@ if (!String.prototype.format) {
 // Gotten from: http://www.benlesh.com/2013/02/angularjs-creating-service-with-http.html
 // plus data service
 $app.factory('plus', function($http, $q, $rootScope, dataSync) { 
-    var theUrl = settings.app.server_url;
+    var collectionUrl = settings.app.server_url + "collection/";
+    var structureUrl = settings.app.server_url + "structure/";
     var isSyncing = true; // TODO: add to config file.
     var hasNetworkConnection = true; // TODO: use phonegap Connection plugin  connection.none, connection   (navigator.network.connection.type  returns the connection type)
     var restServerIsDown = false;
 
-    var serviceDataPullFn = function($http, $q, theUrl, params){
+    var serviceDataPullFn = function($http, $q, collectionUrl, params){
        $http.defaults.useXDomain = true
        
        //create our deferred object.
        var deferred = $q.defer();
 
        //make the call.
-       $http({method: "jsonp", url: theUrl, cache:true}).success(function(data) {
+       $http({method: "jsonp", url: collectionUrl, cache:true}).success(function(data) {
           //when data is returned resolve the deferment.
          deferred.resolve(data);
 
@@ -50,7 +51,7 @@ $app.factory('plus', function($http, $q, $rootScope, dataSync) {
        //return the promise that work will be done (kinda like a data-IOU)
        return deferred.promise;
     };
-    var serviceDataSendFn = function($http, $q, theUrl, params, originalParams, syncKey, mode){
+    var serviceDataSendFn = function($http, $q, collectionUrl, params, originalParams, syncKey, mode){
        $http.defaults.useXDomain = true;   
        var theParams = params;
        var theSyncKey = syncKey;
@@ -60,7 +61,7 @@ $app.factory('plus', function($http, $q, $rootScope, dataSync) {
        var deferred = $q.defer();
 
        //make the call.
-       $http.post(theUrl, params).success(function(data) {
+       $http.post(collectionUrl, params).success(function(data) {
          //when data is returned resolve the deferment.
          deferred.resolve(data);
 
@@ -73,7 +74,7 @@ $app.factory('plus', function($http, $q, $rootScope, dataSync) {
             console.log('running syncing code.');
 
             var syncKeyName = dataSync.getDirtyKey(syncKey, mode);
-            if (mode == "new") { dataSync.add(syncKeyName, theOriginalParams); } 
+            if ( mode == "new") { dataSync.add(syncKeyName, theOriginalParams); } 
             else { dataSync.update(syncKeyName, theOriginalParams); }
            
             dataSync.setNeedDataSync(true);
@@ -86,7 +87,7 @@ $app.factory('plus', function($http, $q, $rootScope, dataSync) {
        //return the promise that work will be done (kinda like a data-IOU)
        return deferred.promise;
     };    
-    var serviceDeleteFn = function($http, $q, theUrl, id, syncKey){
+    var serviceDeleteFn = function($http, $q, collectionUrl, id, syncKey){
      $http.defaults.useXDomain = true; 
       var theSyncKey = syncKey;  
       var theId = id;
@@ -95,8 +96,8 @@ $app.factory('plus', function($http, $q, $rootScope, dataSync) {
       var deferred = $q.defer();
 
       //make the call.
-      console.log('the delete url:', theUrl);
-      $http({method: "delete", url: theUrl}).success(function(data) {     
+      console.log('the delete url:', collectionUrl);
+      $http({method: "delete", url: collectionUrl}).success(function(data) {     
          //when data is returned resolve the deferment.
          deferred.resolve(data);
 
@@ -125,43 +126,15 @@ $app.factory('plus', function($http, $q, $rootScope, dataSync) {
     };
 
     var addFn = function(syncKey, data){
-        if (isSyncing == undefined){ isSyncing = true; }
-        var content = _.omit(data, ['id', 'ID']);
-        console.log('original is: ', content, 'data is: ', data);
-        // var restData = { 
-        //   url :  theUrl + syncKey + "/",
-        //   content : angular.toJson(data),
-        //   isSyncing:isSyncing,
-        //   syncKey:syncKey
-        // };
-        var promisedData = serviceDataSendFn($http, $q, theUrl + syncKey, angular.toJson(content), data, syncKey, "new");     
-        return promisedData;
+        var content = _.omit(data, ['id', 'ID']);   
+        return serviceDataSendFn($http, $q, collectionUrl + syncKey, angular.toJson(content), data, syncKey, "new");;
     }
     var deleteFn = function (syncKey, id){
-        if (isSyncing == undefined){ isSyncing = true; }
-        // var restData = { 
-        //   url :  theUrl + syncKey + "/" + id + "/",
-        //   isSyncing:isSyncing,
-        //   syncKey:syncKey + "_" + id
-        // };
-
-        //return serviceDeleteFn($http, $q, restData);
-        var promisedData = serviceDeleteFn($http, $q, theUrl + syncKey + "/" + id, id, syncKey);
-        return promisedData;
+        return serviceDeleteFn($http, $q, collectionUrl + syncKey + "/" + id, id, syncKey);;
     } 
     var updateFn = function (syncKey, id, data){
-       if (isSyncing == undefined){ isSyncing = true; }
-       var content = _.omit(data, ['id', 'ID']);
-       console.log('original is: ', content, 'data is: ', data);
-       // var restData = { 
-       //    url :  theUrl + syncKey + "/",
-       //    content : angular.toJson(data),
-       //    isSyncing:isSyncing,
-       //    syncKey:syncKey
-       //  };
-
-        var promisedData = serviceDataSendFn($http, $q, theUrl + syncKey + "/" + id,  angular.toJson(content), data, syncKey, "update");
-        return promisedData;
+        var content = _.omit(data, ['id', 'ID']);
+        return serviceDataSendFn($http, $q, collectionUrl + syncKey + "/" + id,  angular.toJson(content), data, syncKey, "update");;
     }
 
     // private function to sync creates/updates
@@ -248,15 +221,6 @@ $app.factory('plus', function($http, $q, $rootScope, dataSync) {
               });
             });  
           }
-
-          // Find existing records that were queued to be updated, but are now being deleted.
-          // var existingData = localDb.query(dataSync.getDirtyKey(entity, "delete"));
-          // if (angular.isArray(existingData) && existingData.length > 0){
-          //   // loop thru each new record & send to rest api to create
-          //   angular.forEach(existingData, function(record, j){
-          //     deleteFn(entity, record);
-          //   });  
-          // } 
         }  
     };       
 
@@ -265,11 +229,6 @@ $app.factory('plus', function($http, $q, $rootScope, dataSync) {
               // Get all the rest based entities that the application uses
               var restEntities = settings.app.restEntities;
               var localDb = new localStorageDB("datasync", localStorage);
-              // var localConfig = localDb.query("localConfiguration", {key:"needsDataSync"}); 
-              // if (localConfig.length <= 0){
-              //   console.log('Need Data Sync configuration value is missing.');
-              //   return;
-              // }
 
               // Check if the sync service claims that records are ready to be uploaded to service
               var needsDataSync = localStorage.getItem("needsDataSync"); //localConfig[0].value;
@@ -289,33 +248,28 @@ $app.factory('plus', function($http, $q, $rootScope, dataSync) {
                   console.log('syncing deletes for: ', entity);                
                   syncDataDelete(entity, localDb);
                 });
-
-                // var data = localDb.query(syncKey);
-                // if (angular.isArray(data)) { 
-                //   return angular.fromJson(data); 
-                // }
               }
              },     
              structure: function(syncKey){
-                var updatedUrl = "https://openplusapp.appspot.com/structure/" + syncKey + "?callback=JSON_CALLBACK";
-                return serviceDataPullFn($http, $q, updatedUrl, syncKey);
-             },       
-             collection: function(syncKey) {
                 var updatedUrl = syncKey + "?callback=JSON_CALLBACK";
-                return serviceDataPullFn($http, $q, theUrl + updatedUrl, syncKey);
+                return serviceDataPullFn($http, $q, structureUrl + updatedUrl, syncKey);
+             },       
+             collection: function(syncKey, params) {
+                var limit=""; var offset=""; var filter=""; var value="";
+                if(angular.isObject(params)) {
+                    limit = params.hasOwnProperty('limit') ? params.limit : 20;
+                    offset = params.hasOwnProperty('offset') ? params.offset : 0;
+                    filter = params.hasOwnProperty('filter') ? "&filter=" + params.filter : "";
+                    value = params.hasOwnProperty('value') ? "&value=" + params.value : "";
+                }
+
+                var updatedUrl = syncKey + "?limit=" + limit + "&offset=" + offset + filter + value + "&callback=JSON_CALLBACK";  
+                return serviceDataPullFn($http, $q, collectionUrl + updatedUrl, syncKey);
              },    
              get: function(syncKey, id) {
                 var updatedUrl = syncKey + "/" + id + "?callback=JSON_CALLBACK";
-                return serviceDataPullFn($http, $q, theUrl + updatedUrl, syncKey + "_" + id, syncKey);
+                return serviceDataPullFn($http, $q, collectionUrl + updatedUrl, syncKey + "_" + id, syncKey);
              },                         
-             filter: function(syncKey, filter, value) {
-                var updatedUrl = syncKey + "/filter/" + filter + "/" + value + "?callback=JSON_CALLBACK";// angular.toJson(data));
-                return serviceDataPullFn($http, $q, theUrl + updatedUrl, syncKey);
-             }, 
-             limit: function(syncKey, limit, offset){
-                var updatedUrl = syncKey + "/limit/" + limit + "/" + offset + "?callback=JSON_CALLBACK";
-                return serviceDataPullFn($http, $q, theUrl + updatedUrl, syncKey);
-             },
              add: function(syncKey, data, isSyncing){
                 return addFn(syncKey, data, isSyncing);
              },
