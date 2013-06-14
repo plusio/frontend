@@ -18,11 +18,11 @@
 	* for previously failed attempts to store create/update/delete based requests.
 	*/
 	"restEntities" : ["newfood2"],
-	/* 10 seconds : don't make this run too quickly. 
+	/* 10 minutes : don't make this run too quickly. 
 	* Else you'll have duplicates because each insert will run faster than the time it takes 
 	* to delete the record from local storage.
 	*/
-	"syncLoopDelay" : 10000, 
+	"syncLoopDelay" : 600000, 
 	/*
 
 	/*

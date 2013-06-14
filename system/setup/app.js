@@ -58,9 +58,8 @@ angular.module('app', ['app.dependencies']).
       }
     }
 
-    console.log($rootScope.app)
-
-    //$rootScope.app.theme = settings.theme;
+    if(!_.isNumber(settings.app.syncLoopDelay)) settings.app.syncLoopDelay = 600000; //ten minutes
+    if(settings.app.syncLoopDelay < 10000) settings.app.syncLoopDelay = 10000; // if less than 10 seconds set to 10 tenseconds
 
   	$rootScope.$navigate = $navigate;
 

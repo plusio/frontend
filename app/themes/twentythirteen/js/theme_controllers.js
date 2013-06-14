@@ -36,11 +36,10 @@ $app.controller('mapController', function($scope, geolocation, $http){
     angular.extend($scope.leaflet, newData);
   }
 
-  //get user's position the .then() is the callback function for when the service returns data
-  geolocation().then(function(data){
-    var latlng = { lat : data.coords.latitude, lng : data.coords.longitude };
 
-    //Limited to 25,000 requests a day
+  geolocation.getCurrentPosition(function(pos){
+    var latlng = { lat : pos.coords.latitude, lng : pos.coords.longitude };
+
     $http.get(sprintf('http://maps.googleapis.com/maps/api/geocode/json?latlng=%(lat)s,%(lng)s&sensor=true', latlng)).success(function(data){
       var address = data.results[0].formatted_address;
       if(_.isEmpty(address)){
@@ -52,6 +51,23 @@ $app.controller('mapController', function($scope, geolocation, $http){
       updateData(latlng, 'You are here');
     });
   });
+
+  // //get user's position the .then() is the callback function for when the service returns data
+  // geolocation().then(function(data){
+  //   var latlng = { lat : data.coords.latitude, lng : data.coords.longitude };
+
+  //   //Limited to 25,000 requests a day
+  //   $http.get(sprintf('http://maps.googleapis.com/maps/api/geocode/json?latlng=%(lat)s,%(lng)s&sensor=true', latlng)).success(function(data){
+  //     var address = data.results[0].formatted_address;
+  //     if(_.isEmpty(address)){
+  //       updateData(latlng, 'You are here');
+  //     }else{
+  //       updateData(latlng, address);
+  //     }
+  //   }).error(function(error){
+  //     updateData(latlng, 'You are here');
+  //   });
+  // });
 
   //set Map defaults
   $scope.leaflet = {
