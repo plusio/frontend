@@ -13,7 +13,7 @@
 /* Variables:
  * 1) $scope: Here we pass in the $scope dependency because this controller needs the two-way databinding functionality of angular.
  */
-$app.controller('HomeCrtl', function ($scope, $timeout) {
+$app.controller('HomeCrtl', function ($scope, $timeout, geolocation) {
   // defaulting the time on Angular's model variable.
   $scope.time = Date.now();
 
@@ -82,58 +82,3 @@ $app.controller('collectionListController', function($scope, $routeParams, $http
       $scope.$navigate.back();
     }
 });
-
-$app.controller('phonegapController', function($scope, geolocation, accelerometer, notification){
-  var functions = {
-    geolocation : function(){
-        $scope.position = {};
-        clearInterval($scope.interval);
-        $scope.interval = setInterval(function(){
-          geolocation.getCurrentPosition(function (position) {
-              $scope.position = position;
-              $scope.$apply();
-          });
-        }, 500);
-    },
-    accelerometer : function(){
-      $scope.acceleration = {};
-      clearInterval($scope.interval);
-      $scope.interval = setInterval(function(){
-        accelerometer.getCurrentAcceleration(function (acceleration) {
-            $scope.acceleration = acceleration;
-            $scope.$apply();
-        });
-      }, 500);
-      
-    },
-    notification : function(){
-      var message = 'Alert Message',
-          title = 'Alert Title',
-          buttonName = 'Alert Button';
-
-      notification.alert(message, alertCallback, title, buttonName);
-
-      function alertCallback() {
-        alert('alert completed');
-      }
-    },
-    stopInterval : function(){
-      clearInterval($scope.interval);
-      $scope.interval = false;
-    }
-  };
-
-    angular.extend($scope, functions);
-});
-
-$app.controller('LoginController', function($scope, $routeParams, auth){
-
-  $scope.logout = function(){
-    auth.logout();
-  }
-
-  $scope.login = function(){
-    auth.login();
-  }
-
- });

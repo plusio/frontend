@@ -10,13 +10,13 @@ angular.module('btford.phonegap.geolocation',
   ['btford.phonegap.ready']).
   factory('geolocation', function ($rootScope, phonegapReady) {
     return {
-      getCurrentPosition: phonegapReady(function (onSuccess, onError, options) {
+      getCurrentPosition: /*phonegapReady(*/function (onSuccess, onError, options) {
         navigator.geolocation.getCurrentPosition(function () {
           var that = this,
             args = arguments;
             
           if (onSuccess) {
-            $scope.$apply(function () {
+            $rootScope.$apply(function () {
               onSuccess.apply(that, args);
             });
           }
@@ -31,6 +31,6 @@ angular.module('btford.phonegap.geolocation',
           }
         },
         options);
-      })
+      }//)
     };
   });
