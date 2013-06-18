@@ -4,7 +4,7 @@
 	"client_secret" : "",
 	"client_scope" : "",
 	"client_redirect" : "",
-	"server_url" : "http://openplusapp.appspot.com/",
+	"server_url" : "",
 	"environment" : "development", // development / production
 
 	/*

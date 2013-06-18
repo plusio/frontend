@@ -1,0 +1,129 @@
+<style type="text/css"> 
+	#dialog {
+	position: fixed;
+	z-index: 10;
+	width: 400px;
+	height: auto;
+	background: rgba(0%,0%,0%,.8);
+	right: 20px;
+	top: -280px;
+	   -webkit-transition-duration: .7s;
+	}
+
+	#dialog-title {
+	font-size: 28px;
+	color: #fff;
+	font-family: "Roboto-Thin";
+	margin: 20px;
+	}
+
+	#dialog-content {
+	margin: 20px;
+	margin-bottom: 50px;
+	height: auto;
+	opacity: .7;
+	font-family: "RobotoThin";
+	color: #fff;
+	}
+
+	#dialog-buttons {
+	clear: both;
+	position: relative;
+	height: 45px;
+	width: 400px;
+	margin: 20px 0px;
+	}
+
+	#dialog-button {
+	position: absolute;
+	right: 20px;
+	width: 150px;
+	height: 45px;
+	background: #0090d6;
+	cursor: pointer;
+	text-align: center;
+	}
+
+	#dialog-button:hover {
+	background: #069;
+	}
+
+	#dialog-button span {
+	position: relative;
+	top: 13px;
+	font-family: "Roboto-Thin";
+	font-size: 14px;
+	color: #fff;
+	}
+
+
+	#dialog-cancel {
+	position: absolute;
+	right: 180px;
+	width: 120px;
+	height: 45px;
+	background: #666;
+	cursor: pointer;
+	text-align: center;
+	}
+
+	#dialog-cancel:hover {
+	background: #444;
+	}
+
+	#dialog-cancel span {
+	position: relative;
+	top: 13px;
+	font-family: "Roboto-Thin";
+	font-size: 14px;
+	color: #fff;
+	}
+	.drop {
+	   -webkit-transform: translateY(300px);
+	}
+
+	#dialog-input {
+	padding: 15px;
+	background: transparent;
+	border: 1px solid #fff;
+	font-family: "Roboto-Thin";
+	font-size: 20px;
+	color: #fff;
+	outline: none;
+	width: 330px;
+	} 
+</style>
+
+<div id="dialog">
+	<div id="dialog-title">Title</div>
+	<div id="dialog-content"></div>
+	<div id="dialog-buttons">
+		<div id="dialog-cancel" onclick="frontend.cancelDialog();"><span>Cancel<span></div>
+		<div id="dialog-button"><span>Confirm<span></div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	var frontend = {};
+	frontend.dialog = function(title, content, thefunction){
+		$("#dialog-title").html(title);
+		$("#dialog-content").html(content);
+		$("#dialog").addClass("drop");
+		$("#dialog-button").attr("onclick", "frontend.closeDialog("+thefunction+")");
+	};
+	frontend.closeDialog = function(thefunction){
+		thefunction();
+		$("#dialog").removeClass("drop");
+		setTimeout(function(){
+			$("#dialog-title").html("");
+			$("#dialog-content").html("");
+		},500);
+	};
+	frontend.cancelDialog = function(){
+		$("#dialog").removeClass("drop");
+		setTimeout(function(){
+			$("#dialog-title").html("");
+			$("#dialog-content").html("");
+		},500);
+	};   
+</script>
