@@ -27,8 +27,10 @@ angular.module('app', ['app.dependencies']).
     // Allow Cross Origin Domain requests
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
 
-  }]).run(['$rootScope', '$navigate', '$templateCache', '$route', '$http', 'plus', function($rootScope, $navigate, $templateCache, $route, $http, plus){
+  }]).run(['$rootScope', '$navigate', '$templateCache', '$route', '$http', 'plus', 'phonegapReady', 'connection', function($rootScope, $navigate, $templateCache, $route, $http, plus, phonegapReady, connection){
     //delete cache on reload / use only in development
+
+    connection.checkConnection();
 
     if (settings.app.environment == "development"){
       console.log('Application has been loaded in Development mode.');

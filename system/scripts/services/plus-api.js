@@ -2,32 +2,18 @@
 
 /* Plus IO Services */
 
-// if (!String.prototype.format) {
-//   String.prototype.format = function() {
-//     var args = arguments;
-//     return this.replace(/{(\d+)}/g, function(match, number) { 
-//       return typeof args[number] != 'undefined'
-//         ? args[number]
-//         : 'undefined'//match
-//       ;
-//     });
-//   };
-// }
-
-
-/* Currently we're experiencing some issues with CORS on App Engine but only for browsers. You must disable web security within chrome for these methods to work.
+/* Cross Origin Domain requests do not work on App Engine for desktop browsers. You must disable web security within chrome for these methods to work.
  * 1. Disable xss protection in chrome (allows running angularjs app in file view w/o running server).
  *   OSX Terminal Command: open -a Google\ Chrome --args --disable-web-security
  */
 
 // Gotten from: http://www.benlesh.com/2013/02/angularjs-creating-service-with-http.html
 // plus data service
-$app.factory('plus', function($http, $q, $rootScope, dataSync) { 
+$app.factory('plus', function($http, $q, $rootScope, dataSync, connection) { 
     var collectionUrl = settings.app.server_url + "collection/";
     var structureUrl = settings.app.server_url + "structure/";
-    var isSyncing = true; // TODO: add to config file.
-    var hasNetworkConnection = true; // TODO: use phonegap Connection plugin  connection.none, connection   (navigator.network.connection.type  returns the connection type)
-    var restServerIsDown = false;
+    var isSyncing =  settings.app.data_sync;  
+    var hasNetworkConnection = connection.hasNetworkConnection();  
 
     var serviceDataPullFn = function($http, $q, collectionUrl, params){
        $http.defaults.useXDomain = true
@@ -102,7 +88,6 @@ $app.factory('plus', function($http, $q, $rootScope, dataSync) {
          deferred.resolve(data);
 
          // remove item from local storage delete queue.
-         //dataSync.removeFromQueue(dataSync.getDirtyKey(syncKey, "delete"), {id:theId});
         }).error(function(){
           //or reject it if there's a problem.
           console.log('an error occurred during delete');
@@ -127,6 +112,7 @@ $app.factory('plus', function($http, $q, $rootScope, dataSync) {
 
     var addFn = function(syncKey, data){
         var content = _.omit(data, ['id', 'ID']);   
+        content.time = Date.getTime();
         return serviceDataSendFn($http, $q, collectionUrl + syncKey, angular.toJson(content), data, syncKey, "new");;
     }
     var deleteFn = function (syncKey, id){
@@ -232,7 +218,7 @@ $app.factory('plus', function($http, $q, $rootScope, dataSync) {
 
               // Check if the sync service claims that records are ready to be uploaded to service
               var needsDataSync = localStorage.getItem("needsDataSync"); //localConfig[0].value;
-              var readyToSync = ((restServerIsDown == false) && (needsDataSync == "1") && (angular.isArray(restEntities)) && (restEntities.length > 0))
+              var readyToSync = ((hasNetworkConnection) && (needsDataSync == "1") && (angular.isArray(restEntities)) && (restEntities.length > 0))
               if (readyToSync){
                 // loop thru each rest entity (data collection) & look for dirty records
                 angular.forEach(restEntities, function(entity, iterator){

@@ -26,6 +26,11 @@
 
 	"syncLoopDelay" : 600000,
 
+   /*
+	* A switch to determine if data synchronization is used.
+	*/
+	"data_sync": true,
+
 	/*
 	 * plugins add to the functionality of Tyto
 	 */
