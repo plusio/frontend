@@ -13,72 +13,13 @@
 /* Variables:
  * 1) $scope: Here we pass in the $scope dependency because this controller needs the two-way databinding functionality of angular.
  */
-$app.controller('HomeCrtl', function ($scope, $timeout, geolocation) {
+$app.controller('HomeCrtl', function ($scope, plus) {
   // defaulting the time on Angular's model variable.
   $scope.time = Date.now();
 
-  function updateTime(){
-    $timeout(function(){
-      $scope.time = Date.now();
-      updateTime();
-    }, 1000);
-  }
-
-  updateTime();
-
-});
-
-/* Variables:
- * 1) $scope: Here we pass in the $scope dependency because this controller needs the two-way databinding functionality of angular.
- * 2) plus: an angularjs service that is used to connect to the Plus.io REST API and get an array of geospatial json data json.
- */
-$app.controller('collectionListController', function($scope, $routeParams, $http, plus) {
- // Currently no data will return unless an app id is specified in the app's config file (app/config.js).
-    var collection = 'newfood';
-
-    plus.collection(collection).then(function(data){     
-      $scope.collectionData = data;
-    });
-
-    plus.structure(collection).then(function(data){
-      $scope.structure = _.difference(data[0], ['id', 'time']);
-     });
-
-    if( $routeParams.id === 'new'){
-    	$scope.new = true;
-    	$scope.item = {};
-
-    }else if(Number($routeParams.id)){
-    	//is a number
-    	plus.get(collection, $routeParams.id).then(function(data){
-          // this is necessary to set the id on the record being posted to the server
-          data.id = Number($routeParams.id);
-	    		$scope.item = data;
-	    	});
-    }else if(angular.isDefined($routeParams.id)){
-    	//id is set and not valid, go back to the list
-    	$scope.$navigate.go('/items', 'none');
-    }
-
-    // Evaluates whether record is new or existing and performs insert or update appropriately.
-    $scope.submit = function(){
-        if ($scope.new){ 
-          plus.add(collection, $scope.item);
-        } else { 
-          plus.update(collection, $routeParams.id, $scope.item);
-        }
-
-        // go back to to list
-        $scope.$navigate.back();
-    }
-
-    // Deletes existing records only.
-    $scope.delete = function(){
-      if(!$scope.new){
-         plus.delete(collection, $routeParams.id);
-      }
-
-      // go back to to list
-      $scope.$navigate.back();
-    }
+  setInterval(function(){
+    $scope.time = new Date().getTime();
+    if(!$scope.$$phase) $scope.$apply();
+  }, 1000);
+  
 });

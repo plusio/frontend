@@ -65,6 +65,7 @@ head.js(
 	"system/scripts/directives/plus-template.js",
 	"system/scripts/directives/plus-table.js",
 	"system/scripts/directives/plus-menu.js",
+	"system/scripts/directives/plus-data.js",
 	"system/scripts/directives/plus-auth.js",
 	{system : "system/scripts/directives/plus-resize.js" }
 );

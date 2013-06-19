@@ -42,6 +42,7 @@ angular.module('app', ['app.dependencies']).
     }
 
     $rootScope.app = {
+      client_id : settings.app.client_id,
       name : settings.app.name,
       theme : settings.theme,
       paths : {
