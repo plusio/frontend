@@ -1,10 +1,10 @@
 {
 	"name" : "",
-	"client_id" : "",
+	"client_id" : "sdfsdf",
 	"client_secret" : "",
 	"client_scope" : "",
 	"client_redirect" : "",
-	"server_url" : "",
+	"server_url" : "http://openplusapp.appspot.com/",
 	"environment" : "development", // development / production
 
 	/*

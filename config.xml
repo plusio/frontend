@@ -6,7 +6,7 @@
         id        = "com.citizenhub.app"
         version   = "1.0.0">
 
-    <name>+app</name>
+    <name>$app</name>
 
     <description>
         Default plus.io app

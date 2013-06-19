@@ -1,17 +1,10 @@
-<style>
-	#create-new{	
-		width: 98%;
-		margin: 0 1% 10px;
-	}
-</style>
-
-<ul id="list" class="nav nav-tabs nav-stacked" ng-show="collectionData">
-	<li class="form">
-		<form class="form-search">
-			<input type="text" ng-model="search" class="input-block-level search-query" placeholder="Search">
-		</form>
-	</li>
-	<li ng-repeat="item in collectionData | filter:search" hm-tap="$navigate.go('/item/{{item.id}}', 'slide')" class="item">
-		<a><span ng-repeat="key in structure">{{ item.name }}</span></a>
+<ul id="list" class="nav nav-tabs nav-stacked" ng-show="collection.data">
+	<!--
+		we're using ng-repeat which loops through an array to access each 
+		item of data. Here the collection array is return by the <plus-data>
+		element in list.tpl.html, in the twentythirteen theme's view folder.
+	-->
+	<li ng-repeat="item in collection.data | filter:search" class="item">
+		<a>{{ item.name }}</a>
 	</li>
 </ul>

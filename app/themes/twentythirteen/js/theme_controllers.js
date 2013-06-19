@@ -12,7 +12,17 @@
  */
 
 $app.controller('mapController', function($scope, geolocation, $http){
-  // defaulting the settings on the model on the leaflet directive
+
+  //set Map defaults
+  $scope.leaflet = {
+    defaults: {
+      tileLayer: $scope.app.paths.map("plusdark"),
+      maxZoom: 4
+    },
+    center: {lat :0, lng:0},
+    markers : {}
+  };
+
 
   // function to update Leaflet model once we have gotten the user's location.
   // This is assigned to a fuction so that we can change the message if we cannot reverse geocode the Lat/Lng
@@ -36,47 +46,37 @@ $app.controller('mapController', function($scope, geolocation, $http){
     angular.extend($scope.leaflet, newData);
   }
 
+  //if location is saved in localstorage use that until we can get updated locataion
+  if(!_.isUndefined(localStorage.savedGeo)){
+    var geo = angular.fromJson(localStorage.savedGeo);
+    console.log(geo.latlng);
+    updateData(geo.latlng, geo.address);
+  }
 
+  //get geolocation
   geolocation.getCurrentPosition(function(pos){
     var latlng = { lat : pos.coords.latitude, lng : pos.coords.longitude };
 
+    //use the latlng with google maps geocode api to find the nearest address
     $http.get(sprintf('http://maps.googleapis.com/maps/api/geocode/json?latlng=%(lat)s,%(lng)s&sensor=true', latlng)).success(function(data){
+      
+      //get the formatted address
       var address = data.results[0].formatted_address;
       if(_.isEmpty(address)){
         updateData(latlng, 'You are here');
       }else{
         updateData(latlng, address);
       }
+
+      //save location data, so when user comes back to the page the map can still be populated
+      localStorage.savedGeo = angular.toJson({
+        latlng : latlng,
+        address : address
+      });
+
     }).error(function(error){
       updateData(latlng, 'You are here');
     });
   });
-
-  // //get user's position the .then() is the callback function for when the service returns data
-  // geolocation().then(function(data){
-  //   var latlng = { lat : data.coords.latitude, lng : data.coords.longitude };
-
-  //   //Limited to 25,000 requests a day
-  //   $http.get(sprintf('http://maps.googleapis.com/maps/api/geocode/json?latlng=%(lat)s,%(lng)s&sensor=true', latlng)).success(function(data){
-  //     var address = data.results[0].formatted_address;
-  //     if(_.isEmpty(address)){
-  //       updateData(latlng, 'You are here');
-  //     }else{
-  //       updateData(latlng, address);
-  //     }
-  //   }).error(function(error){
-  //     updateData(latlng, 'You are here');
-  //   });
-  // });
-
-  //set Map defaults
-  $scope.leaflet = {
-    defaults: {
-      tileLayer: $scope.app.paths.map("plusdark"),
-      maxZoom: 4
-    },
-    center: {lat :0, lng:0},
-    markers : {}
-  };
 
 });

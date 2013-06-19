@@ -35,11 +35,10 @@
 	 */
 	"routes" : [
 		{ "path" : "/home",			"layout" : "layouts/main",		"template" : "home",		"controller" : "HomeCrtl",					"title" : "Home",	"class" : "home" },
-		{ "path" : "/items",		"layout" : "layouts/main",		"template" : "list",		"controller" : "collectionListController",	"title" : "Data",	"class" : "list" },	
-		{ "path" : "/item/:id",		"layout" : "layouts/main",		"template" : "single",	   	"controller" : "collectionListController",	"title" : "List",	"class" : "list" },				
+		{ "path" : "/items",		"layout" : "layouts/main",		"template" : "list",		"title" : "Data",	"class" : "list" },	
+		{ "path" : "/item/:id",		"layout" : "layouts/main",		"template" : "single",	   	"title" : "List",	"class" : "list" },				
 		{ "path" : "/map",			"layout" : "layouts/main",		"template" : "map",			"controller" : "mapController",				"title" : "Map",	"class" : "globe" },
 		{ "path" : "/pages/about",	"layout" : "layouts/modal",		"template" : "about" },
-		{ "path" : "/pages/test",	"layout" : "layouts/modal",		"template" : "home" },
 		{ "otherwise" : "/home" }
 	]
 }
