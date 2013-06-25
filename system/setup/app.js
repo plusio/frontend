@@ -2,7 +2,7 @@
 
 // Declare app level module which depends on filters, and services
 angular.module('app', ['app.dependencies']).
-  config(['$routeProvider', '$httpProvider', '$locationProvider', 'RestangularProvider', function($routeProvider, $httpProvider, $locationProvider, RestangularProvider) {
+  config(['$routeProvider', '$httpProvider', '$locationProvider', function($routeProvider, $httpProvider, $locationProvider) {
     // automagicly generate the angular routes config using the array supplied with the theme
   	for(var i in settings.theme.routes){
   		var route = settings.theme.routes[i];

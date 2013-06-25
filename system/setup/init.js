@@ -46,7 +46,7 @@ head.js(
 	"system/vendor/angular/angular-resource.js",
 	"system/vendor/angular/angular-sanitize.js",
 	"system/vendor/angular/angular-cookies.js",
-	"system/vendor/mgonto/restangular.js",
+	// "system/vendor/mgonto/restangular.js",
 	"system/vendor/angular-mobile-nav/mobile-nav.js",
 	"system/vendor/angular-retina/angular-retina.js",
 	"system/vendor/wzr1337/gestures-0.1.0.min.js",
@@ -82,8 +82,7 @@ head.ready('angular', function(){
 		'btford.phonegap.ready',
 		'btford.phonegap.geolocation',
 		'btford.phonegap.accelerometer',
-		'btford.phonegap.notification',
-		'restangular',
+		'btford.phonegap.notification'
 	]);
 })
 
