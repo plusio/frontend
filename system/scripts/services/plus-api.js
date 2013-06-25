@@ -9,7 +9,7 @@
 
 // Gotten from: http://www.benlesh.com/2013/02/angularjs-creating-service-with-http.html
 // plus data service
-$app.factory('plus', function($http, $q, $rootScope, dataSync, connection) { 
+$app.factory('plusCloud', function($http, $q, $rootScope, dataSync, connection) { 
     var collectionUrl = settings.app.server_url + "collection/";
     var structureUrl = settings.app.server_url + "structure/";
     var isSyncing =  settings.app.data_sync;  

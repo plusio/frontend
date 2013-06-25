@@ -60,6 +60,7 @@ head.js(
 	"system/scripts/services/plus-google-signon.js",
 	// "system/scripts/services/plus-geolocation.js",
 	"system/scripts/services/plus-api.js",
+	"system/scripts/services/plus.js",	
 	"system/scripts/services/datasync.js",
 	"system/scripts/services/plus-connection.js",
 	"system/scripts/directives/plus-compile.js",
