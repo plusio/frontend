@@ -23,19 +23,19 @@ $app.controller('mapController', function($scope, geolocation, $http){
     markers : {}
   };
 
-
   // function to update Leaflet model once we have gotten the user's location.
   // This is assigned to a fuction so that we can change the message if we cannot reverse geocode the Lat/Lng
   function updateData(latlng, message){
+    var marker = {
+      currentLocation : {
+        lat : latlng.lat,
+        lng : latlng.lng,
+        focus : true,
+        message : message
+      }
+    }
+
     var newData = {
-        markers : {
-          currentLocation : {
-            lat : latlng.lat,
-            lng : latlng.lng,
-            focus : true,
-            message : message
-          }
-        },
         center : {
           lat: latlng.lat,
           lng: latlng.lng,
@@ -43,6 +43,7 @@ $app.controller('mapController', function($scope, geolocation, $http){
         }
       };
 
+    angular.extend($scope.leaflet.markers, marker);
     angular.extend($scope.leaflet, newData);
   }
 
