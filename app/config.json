@@ -1,10 +1,10 @@
 {
 	"name" : "",
-	"client_id" : "sdfsdf",
+	"client_id" : "",
 	"client_secret" : "",
 	"client_scope" : "",
 	"client_redirect" : "",
-	"server_url" : "http://openplusapp.appspot.com/",
+	"server_url" : "",
 	"environment" : "development", // development / production
 
 	/*
@@ -17,7 +17,7 @@
 	 * This is used while syncing data between local storage & rest-based backend 
 	 * for previously failed attempts to store create/update/delete based requests.
 	 */
-	"restEntities" : ["newfood2"],
+	"restEntities" : [""],
 
 	/* 
 	 * This defines in milliseconds, how often the queue should attempt to "sync" the data with rest backend.

@@ -1,12 +1,9 @@
 'use strict';
 
-var testVar;
 // Declare app level module which depends on filters, and services
 angular.module('app', ['app.dependencies']).
-  config(['$routeProvider', '$httpProvider', '$locationProvider', 'RestangularProvider', function($routeProvider, $httpProvider, $locationProvider, RestangularProvider) {
+  config(['$routeProvider', '$httpProvider', '$locationProvider', function($routeProvider, $httpProvider, $locationProvider) {
     // automagicly generate the angular routes config using the array supplied with the theme
-    RestangularProvider.setBaseUrl('http://openplusapp.appspot.com/collection');
-
   	for(var i in settings.theme.routes){
   		var route = settings.theme.routes[i];
       var template = (_.isUndefined(route.layout))?route.template:route.layout;
@@ -67,7 +64,7 @@ angular.module('app', ['app.dependencies']).
   	$rootScope.$navigate = $navigate;
 
     setInterval(function(){
-      console.log('Syncing data failures with plus io.')
+      //console.log('Syncing data failures with plus io.')
 
        plus.cloud.syncData(); 
     }, settings.app.syncLoopDelay);
