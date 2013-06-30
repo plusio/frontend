@@ -69,7 +69,7 @@ angular.module('app', ['app.dependencies']).
     setInterval(function(){
       console.log('Syncing data failures with plus io.')
 
-       plus.syncData(); 
+       plus.cloud.syncData(); 
     }, settings.app.syncLoopDelay);
   }]);
 
