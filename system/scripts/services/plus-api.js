@@ -120,7 +120,7 @@ $app.factory('plusCloud', function($http, $q, $rootScope, dataSync, connection) 
     } 
     var updateFn = function (syncKey, id, data){
         var content = _.omit(data, ['id', 'ID']);
-        content.time = (new Date()).getTime().toString();
+        //content.time = (new Date()).getTime().toString(); time should be the created date, and we don't want to assume they want/need a modified time.
         return serviceDataSendFn($http, $q, collectionUrl + syncKey + "/" + id,  angular.toJson(content), data, syncKey, "update");;
     }
 
