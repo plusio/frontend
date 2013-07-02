@@ -59,15 +59,20 @@ To set up the sync, find `restEntities` in your app’s config.json, this is an 
 
 ###API reference:
 `plus.collection.structure`
+
 `plus.collection.get`
+
 `plus.collection.add`
+
 `plus.collection.update`
+
 `plus.collection.delete`
 
 **For the Examples below we will use 'foo' as a collection name**
 
 ####Structure
 `plus.collection.structure(collection_name)`
+
 This returns an array with two objects of metadata. The first object contains the keys for the collection, the second contains ‘count’ which is the total number of objects in the collection.
 
 `plus.collection.structure("foo");`
@@ -84,11 +89,14 @@ returns:
 
 ####Getting Data
 `plus.collection.get (collection_name[, filter]);`
-This function takes the name of a collection and optionally a filter, filter can be either an Integer which will return the object with that id, or an the filter can be an object with the options specified below.
+
+This function takes the name of a collection and optionally a filter, a filter can be either an Integer which will return the object with that id, or the filter can be an object with the options specified below.
+
 `plus.collection.get(‘foo’);`
 returns:
+
 	[{
-        “id” : 20043,
+		“id” : 20043,
         "name" : "bar",
         "time" : "1372790420482"
 	},
@@ -98,6 +106,7 @@ returns:
 #####Getting one record by id
 `plus.collection.get(‘foo’, 10011);`
 returns:
+
 	{
         "name" : "baz",
         "time" : "1372790420482"
@@ -111,14 +120,14 @@ returns:
 - filter (String) - A key within the objects in the collection to search by
 - value (String) - the value to search with, this must match the filter's value exactly
 
-`plus.collection.get('foo', { limit : 50, offset : 150 });` will return up to 50 results skipping the first 150 objects in the collection, you the any the options in conjunction, where only the `filter` and `value` options to required to be together.
+`plus.collection.get('foo', { limit : 50, offset : 150 });` will return up to 50 results skipping the first 150 objects in the collection, you can use any of the options together, where only the `filter` and `value` options to required to be together.
 
 if the `limit` and `offset` options are not specified the api defaults to a limit of `20` and an offset of `0`.
 
 ####Adding Data
 `plus.collection.add(collection_name, data);`
  
-This function adds a record to the plus.io collection specified. The time of function call will be added to the data automatically and sent to the collection to represent the created time.
+This function adds a record to the plus.io collection specified. The time of the function call will be added to the data automatically and sent to the collection to represent the created time.
 
 `plus.collection.add('foo', { name : 'barbaz' })`
 
@@ -131,21 +140,23 @@ returns:
 	}
 ####Updating Data
 `plus.collection.update(collection_name, id, data)`
+
 This function updates a record with the id in the collection specified.
 
-`plus.collection.update('foo', 20010, { name : 'foobar', modified_time : new Date().getTime().toString() });` 
+`plus.collection.update('foo', 20010, { name : 'foobar', modified_time : new Date().getTime() });` 
 
 returns:
 	
 	{
 		name : 'foobar',
 		time : '1372790420482',
-		modified_time : '1372792616943',
+		modified_time : 1372792616943,
 		id : 20010
 	}
 ####Deleting Data
 
 `plus.collection.delete(collection_name, id);`
+
 This function deletes the record with the specified id in the specified collection.
 
 `plus.collection.delete('foo', 20010);`
@@ -160,7 +171,7 @@ To provide a callback function to run when the api returns data simply chain `.t
 **Note**:
 While developing on `localhost` you may experience 405 errors (Cross Origin Domain errors) while posting data. This is because the browser security will not allow localhost to post to servers, this can be circumvented by disabling the security in the browser. This is only necessary on localhost, deploying to a mobile app will function as expected.
 
-For Chrome run your OS's repetitive command in the terminal or command prompt:
+For Chrome run your OS's respective command in the terminal or command prompt:
 
 **Mac** : `open -a Google\ Chrome –args –disable-web-security`
 
