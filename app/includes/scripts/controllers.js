@@ -18,8 +18,9 @@ $app.controller('HomeCrtl', function ($scope, plus) {
   $scope.time = Date.now();
 
   setInterval(function(){
-    $scope.time = new Date().getTime();
-    if(!$scope.$$phase) $scope.$apply();
+  	$scope.$apply(function(){
+    	$scope.time = new Date().getTime();
+  	});
   }, 1000);
   
 });
