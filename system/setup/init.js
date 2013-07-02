@@ -116,7 +116,7 @@ head.ready(function(){
 	});
 
 
-	$.getJSON( sprintf("app/themes/%1$s/%1$s.config.json", settings.app.theme), function(data) {
+	$.getJSON( sprintf("app/themes/%1$s/%1$s.json", settings.app.theme), function(data) {
 		settings.theme = data;
 	})
 	.fail(function(jqxhr) { 
@@ -124,7 +124,7 @@ head.ready(function(){
 	});
 
 	$.each(settings.app.plugins, function(i, val){
-		$.getJSON( sprintf("app/plugins/%1$s/%1$s.config.json", val), function(data) {
+		$.getJSON( sprintf("app/plugins/%1$s/%1$s.json", val), function(data) {
 		  settings.plugins[val] = data;
 		})
 		.fail(function(jqxhr) { 
