@@ -1,4 +1,4 @@
-$app.factory('auth', ['$http', 'plusCloud', '$location', '$rootScope', function($http, plusCloud, $location, $rootScope) {
+$app.factory('auth', ['$http', 'plusCollection', '$location', '$rootScope', function($http, plusCollection, $location, $rootScope) {
 
 	if (window.addEventListener) {
 	  window.addEventListener("storage", handle_storage, false);
@@ -84,13 +84,13 @@ $app.factory('auth', ['$http', 'plusCloud', '$location', '$rootScope', function(
 				});
 
 				setUserSession(userInfo);
-				plusCloud.collection('users').then(function(data){
+				plusCollection.get('users').then(function(data){
 					var toUpdate = false;
 					angular.forEach(data, function(value, key){
 						if(value.user_id === userInfo.user_id){
 							//update
 							toUpdate = true;
-							plusCloud.update('users', value.id, _.pick(data, 'email', 'user_id', 'verified_email', 'time'));
+							plusCollection.update('users', value.id, _.pick(data, 'email', 'user_id', 'verified_email', 'time'));
 							
 							setTimeout(function(){
 								window.close()
@@ -101,7 +101,7 @@ $app.factory('auth', ['$http', 'plusCloud', '$location', '$rootScope', function(
 					if(!toUpdate){
 						newUser = _.omit(_.extend(userInfo, {join_date : new Date().getTime()}), 'expires', 'loggedIn');
 
-						plusCloud.add('users', newUser);
+						plusCollection.add('users', newUser);
 						//console.log('add');
 						setTimeout(function(){
 							window.close

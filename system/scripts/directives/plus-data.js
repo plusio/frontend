@@ -47,11 +47,11 @@ $app.directive('plusData', function () {
       }
 
       function updateCollection(values){
-        plus.cloud.structure(values.collection).then(function(data){
+        plus.collection.structure(values.collection).then(function(data){
           $scope.collection.structure = data;
         });
 
-        plus.cloud.collection(values.collection, {limit : values.limit, offset: values.offset, filter : values.filter, value : values.value}).then(function(data){
+        plus.collection.get(values.collection, {limit : values.limit, offset: values.offset, filter : values.filter, value : values.value}).then(function(data){
           $scope.collection.data = data;
         });
       }

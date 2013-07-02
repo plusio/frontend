@@ -9,7 +9,7 @@
 
 // Gotten from: http://www.benlesh.com/2013/02/angularjs-creating-service-with-http.html
 // plus data service
-$app.factory('plusCloud', function($http, $q, $rootScope, dataSync, connection) { 
+$app.factory('plusCollection', function($http, $q, $rootScope, dataSync, connection) { 
     var collectionUrl = settings.app.server_url + "collection/";
     var structureUrl = settings.app.server_url + "structure/";
     var isSyncing =  settings.app.data_sync;  
@@ -241,21 +241,37 @@ $app.factory('plusCloud', function($http, $q, $rootScope, dataSync, connection) 
                 var updatedUrl = syncKey + "?callback=JSON_CALLBACK";
                 return serviceDataPullFn($http, $q, structureUrl + updatedUrl, syncKey);
              },       
-             collection: function(syncKey, params) {
-                var limit="20"; var offset="0"; var filter=""; var value="";
-                if(angular.isObject(params)) {
-                    limit = params.hasOwnProperty('limit') ? params.limit : 20;
-                    offset = params.hasOwnProperty('offset') ? params.offset : 0;
-                    filter = params.hasOwnProperty('filter') ? "&filter=" + params.filter : "";
-                    value = params.hasOwnProperty('value') ? "&value=" + params.value : "";
-                }
+             // collection: function(syncKey, params) {
+             //    var limit="20"; var offset="0"; var filter=""; var value="";
+             //    if(angular.isObject(params)) {
+             //        limit = params.hasOwnProperty('limit') ? params.limit : 20;
+             //        offset = params.hasOwnProperty('offset') ? params.offset : 0;
+             //        filter = params.hasOwnProperty('filter') ? "&filter=" + params.filter : "";
+             //        value = params.hasOwnProperty('value') ? "&value=" + params.value : "";
+             //    }
 
-                var updatedUrl = syncKey + "?limit=" + limit + "&offset=" + offset + filter + value + "&callback=JSON_CALLBACK";  
-                return serviceDataPullFn($http, $q, collectionUrl + updatedUrl, syncKey);
-             },    
+             //    var updatedUrl = syncKey + "?limit=" + limit + "&offset=" + offset + filter + value + "&callback=JSON_CALLBACK";  
+             //    return serviceDataPullFn($http, $q, collectionUrl + updatedUrl, syncKey);
+             // },    
              get: function(syncKey, id) {
-                var updatedUrl = syncKey + "/" + id + "?callback=JSON_CALLBACK";
-                return serviceDataPullFn($http, $q, collectionUrl + updatedUrl, syncKey + "_" + id, syncKey);
+                if(_.isNumber(id) && !_.isNaN(id)){
+                  // if the id is an integer, use it as an id and get one item
+                  var updatedUrl = syncKey + "/" + id + "?callback=JSON_CALLBACK";
+                  return serviceDataPullFn($http, $q, collectionUrl + updatedUrl, syncKey + "_" + id, syncKey);  
+                }else{
+                  var params = id;
+                  var limit="20"; var offset="0"; var filter=""; var value="";
+                  if(angular.isObject(params)) {
+                      limit = params.hasOwnProperty('limit') ? params.limit : 20;
+                      offset = params.hasOwnProperty('offset') ? params.offset : 0;
+                      filter = params.hasOwnProperty('filter') ? "&filter=" + params.filter : "";
+                      value = params.hasOwnProperty('value') ? "&value=" + params.value : "";
+                  }
+
+                  var updatedUrl = syncKey + "?limit=" + limit + "&offset=" + offset + filter + value + "&callback=JSON_CALLBACK";  
+                  return serviceDataPullFn($http, $q, collectionUrl + updatedUrl, syncKey);
+                }
+                
              },                         
              add: function(syncKey, data){
                 return addFn(syncKey, data);
