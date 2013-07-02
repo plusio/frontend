@@ -163,11 +163,11 @@ This function deletes the record with the specified id in the specified collecti
 
 ####Callbacks
 To provide a callback function to run when the api returns data simply chain `.then(fn)` to the end of any of the above functions and pass in `data` where data will be equal to the data returned from the api.
-
+```javascript
 	plus.collection.get('foo').then(function(data){
 		$scope.records = data;
 	});
-
+```
 **Note**:
 While developing on `localhost` you may experience 405 errors (Cross Origin Domain errors) while posting data. This is because the browser security will not allow localhost to post to servers, this can be circumvented by disabling the security in the browser. This is only necessary on localhost, deploying to a mobile app will function as expected.
 
