@@ -9,7 +9,8 @@
 
 // Gotten from: http://www.benlesh.com/2013/02/angularjs-creating-service-with-http.html
 // plus data service
-$app.factory('plusCollection', function($http, $q, $rootScope, dataSync, connection) { 
+$app.factory('plusCollection', function($http, $q, $rootScope, dataSync, connection) {
+    var secretKey = settings.app.client_secret;
     var collectionUrl = settings.app.server_url + "collection/";
     var structureUrl = settings.app.server_url + "structure/";
     var isSyncing =  settings.app.data_sync;  
@@ -256,7 +257,7 @@ $app.factory('plusCollection', function($http, $q, $rootScope, dataSync, connect
              get: function(syncKey, id) {
                 if(_.isNumber(id) && !_.isNaN(id)){
                   // if the id is an integer, use it as an id and get one item
-                  var updatedUrl = syncKey + "/" + id + "?callback=JSON_CALLBACK";
+                  var updatedUrl = syncKey + "/" + id + "?callback=JSON_CALLBACK&secret_key="+secretKey;
                   return serviceDataPullFn($http, $q, collectionUrl + updatedUrl, syncKey + "_" + id, syncKey);  
                 }else{
                   var params = id;
@@ -268,20 +269,20 @@ $app.factory('plusCollection', function($http, $q, $rootScope, dataSync, connect
                       value = params.hasOwnProperty('value') ? "&value=" + params.value : "";
                   }
 
-                  var updatedUrl = syncKey + "?limit=" + limit + "&offset=" + offset + filter + value + "&callback=JSON_CALLBACK";  
+                  var updatedUrl = syncKey + "?limit=" + limit + "&offset=" + offset + filter + value + "&callback=JSON_CALLBACK&secret_key="+secretKey;  
                   return serviceDataPullFn($http, $q, collectionUrl + updatedUrl, syncKey);
                 }
                 
              },                         
              add: function(syncKey, data){
-                return addFn(syncKey, data);
+                return addFn(syncKey + "?secret_key="+secretKey, data);
              },
              update: function (syncKey, id, data){
                var content = _.omit(data, ['id']);
-               return serviceDataSendFn($http, $q, collectionUrl + syncKey + "/" + id,  angular.toJson(content));
+               return serviceDataSendFn($http, $q, collectionUrl + syncKey + "/" + id + "?secret_key="+secretKey,  angular.toJson(content));
              },
              delete: function (syncKey, id){
-                return serviceDeleteFn($http, $q, collectionUrl + syncKey + "/" + id, syncKey + "_" + id);
+                return serviceDeleteFn($http, $q, collectionUrl + syncKey + "/" + id + "?secret_key="+secretKey, syncKey + "_" + id);
              }                                                                                    
    }
 });
