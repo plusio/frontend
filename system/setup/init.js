@@ -36,6 +36,7 @@ var $app; //inilize the $app variable at a global level
  * framework modules
  */
 loadCss ("system/vendor/angular-mobile-nav/mobile-nav.css");
+loadCss ("system/includes/fonts/roboto-fontfacekit/stylesheet.css");
 head.js(
 	"phonegap.js",
 	"system/vendor/jquery/jquery-2.0.0.min.js",
