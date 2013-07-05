@@ -4,7 +4,6 @@ html, body{
 }
 
 .mb-page{
-	/*position: relative;/* fixes page placement issue */
 	padding-top: 40px;
 }
 
@@ -20,11 +19,9 @@ html, body{
 	bottom: 50px; /* height of footer ( x 2?)*/
 	left: 0;
 	right: 0;
-	/*background: url(../img/background.jpg);*/
 }
 
 #wrapper.mb-modal{
-	/*bottom:0;*/
 }
 
 header .navbar-inner{
@@ -82,11 +79,6 @@ header .navbar-inner .nav{
 	min-height: 100%;
 }
 
-/*.scroller ul{
-	padding: 0; margin:0;
-	list-style-type: none;
-}*/
-
 .iscroll-pages .scroller{
 	height: 100%;
 	font: 18px/27px 'RobotoThin', Arial, sans-serif;
@@ -104,11 +96,9 @@ header .navbar-inner .nav{
 	float: left;
 	display: block;
 	height: 100%;
-	/*
-	 * We'll do some magic in the view to set the with of the li
-	 * to the width of the window instead of 300% the width of it
-	 * so that the li's will line up in a neat row, with one on the page at a time.
-	 */
+
+	/* We'll do some magic in the view to set the with of the li to the width of the window instead of 300% the width of it
+	 * so that the li's will line up in a neat row, with one on the page at a time. */
 }
 
 .iscroll-page{
@@ -126,8 +116,6 @@ header .navbar-inner .nav{
 
 .iscroll-page .ico-gesture{
 	margin-top: 25px;
-	/*opacity: 0.5;*/
-	/*-webkit-filter: brightness(-10%); */
 }
 
 .nav-stacked .form{
@@ -146,7 +134,6 @@ header .navbar-inner .nav{
 }
 
 .nav-tabs.nav-stacked > li.item{
-	/*pointer-events: none;*/
 }
 
 footer .navbar-inner{

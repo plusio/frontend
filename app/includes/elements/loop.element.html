@@ -1,9 +1,5 @@
 <ul id="list" class="nav nav-tabs nav-stacked" ng-show="collection.data">
-	<!--
-		we're using ng-repeat which loops through an array to access each 
-		item of data. Here the collection array is return by the <plus-data>
-		element in list.tpl.html, in the twentythirteen theme's view folder.
-	-->
+	<!-- loops thru each record found in $scope.collection.data  -->
 	<li ng-repeat="item in collection.data | filter:search" class="item">
 		<a>{{ item.name }}</a>
 	</li>

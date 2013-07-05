@@ -1,16 +1,10 @@
 'use strict';
-/*
- * In this theme controllers file, we can create controllers as we wold normally but the view has a very specific purpose and the developer 
- * won't need to code anything for this view so we can have custom functionality packaged with the theme.
- */
-
 
 /* Variables:
  * 1) $scope: Here we pass in the $scope dependency because this controller needs the two-way databinding functionality of angular.
  * 2) geolocation: The geo location service will get and return the user's current location
  * 3) $http: This is angular service to  post and get data from external sources
  */
-
 $app.controller('mapController', function($scope, geolocation, $http){
 
   //set Map defaults
@@ -23,8 +17,7 @@ $app.controller('mapController', function($scope, geolocation, $http){
     markers : {}
   };
 
-  // function to update Leaflet model once we have gotten the user's location.
-  // This is assigned to a fuction so that we can change the message if we cannot reverse geocode the Lat/Lng
+  // Update Leaflet model once we have gotten the user's location & lets us change the message if we cannot reverse geocode the Lat/Lng
   function updateData(latlng, message){
     var marker = {
       currentLocation : {
@@ -60,8 +53,6 @@ $app.controller('mapController', function($scope, geolocation, $http){
 
     //use the latlng with google maps geocode api to find the nearest address
     $http.get(sprintf('http://maps.googleapis.com/maps/api/geocode/json?latlng=%(lat)s,%(lng)s&sensor=true', latlng)).success(function(data){
-      
-      //get the formatted address
       var address = data.results[0].formatted_address;
       if(_.isEmpty(address)){
         updateData(latlng, 'You are here');
