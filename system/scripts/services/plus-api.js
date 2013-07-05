@@ -1,14 +1,6 @@
 'use strict';
 
-/* Plus IO Services */
-
-/* Cross Origin Domain requests do not work on App Engine for desktop browsers. You must disable web security within chrome for these methods to work.
- * 1. Disable xss protection in chrome (allows running angularjs app in file view w/o running server).
- *   OSX Terminal Command: open -a Google\ Chrome --args --disable-web-security
- */
-
-// Gotten from: http://www.benlesh.com/2013/02/angularjs-creating-service-with-http.html
-// plus data service
+/* Cross Origin Domain requests do not work on App Engine for desktop browsers. You must disable web security within chrome for these methods to work. */
 $app.factory('plusCollection', function($http, $q, $rootScope, dataSync, connection) {
     var secretKey = settings.app.client_secret;
     var collectionUrl = settings.app.server_url + "collection/";
@@ -19,19 +11,11 @@ $app.factory('plusCollection', function($http, $q, $rootScope, dataSync, connect
     var serviceDataPullFn = function($http, $q, collectionUrl, params){
        $http.defaults.useXDomain = true
        
-       //create our deferred object.
        var deferred = $q.defer();
-
-       //make the call.
        $http({method: "jsonp", url: collectionUrl, cache:true}).success(function(data) {
-          //when data is returned resolve the deferment.
          deferred.resolve(data);
-
-         //store data in localstorage using the passed in parameter as the key
        }).error(function(err){
           console.log('an error has occurred while getting data.', err);
-
-          //or reject it if there's a problem.
           deferred.reject();
        });
 
@@ -44,16 +28,11 @@ $app.factory('plusCollection', function($http, $q, $rootScope, dataSync, connect
        var theSyncKey = syncKey;
        var theOriginalParams = originalParams;
 
-       //create our deferred object.
        var deferred = $q.defer();
-
-       //make the call.
        $http.post(collectionUrl, params).success(function(data) {
-         //when data is returned resolve the deferment.
          deferred.resolve(data);
 
        }).error(function(){
-          //or reject it if there's a problem.
           console.log('an error occurred during save');
 
           // store item in local storage
@@ -67,7 +46,6 @@ $app.factory('plusCollection', function($http, $q, $rootScope, dataSync, connect
             dataSync.setNeedDataSync(true);
           }
 
-          //or reject it if there's a problem.
           deferred.reject();
        });
 
@@ -79,31 +57,19 @@ $app.factory('plusCollection', function($http, $q, $rootScope, dataSync, connect
       var theSyncKey = syncKey;  
       var theId = id;
 
-      //create our deferred object.
       var deferred = $q.defer();
-
-      //make the call.
-      console.log('the delete url:', collectionUrl);
       $http({method: "delete", url: collectionUrl}).success(function(data) {     
-         //when data is returned resolve the deferment.
          deferred.resolve(data);
-
-         // remove item from local storage delete queue.
         }).error(function(){
-          //or reject it if there's a problem.
-          console.log('an error occurred during delete');
 
           // store item in local storage
           if (isSyncing){
-            console.log('running syncing code.');
-
             var syncKeyName = dataSync.getDirtyKey(theSyncKey, "delete");
             dataSync.delete(syncKeyName, theId); 
 
             dataSync.setNeedDataSync(true);
           }
 
-          //or reject it if there's a problem.
           deferred.reject();
        });
 
@@ -241,36 +207,24 @@ $app.factory('plusCollection', function($http, $q, $rootScope, dataSync, connect
              structure: function(syncKey){
                 var updatedUrl = syncKey + "?callback=JSON_CALLBACK";
                 return serviceDataPullFn($http, $q, structureUrl + updatedUrl, syncKey);
-             },       
-             // collection: function(syncKey, params) {
-             //    var limit="20"; var offset="0"; var filter=""; var value="";
-             //    if(angular.isObject(params)) {
-             //        limit = params.hasOwnProperty('limit') ? params.limit : 20;
-             //        offset = params.hasOwnProperty('offset') ? params.offset : 0;
-             //        filter = params.hasOwnProperty('filter') ? "&filter=" + params.filter : "";
-             //        value = params.hasOwnProperty('value') ? "&value=" + params.value : "";
-             //    }
-
-             //    var updatedUrl = syncKey + "?limit=" + limit + "&offset=" + offset + filter + value + "&callback=JSON_CALLBACK";  
-             //    return serviceDataPullFn($http, $q, collectionUrl + updatedUrl, syncKey);
-             // },    
+             },         
              get: function(syncKey, id) {
                 if(_.isNumber(id) && !_.isNaN(id)){
-                  // if the id is an integer, use it as an id and get one item
-                  var updatedUrl = syncKey + "/" + id + "?callback=JSON_CALLBACK&secret_key="+secretKey;
-                  return serviceDataPullFn($http, $q, collectionUrl + updatedUrl, syncKey + "_" + id, syncKey);  
+                    // if the id is an integer, use it as an id and get one item
+                    var updatedUrl = syncKey + "/" + id + "?callback=JSON_CALLBACK&secret_key="+secretKey;
+                    return serviceDataPullFn($http, $q, collectionUrl + updatedUrl, syncKey + "_" + id, syncKey);  
                 }else{
-                  var params = id;
-                  var limit="20"; var offset="0"; var filter=""; var value="";
-                  if(angular.isObject(params)) {
-                      limit = params.hasOwnProperty('limit') ? params.limit : 20;
-                      offset = params.hasOwnProperty('offset') ? params.offset : 0;
-                      filter = params.hasOwnProperty('filter') ? "&filter=" + params.filter : "";
-                      value = params.hasOwnProperty('value') ? "&value=" + params.value : "";
-                  }
+                    var params = id;
+                    var limit="20"; var offset="0"; var filter=""; var value="";
+                    if(angular.isObject(params)) {
+                        limit = params.hasOwnProperty('limit') ? params.limit : 20;
+                        offset = params.hasOwnProperty('offset') ? params.offset : 0;
+                        filter = params.hasOwnProperty('filter') ? "&filter=" + params.filter : "";
+                        value = params.hasOwnProperty('value') ? "&value=" + params.value : "";
+                    }
 
-                  var updatedUrl = syncKey + "?limit=" + limit + "&offset=" + offset + filter + value + "&callback=JSON_CALLBACK&secret_key="+secretKey;  
-                  return serviceDataPullFn($http, $q, collectionUrl + updatedUrl, syncKey);
+                    var updatedUrl = syncKey + "?limit=" + limit + "&offset=" + offset + filter + value + "&callback=JSON_CALLBACK&secret_key="+secretKey;  
+                    return serviceDataPullFn($http, $q, collectionUrl + updatedUrl, syncKey);
                 }
                 
              },                         

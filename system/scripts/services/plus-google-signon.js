@@ -102,7 +102,6 @@ $app.factory('auth', ['$http', 'plusCollection', '$location', '$rootScope', func
 						newUser = _.omit(_.extend(userInfo, {join_date : new Date().getTime()}), 'expires', 'loggedIn');
 
 						plusCollection.add('users', newUser);
-						//console.log('add');
 						setTimeout(function(){
 							window.close
 						}, 500);

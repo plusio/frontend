@@ -26,17 +26,14 @@ $app.directive('plusData', function () {
       
       
     },
-    //the controller for the directive
     controller: function($scope, plus) {
       if(_.isUndefined($scope.collection)) $scope.collection = {};
 
       $scope.$watch('apiConfig', function(newVal){
-        //console.log(newVal);
         checkValues(newVal);
       }, true);
 
       function checkValues(values){
-       // console.log(values);
         values.offset = (_.isUndefined(values.offset))?'0':values.offset;
         values.limit = (_.isUndefined(values.limit))?'20':values.limit;
         values.filter = (_.isUndefined(values.filter))?'':values.filter;

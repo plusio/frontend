@@ -1,6 +1,5 @@
-/*
- * Phone gap service to detect network connection on mobile device.
- * This service uses an angular phone gap service created by Brian Ford: http://briantford.com
+/* Phone gap service to detect network connection on mobile device. 
+ * This service uses an angular phone gap service created by Brian Ford: http://briantford.com 
  */
 
 'use strict';

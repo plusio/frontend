@@ -1,10 +1,7 @@
-/* This service exists in order to store data in local storage for 2 reasons:
- * 1) To allow application to continue functioning when network connectivity is broken
- */
+/* This service exists in order to store data in local storage updates to rest based data in the effect network connection breaks down */
 $app.factory('dataSync', function() { 
     // Initialise. If the database doesn't exist, it is created
     var localDb = new localStorageDB("datasync", localStorage);
-
     var createLocalConfigTable = function(){
         var localConfigTableName = "localConfiguration";
         if (localDb.tableExists(localConfigTableName) == false){
@@ -25,10 +22,7 @@ $app.factory('dataSync', function() {
     }
 
     // Check if the database was just created. Useful for initial database setup
-    if(localDb.isNew()) {
-        // create the "configuration" table
-        createLocalConfigTable();
-    }   
+    if(localDb.isNew()) { createLocalConfigTable(); }   
 
    return {  
              getPersistanceDatabase: function (){

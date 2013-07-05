@@ -2,15 +2,12 @@ $app.directive('plusTable', function(){
   return {
     // restrict to an attribute (A = attribute, C = class, M = comment)
     restrict: 'A',
-    //the template for the directive.
     template: '<table style="width: 100%;"><tr><th ng-repeat="head in headers">{{head}}</th></tr><tr ng-repeat="row in rows | filter:search"><td ng-repeat="data in row">{{data}}</td></tr></table>',
-    //the controller for the directive
     controller: function($scope) {
       
     },
     replace: true,
-    //the link method does the work of setting the directive
-    // up, things like bindings, jquery calls, etc are done in here
+    //the link method does the work of setting the directive up, things like bindings, jquery calls, etc are done in here
     link: function(scope, elem, attrs) {
 
       scope.predicate = '';
