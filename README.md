@@ -263,7 +263,7 @@ This is where you can simply drop-in new features & functionality. These are sel
 Installing a plugin
 Step 1. Copy the plugin folder into the app/plugins folder.
 Step 2. Add the plugin folder name to the “plugins” json key in the application configuration file. 
-         * plugins add to the functionality of Tyto
+         * plugins add to the functionality of Plus.io Frontend
          */
         "plugins" : ["leaflet"],
 The example above shows how to add mapping features to your application by using a leaflet plugin simply by dropping in the leaflet plugin folder into the app/plugins folder.

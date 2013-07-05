@@ -32,7 +32,7 @@
 	"data_sync": true,
 
 	/*
-	 * plugins add to the functionality of Tyto
+	 * plugins add to the functionality of Plus.io Frontend
 	 */
 	"plugins" : ["leaflet"],
 
