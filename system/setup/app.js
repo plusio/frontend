@@ -1,5 +1,7 @@
 'use strict';
 
+window.plus = '';
+
 // Declare app level module which depends on filters, and services
 angular.module('app', ['app.dependencies']).
   config(['$routeProvider', '$httpProvider', '$locationProvider', function($routeProvider, $httpProvider, $locationProvider) {
@@ -28,6 +30,12 @@ angular.module('app', ['app.dependencies']).
     //delete cache on reload / use only in development
 
     connection.checkConnection();
+
+    window.plus = plus;
+
+    var plusReadyEvt = new CustomEvent('plusReady');
+   // var my_element = document.getElementById('TargetElement');
+    document.dispatchEvent(plusReadyEvt);
 
     if (settings.app.environment == "development"){
       console.log('Application has been loaded in Development mode.');
