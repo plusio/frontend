@@ -1,5 +1,5 @@
 /*
- * init.js Initialize the tyto framework and load in configuration file then load in all necessary scripts
+ * init.js Initialize the plus.io Frontend and load in configuration file then load in all necessary scripts
  */
 
  window.phonegap = (document.URL.indexOf("http://") == -1);
