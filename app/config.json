@@ -1,7 +1,7 @@
 {
 	"name" : "",
 	"server_url" : "",
-	"server_secrect" : "",
+	"server_secret" : "",
 
 	/*
 	 * Specify the name of the desired theme
