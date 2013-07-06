@@ -2,7 +2,7 @@
 
 /* Cross Origin Domain requests do not work on App Engine for desktop browsers. You must disable web security within chrome for these methods to work. */
 $app.factory('plusCollection', function($http, $q, $rootScope, dataSync, connection) {
-    var secretKey = settings.app.client_secret;
+    var secretKey = settings.app.server_secret;
     var collectionUrl = settings.app.server_url + "collection/";
     var structureUrl = settings.app.server_url + "structure/";
     var isSyncing =  settings.app.data_sync;  
