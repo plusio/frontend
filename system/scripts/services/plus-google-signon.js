@@ -51,7 +51,7 @@ $app.factory('auth', ['$http', 'plusCollection', '$location', '$rootScope', func
 			}
 
 			var response;
-    		var authWindow = window.open(sprintf('https://accounts.google.com/o/oauth2/auth?response_type=token&client_id=%(client_id)s&scope=%(scope)s&redirect_uri=%(redirect_uri)s&login_hint=%(email)s', config), '_blank', 'location=no');
+    		var authWindow = window.open(sprintf('https://accounts.google.com/o/oauth2/auth?response_type=token&client_id=%(google_id)s&scope=%(scope)s&redirect_uri=%(redirect_uri)s&login_hint=%(email)s', config), '_blank', 'location=no');
     		
     		authWindow.addEventListener('loadstart', function(event) {
     			if(event.url.search('access_token') >= 0){
@@ -132,9 +132,9 @@ $app.factory('auth', ['$http', 'plusCollection', '$location', '$rootScope', func
 	}
 
 	var config = {
-		client_id : settings.app.client_id,
-		scope : "https://www.googleapis.com/auth/userinfo.email " + settings.app.client_scope,
-		redirect_uri : settings.app.client_redirect,
+		google_id : settings.app.google_id,
+		scope : "https://www.googleapis.com/auth/userinfo.email " + settings.app.google_scope,
+		redirect_uri : settings.app.google_redirect,
 		email : (functions.isLoggedIn())?functions.get('email'):((!_.isUndefined(functions.get('hint')))?functions.get('hint'):'')
 	}
 

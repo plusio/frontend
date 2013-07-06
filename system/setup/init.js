@@ -93,10 +93,10 @@ head.ready(function(){
 	settings = {
 		app : {
 			name : '',
-			client_id : '',
-			client_secret : '',
-			client_scope : '',
-			client_redirect : '',
+			google_id : '',
+			google_secret : '',
+			google_scope : '',
+			google_redirect : '',
 			server_url : '',
 			server_secrect : '',
 			environment : 'development',
