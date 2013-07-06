@@ -25,6 +25,7 @@ In the app folder there is a config.json file which contains all of the configur
 		"client_scope" : "",
 		"client_redirect" : "",
 		"server_url" : "",
+		"server_secret"" : "",
 		"environment" : "",
 
 		"theme" : "",
@@ -42,7 +43,8 @@ In the app folder there is a config.json file which contains all of the configur
 - client_secret : your google api console client secret key.
 - client_scope : scopes to request user information when a user log's in through your app. note: that the userinfo.email scope is called already by plus.io
 - client_redirect : is the redirect url after a user logs in, and needs to match the entry it your google api console, and must be the url to your application. i.e.: if your app is in htdocs/plus, then the redirect url will be http://locahost/plus/ (This option **does not** need be changed when deploying to mobile)
-- server_url : the url to the your api's endpoint. i.e.: [yourapp].appspot.com/
+- server_url : the url to the your api's endpoint. i.e.: https://[yourapp].appspot.com/
+- server_secret : the secret key to be passed in as a URL parameter
 - environment : either development or production, current suppresses warning messages while in production
 - theme : the name of theme to use, must match the theme's folder name.
 - restEntitites : the names of the collections for data sync to monitor.
