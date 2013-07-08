@@ -4,7 +4,7 @@
 $app.factory('plusCollection', function($http, $q, $rootScope, dataSync, connection) {
     var secretKey = settings.app.server_secret;
     var collectionUrl = settings.app.server_url + "collection/";
-    var structureUrl = settings.app.server_url + "structure/";
+    var structureUrl = settings.app.server_url + "structure";
     var isSyncing =  settings.app.data_sync;  
     var hasNetworkConnection = connection.hasNetworkConnection();  
 
@@ -205,6 +205,7 @@ $app.factory('plusCollection', function($http, $q, $rootScope, dataSync, connect
               }
              },     
              structure: function(syncKey){
+                syncKey = (_.isUndefined(syncKey))?'':'/'+syncKey;
                 var updatedUrl = syncKey + "?callback=JSON_CALLBACK&secret_key="+secretKey;
                 return serviceDataPullFn($http, $q, structureUrl + updatedUrl, syncKey);
              },         
