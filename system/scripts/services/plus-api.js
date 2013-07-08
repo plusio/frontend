@@ -205,7 +205,7 @@ $app.factory('plusCollection', function($http, $q, $rootScope, dataSync, connect
               }
              },     
              structure: function(syncKey){
-                var updatedUrl = syncKey + "?callback=JSON_CALLBACK";
+                var updatedUrl = syncKey + "?callback=JSON_CALLBACK&secret_key="+secretKey;
                 return serviceDataPullFn($http, $q, structureUrl + updatedUrl, syncKey);
              },         
              get: function(syncKey, id) {
