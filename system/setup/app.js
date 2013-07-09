@@ -32,10 +32,9 @@ angular.module('app', ['app.dependencies']).
     connection.checkConnection();
 
     window.plus = plus;
+    window.$navigate = $navigate;
 
-    var plusReadyEvt = new CustomEvent('plusReady');
-   // var my_element = document.getElementById('TargetElement');
-    document.dispatchEvent(plusReadyEvt);
+    $(document).trigger('plusReady');
 
     if (settings.app.environment == "development"){
       console.log('Application has been loaded in Development mode.');
