@@ -1,2 +1,6 @@
 <h1>{{ $page.title }}</h1>
-
+<leaflet center="mc.center" style="width: 400px;height:400px;"></leaflet>
+<button ng-click="add()">Add()</button>
+<button ng-click="remove()">Remove()</button>
+<button ng-click="update()">Update()</button>
+<pre>{{ books | json }}</pre>

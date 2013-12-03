@@ -134,11 +134,11 @@ function generateTitle(route){
 	'use strict';
 	function loadPlugins(){
 		var supportFilePaths = [];
-		Object.keys(app.loadedPlugins).forEach(function(name) {
+		Object.keys(app.loadedPlugins).forEach(function(name, i) {
 			app.loadedPlugins[name].files.forEach(function(file){
 				var ext = file.split('.').pop(),
 					isRemote = (file.substr(0,4) == 'http'),
-					path = ((isRemote)?'':'plugins/' + name + '/') + file;
+					path = ((isRemote)?'':'plugins/' + app.plugins[i] + '/') + file;
 
 				switch(ext){
 					case 'js':
@@ -148,11 +148,14 @@ function generateTitle(route){
 						supportFilePaths.push(path);
 						break;
 					default:
-						console.log(ext + ' files are not supported, please use only css or js files. ' + '(' + name + ')');
+						console.log(ext + ' files are not supported, please use only css or js files. ' + '(' + app.plugins[i] + ')');
 						break;
 				}
 			});
 		});
+
+		app.plugins = app.loadedPlugins;
+		delete app.loadedPlugins;
 
 		head.js(supportFilePaths, loadTheme);
 	}
@@ -197,9 +200,9 @@ function generateTitle(route){
 	function initApp(){
 		var deps = [];
 
-		for(var plugin in app.loadedPlugins){
-			if(app.loadedPlugins.hasOwnProperty(plugin)){
-				plugin = app.loadedPlugins[plugin];
+		for(var plugin in app.plugins){
+			if(app.plugins.hasOwnProperty(plugin)){
+				plugin = app.plugins[plugin];
 				if(plugin.hasOwnProperty('angularMod')){
 					deps = deps.concat(plugin.angularMod);
 				}
@@ -277,6 +280,7 @@ function generateTitle(route){
 				$rootScope.$on('$routeChangeStart', function(next, current) { 
 				   $rootScope.$page = current.$$route;
 				});
+				$rootScope.$app = app;
 			}]);
 
 			angular.bootstrap(document, ['myApp']);
