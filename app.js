@@ -3,10 +3,6 @@ $app.controller('home', function($scope, plusCollection){
 		$('h1').css('color', '#0090d6');
 	}
 
-	function getid(){
-		return 2348723984723984;
-	}
-
 	function updateScope(){
 		console.log('updating scope');
 		plusCollection.get('test',function(data){
