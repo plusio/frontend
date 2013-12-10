@@ -7,7 +7,7 @@ $app.controller('home', function($scope, plusCollection){
 		console.log('updating scope');
 		plusCollection.get('test',function(data){
 			$scope.books = data;
-			plusCollection.get('test', data[0].id, function(data){
+			plusCollection.get('test', { limit : 1, test_key:'value', myKey : 'sdf' }, function(data){
 				$scope.first = data;
 			});
 		}, function(a, b, c, d){
@@ -21,7 +21,7 @@ $app.controller('home', function($scope, plusCollection){
 	}
 
 	$scope.add = function(){
-		plusCollection.add('test', { test_key: 'value'}, updateScope);
+		plusCollection.add('test', { test_key: 'newvalue'}, updateScope);
 	}
 
 	$scope.update = function(){

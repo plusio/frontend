@@ -4,6 +4,9 @@ angular.module('plus.api', [])
   	var callbackKey = '?callback=JSON_CALLBACK&secret_key=' + app.serverSecret;
     return{
 		get: function(collection, filter, callback, error){
+			var defaultParams = '&offset=' + 0 + '&limit=' +  20,
+				filteredParams;
+
 			if(!angular.isDefined(collection) || !angular.isString(collection)){
 				console.error('Collection must be specified as a string');
 				return;
@@ -21,8 +24,41 @@ angular.module('plus.api', [])
 				}
 
 				if(angular.isObject(filter) && !angular.isArray(filter)){
-					console.log('the filter is an object!');
-					//TODO
+					if(parseInt(filter.offset) && !isNaN(filter.offset) && parseInt(filter.offset) >= 0){
+						console.log(filter.offset);
+						filteredParams = '&offset=' + filter.offset;
+					}else{
+						if(filter.offset)
+							console.error('The offset must be a positive integer, defaulting to zero');
+						filteredParams = '&offset=0';
+					}
+
+					if(parseInt(filter.limit) && !isNaN(filter.limit) && parseInt(filter.limit) >= 0){
+						filteredParams += '&limit=' + parseInt(filter.limit);
+					}else if(filter.limit == -1){
+						/*
+						// the api requires that the limit is specified with offset so we default to 1 Billion items
+						// God help you if you're requesting more than that at one
+						*/
+
+						filteredParams += '&limit=1000000000';
+					}else{
+						if(filter.limit)
+							console.error('The limit must be a positive integer or -1 for no limit, defaulting to 20');
+						filteredParams+= '&limit=20';
+					}
+
+					delete filter.offset; delete filter.limit;
+					var keys = Object.keys(filter);
+
+					if(keys.length > 1){
+						console.log('The api only supports filtering by one column currently. (using the first filter : ' + keys[0] + ')')
+					}
+
+					if(keys.length >= 1){
+						filteredParams += '&filter=' + keys[0] + '&value=' + filter[keys[0]];
+					}
+
 				}else if(parseInt(filter) && !isNaN(filter)){
 					var id = '/' + filter;
 				}else{
@@ -30,7 +66,9 @@ angular.module('plus.api', [])
 				}
 			}
 
-		  $http.jsonp(baseUrl + collection + (id || '') + callbackKey).success(callback).error(error || function(){});
+			
+
+			$http.jsonp(baseUrl + collection + (id || '') + callbackKey + (filteredParams || defaultParams)).success(callback).error(error || function(){});
 		},
 		add: function(collection, data, callback, error){
 			if(!angular.isDefined(collection) || !angular.isString(collection)){
