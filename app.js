@@ -21,7 +21,7 @@ $app.controller('home', function($scope, plusCollection){
 	}
 
 	$scope.add = function(){
-		plusCollection.add('test', { test_key: 'newvalue'}, updateScope);
+		plusCollection.add('test', { test_key: 'newvalue', offset : 'three', _two : 2}, updateScope);
 	}
 
 	$scope.update = function(){

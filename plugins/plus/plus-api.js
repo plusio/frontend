@@ -71,6 +71,8 @@ angular.module('plus.api', [])
 			$http.jsonp(baseUrl + collection + (id || '') + callbackKey + (filteredParams || defaultParams)).success(callback).error(error || function(){});
 		},
 		add: function(collection, data, callback, error){
+			var restrictedKeys = ['id', 'ID', 'Id', 'iD', 'offset', 'limit','all','app','copy','delete','entity','entity_type','fields','from_entity','get','gql','instance_properties','is_saved','key','key_name','kind','parent','parent_key','properties','put','setdefault','to_xml','update'];
+			var startWithBlacklist = ['_'];
 			if(!angular.isDefined(collection) || !angular.isString(collection)){
 				console.error('Collection must be specified as a string');
 				return;
@@ -95,7 +97,31 @@ angular.module('plus.api', [])
 				if(!angular.isDefined(data.time))
 					data.time = new Date().getTime().toString();
 
-				//restrict keys that reserved in Mongo
+				var keys = Object.keys(data);
+
+				keys.forEach(function(i){
+					if (i.substring(0, 6) == "_") {
+					    // ...
+					}
+				});
+
+				var errMsgs = [];
+
+				keys.forEach(function(i){
+					if(restrictedKeys.indexOf(i) >= 0){
+						errMsgs.push(i + ' is a Restricted Key and is disallowed in Google App Engine.');
+					}
+					if(startWithBlacklist.indexOf(i.substring(0,1)) >= 0){
+						errMsgs.push(i + ' Starts with an illegal character');
+					}
+				});
+
+				if(errMsgs.length){
+					errMsgs.forEach(function(i){
+						console.error(i);
+					});
+					return;
+				}					
 
 				$http.post(baseUrl + collection + callbackKey, data, {}).success(callback || function(){}).error(error || function(){});
 			}else{
