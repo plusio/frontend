@@ -4,6 +4,10 @@
 
 var $app;
 
+//Remove no-js class from html element
+document.getElementsByTagName("html")[0].classList.remove("no-js");
+
+
 function PluginConfig(config){
 	if(config == null){
 		console.error('No configuration object provided for plugin');
@@ -80,6 +84,8 @@ function generateView(route){
 		view += (i == arr.length - 1)?'.html':'';
 	});
 
+	console.log('view', view);
+
 	return view;
 }
 
@@ -115,6 +121,11 @@ function generateTitle(route){
 	});
 
 	return titleParts.join(' ');
+}
+
+function generateClass(route){
+	var parts = route.split('/');
+	return parts.join('-');
 }
 
 
@@ -214,27 +225,34 @@ function generateTitle(route){
 		var routeDetails = [];
 
 		app.theme.routes.forEach(function(routeConfig, r){
-			var route, view, controller, title;
+			var routeOpts = {}, route;
 
 			if(typeof routeConfig == 'string'){
-
-				route = generateRoute(routeConfig);
-				view = generateView(route);
-				controller = generateController(route);
-				title = generateTitle(route);
+				route = generateRoute(routeConfig)
+				routeOpts.routePath = '/' + route;
+				routeOpts.templateUrl = generateView(route);
+				routeOpts.controller = generateController(route);
+				routeOpts.title = generateTitle(route);
+				routeOpts.class = generateClass(route);
 				
 			}else if(typeof routeConfig == 'object' && !(routeConfig instanceof Array)){
 				
 				if(routeConfig.route){
-					route = generateRoute(routeConfig.route);
-					view = generateView(routeConfig.view || route);
-					controller = (routeConfig.controller)?routeConfig.controller:generateController(route);
-					title = (routeConfig.title)?routeConfig.title:generateTitle(route);
+					route = generateRoute(routeConfig.route)
+					routeOpts.routePath = '/' + route;
+					routeOpts.templateUrl = generateView(routeConfig.view || route);
+					routeOpts.controller = (routeConfig.controller)?routeConfig.controller:generateController(route);
+					routeOpts.title = (routeConfig.title)?routeConfig.title:generateTitle(route);
+					routeOpts.class = (routeConfig.class)?routeConfig.class:generateClass(route);
+
 
 					delete routeConfig.route;
 					delete routeConfig.view;
-					delete routeConfig.controller;
-					delete routeConfig.title;
+					// delete routeConfig.controller;
+					// delete routeConfig.title;
+					// delete routeConfig.class;
+
+					routeOpts = angular.extend(routeOpts, routeConfig);
 				}else{
 					console.log('Route must be specified: index ' + r);
 					return;
@@ -245,21 +263,22 @@ function generateTitle(route){
 				return;
 			}
 
-			var routeOpts = {
-				routePath: '/' + route,
-				templateUrl : view,
-				controller : controller,
-				title : title
-			}
+			// var routeOpts = {
+			// 	routePath: '/' + route,
+			// 	templateUrl : view,
+			// 	controller : controller,
+			// 	title : title
+			// }
 
-			if(typeof routeConfig == 'object')
-				routeOpts = angular.extend(routeOpts, routeConfig);
+			// if(typeof routeConfig == 'object')
+			// 	routeOpts = angular.extend(routeOpts, routeConfig);
+
 
 			routeDetails.push(routeOpts);
 			
 			
 			//create controllers so if no controller are created the views still have basic functionality
-			$app.controller(controller, ['$scope', '$routeParams', '$window', function(scope, params, $window){
+			$app.controller(routeOpts.controller, ['$scope', '$routeParams', '$window', function(scope, params, $window){
 				scope.routeParams = params;
 				scope.window = $window;
 			}]);

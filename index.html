@@ -7,7 +7,7 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
     </head>
-    <body ng-view>
+    <body ng-class="page-{{$page.class}}" ng-view>
         <script src="config.js"></script>
         <script src="plugins/start.js"></script>
     </body>
