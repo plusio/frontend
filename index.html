@@ -7,7 +7,7 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
     </head>
-    <body ng-class="page-{{$page.class}}" ng-view>
+    <body ng-class="page-{{$page.class}}" ng-view ng-animate="{enter: 'enter-animation', leave: 'leave-animation'}">
         <script src="config.js"></script>
         <script src="plugins/start.js"></script>
     </body>
