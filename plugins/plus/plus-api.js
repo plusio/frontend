@@ -1,6 +1,7 @@
 angular.module('plus.api', [])
   .factory('plusCollection', ['$http', function($http){
   	var baseUrl = 'https://' + app.projectId + '.appspot.com/collection/';
+  	var baseStructureUrl = 'https://' + app.projectId + '.appspot.com/structure/';
   	var callbackKey = '?callback=JSON_CALLBACK&secret_key=' + app.serverSecret;
     return{
 		get: function(collection, filter, callback, error){
@@ -109,7 +110,7 @@ angular.module('plus.api', [])
 
 				keys.forEach(function(i){
 					if(restrictedKeys.indexOf(i) >= 0){
-						errMsgs.push(i + ' is a Restricted Key and is disallowed in Google App Engine.');
+						errMsgs.push(i + ' is a Restricted Key or is disallowed in Google App Engine.');
 					}
 					if(startWithBlacklist.indexOf(i.substring(0,1)) >= 0){
 						errMsgs.push(i + ' Starts with an illegal character');
@@ -181,14 +182,102 @@ angular.module('plus.api', [])
 					return;
 				}
 
-				if(!angular.isDefined(data.time))
-					data.time = new Date().getTime().toString();
+				// if(!angular.isDefined(data.time))
+				// 	data.time = new Date().getTime().toString();
 
 				$http.post(baseUrl + collection + '/' + id + callbackKey, data, {}).success(callback || function(){}).error(error || function(){});
 			}else{
 				console.error('Data must be an Object.');
 				return;
 			}
+		},
+		structure: function(collection, callback, error){
+			if(!angular.isDefined(collection) || !angular.isString(collection)){
+				console.error('Collection must be specified as a string');
+				return;
+			}
+
+			if(!angular.isFunction(callback)){
+				console.error('A Callback is required for get requests');
+				return;
+			}
+
+			if(!angular.isFunction(error) && angular.isDefined(error)){
+				console.error('A Callback must be a function');
+				return;
+			}
+
+			$http.jsonp(baseStructureUrl + collection + callbackKey).success(callback).error(error || function(){});
+
 		}
     };
-  }]);
+  }])
+
+.directive('plusData', function () {
+    return {
+    restrict: 'EA',
+    link : function(scope, element, attrs){
+      scope.apiConfig = {};
+      
+      attrs.$observe('collection', function( newVal ) {
+        scope.apiConfig.collection = (angular.isString(newVal) && newVal !== '')?newVal : undefined;
+      });
+
+      attrs.$observe('offset', function( newVal ) {
+        scope.apiConfig.offset = (angular.isString(newVal) && newVal !== '')?newVal : undefined;
+      });
+
+      attrs.$observe('limit', function( newVal ) {
+        scope.apiConfig.limit = (angular.isString(newVal) && newVal !== '')?newVal : undefined;
+      });
+
+      attrs.$observe('filter', function( newVal ) {
+        scope.apiConfig.filter = (angular.isString(newVal) && newVal !== '')?newVal : undefined;
+      });
+
+      attrs.$observe('value', function( newVal ) {
+        scope.apiConfig.value = (angular.isString(newVal) && newVal !== '')?newVal : undefined;
+      });
+      
+      
+    },
+    controller: function($scope, plusCollection) {
+      if(angular.isUndefined($scope.collection)) $scope.collection = {};
+
+      $scope.$watch('apiConfig', function(newVal){
+        checkValues(newVal);
+      }, true);
+
+      function checkValues(values){
+        values.offset = (angular.isUndefined(values.offset))?0:values.offset;
+        values.limit = (angular.isUndefined(values.limit))?20:values.limit;
+        values.filter = (angular.isUndefined(values.filter))?'':values.filter;
+        values.value = (angular.isUndefined(values.value))?'':values.value;
+        if(values.collection !== '' && values.offset !== '' && values.limit !== ''){
+          updateCollection(values);
+        }
+      }
+
+      function updateCollection(values){
+        plusCollection.structure(values.collection, function(data){
+          $scope.collection.structure = data;
+        });
+
+		var opts= {
+			limit : values.limit,
+			offset : values.offset
+		}
+
+		if(values.filter)
+			opts[values.filter] = values.value
+
+		console.log(opts);
+
+        plusCollection.get(values.collection, opts, function(data){
+          $scope.collection.data = data;
+        });
+      }
+            
+    }
+  }
+});
