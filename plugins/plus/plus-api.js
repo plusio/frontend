@@ -9,7 +9,7 @@ angular.module('plus.api', [])
 				filteredParams;
 
 			if(!angular.isDefined(collection) || !angular.isString(collection)){
-				console.error('Collection must be specified as a string');
+				throw Error('Collection must be specified as a string');
 				return;
 			}
 			if(angular.isFunction(filter)){
@@ -20,7 +20,7 @@ angular.module('plus.api', [])
 
 			}else{
 				if(!angular.isFunction(callback)){
-					console.error('A Callback is required for get requests');
+					throw Error('A Callback is required for get requests');
 					return;
 				}
 
@@ -30,7 +30,7 @@ angular.module('plus.api', [])
 						filteredParams = '&offset=' + filter.offset;
 					}else{
 						if(filter.offset)
-							console.error('The offset must be a positive integer, defaulting to zero');
+							throw Error('The offset must be a positive integer, defaulting to zero');
 						filteredParams = '&offset=0';
 					}
 
@@ -45,7 +45,7 @@ angular.module('plus.api', [])
 						filteredParams += '&limit=1000000000';
 					}else{
 						if(filter.limit)
-							console.error('The limit must be a positive integer or -1 for no limit, defaulting to 20');
+							throw Error('The limit must be a positive integer or -1 for no limit, defaulting to 20');
 						filteredParams+= '&limit=20';
 					}
 
@@ -63,7 +63,7 @@ angular.module('plus.api', [])
 				}else if(parseInt(filter) && !isNaN(filter)){
 					var id = '/' + filter;
 				}else{
-					console.error('filter is an invalid value');
+					throw Error('filter is an invalid value');
 				}
 			}
 
@@ -75,23 +75,23 @@ angular.module('plus.api', [])
 			var restrictedKeys = ['id', 'ID', 'Id', 'iD', 'offset', 'limit','all','app','copy','delete','entity','entity_type','fields','from_entity','get','gql','instance_properties','is_saved','key','key_name','kind','parent','parent_key','properties','put','setdefault','to_xml','update'];
 			var startWithBlacklist = ['_'];
 			if(!angular.isDefined(collection) || !angular.isString(collection)){
-				console.error('Collection must be specified as a string');
+				throw Error('Collection must be specified as a string');
 				return;
 			}
 
 			if(!angular.isDefined(data)){
-				console.error('Data is required to be added to the collection.');
+				throw Error('Data is required to be added to the collection.');
 				return;
 			}
 
 			if(angular.isObject(data) && !angular.isArray(data)){
 				if(angular.isDefined(callback) && !angular.isFunction(callback)){
-					console.error('Callback must be defined as a function');
+					throw Error('Callback must be defined as a function');
 					return;
 				}
 
 				if(angular.isDefined(error) && !angular.isFunction(error)){
-					console.error('Error callback must be defined as a function');
+					throw Error('Error callback must be defined as a function');
 					return;
 				}
 
@@ -119,14 +119,14 @@ angular.module('plus.api', [])
 
 				if(errMsgs.length){
 					errMsgs.forEach(function(i){
-						console.error(i);
+						throw Error(i);
 					});
 					return;
 				}					
 
 				$http.post(baseUrl + collection + callbackKey, data, {}).success(callback || function(){}).error(error || function(){});
 			}else{
-				console.error('Data must be an Object.');
+				throw Error('Data must be an Object.');
 				return;
 			}
 			
@@ -134,22 +134,22 @@ angular.module('plus.api', [])
 		delete: function(collection, id, callback, error){
 			console.log(error);
 			if(!angular.isDefined(collection) || !angular.isString(collection)){
-				console.error('Collection must be specified as a string');
+				throw Error('Collection must be specified as a string');
 				return;
 			}
 
 			if(!parseInt(id) || isNaN(id)){
-				console.error('The id must be a defined as a valid id (integer)');
+				throw Error('The id must be a defined as a valid id (integer)');
 				return;
 			}
 
 			if(angular.isDefined(callback) && !angular.isFunction(callback)){
-				console.error('Callback must be defined as a function');
+				throw Error('Callback must be defined as a function');
 				return;
 			}
 
 			if(angular.isDefined(error) && !angular.isFunction(error)){
-				console.error('Error callback must be defined as a function');
+				throw Error('Error callback must be defined as a function');
 				return;
 			}
 
@@ -157,28 +157,28 @@ angular.module('plus.api', [])
 		},
 		update: function(collection, id, data, callback, error){
 			if(!angular.isDefined(collection) || !angular.isString(collection)){
-				console.error('Collection must be specified as a string');
+				throw Error('Collection must be specified as a string');
 				return;
 			}
 
 			if(!parseInt(id) || isNaN(id)){
-				console.error('The id must be a defined as a valid id (integer)');
+				throw Error('The id must be a defined as a valid id (integer)');
 				return;
 			}
 
 			if(!angular.isDefined(data)){
-				console.error('Data is required to be added to the collection.');
+				throw Error('Data is required to be added to the collection.');
 				return;
 			}
 
 			if(angular.isObject(data) && !angular.isArray(data)){
 				if(angular.isDefined(callback) && !angular.isFunction(callback)){
-					console.error('Callback must be a function');
+					throw Error('Callback must be a function');
 					return;
 				}
 
 				if(angular.isDefined(error) && !angular.isFunction(error)){
-					console.error('Error callback must be a function');
+					throw Error('Error callback must be a function');
 					return;
 				}
 
@@ -187,23 +187,23 @@ angular.module('plus.api', [])
 
 				$http.post(baseUrl + collection + '/' + id + callbackKey, data, {}).success(callback || function(){}).error(error || function(){});
 			}else{
-				console.error('Data must be an Object.');
+				throw Error('Data must be an Object.');
 				return;
 			}
 		},
 		structure: function(collection, callback, error){
 			if(!angular.isDefined(collection) || !angular.isString(collection)){
-				console.error('Collection must be specified as a string');
+				throw Error('Collection must be specified as a string');
 				return;
 			}
 
 			if(!angular.isFunction(callback)){
-				console.error('A Callback is required for get requests');
+				throw Error('A Callback is required for get requests');
 				return;
 			}
 
 			if(!angular.isFunction(error) && angular.isDefined(error)){
-				console.error('A Callback must be a function');
+				throw Error('A Callback must be a function');
 				return;
 			}
 

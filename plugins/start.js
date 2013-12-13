@@ -10,28 +10,23 @@ document.getElementsByTagName("html")[0].classList.remove("no-js");
 
 function PluginConfig(config){
 	if(config == null){
-		console.error('No configuration object provided for plugin');
-		return false;
+		throw Error('No configuration object provided for plugin');
 	}
 
 	if(!config.name){
-		console.error('No name provided for plugin');
-		return false;
+		throw Error('No name provided for plugin');
 	}
 
 	if(typeof config.name != 'string'){
-		console.error('Name must be a string in plugin.js, given ' + typeof config.name);
-		return false;
+		throw Error('Name must be a string in plugin.js, given ' + typeof config.name);
 	}
 
 	if(!config.files){
-		console.error('No files included in plugin.js for ' + config.name);
-		return false;
+		throw Error('No files included in plugin.js for ' + config.name);
 	}
 
 	if(!(config.files instanceof Array)){
-		console.error('Files must be an array of relative or remote paths that the plugin requires (' + config.name + ')');
-		return false;
+		throw Error('Files must be an array of relative or remote paths that the plugin requires (' + config.name + ')');
 	}
 
 	if(!app.loadedPlugins)
@@ -42,32 +37,28 @@ function PluginConfig(config){
 
 function ThemeConfig(config){
 	if(config == null){
-		console.error('No configuration object provided for theme');
-		return false;
+		throw Error('No configuration object provided for theme');
 	}
 
 	if(!config.name){
-		console.error('No name provided for theme');
-		return false;
+		throw Error('No name provided for theme');
 	}
 
 	if(typeof config.name != 'string'){
-		console.error('Name must be a string in theme.js, given ' + typeof config.name);
-		return false;
+		throw Error('Name must be a string in theme.js, given ' + typeof config.name);
 	}
 
 	// if(!config.files){
-	// 	console.error('No files included in theme.js for ' + config.name);
+	// 	throw Error('No files included in theme.js for ' + config.name);
 	// 	return false;
 	// }
 
 	if(config.files && !(config.files instanceof Array)){
-		console.error('Files must be an array of relative or remote paths that the theme requires (' + config.name + ')');
-		return false;
+		throw Error('Files must be an array of relative or remote paths that the theme requires (' + config.name + ')');
 	}
 
 	if(!config.routes){
-		console.error('No routes specified in theme.js for ' + config.name);
+		throw Error('No routes specified in theme.js for ' + config.name);
 	}
 
 	app.theme = config;
@@ -83,8 +74,6 @@ function generateView(route){
 
 		view += (i == arr.length - 1)?'.html':'';
 	});
-
-	console.log('view', view);
 
 	return view;
 }
@@ -177,8 +166,7 @@ function generateClass(route){
 		head.js(['themes/' + app.theme + '/theme.js'], function(){
 			app.theme.path = 'themes/' + themeFolder;
 			if(typeof app.theme !== 'object'){
-				alert('Error loading theme.\nCheck that you have a theme installed in your config.js, and themes folder.');
-				return;
+				throw Error('Error loading theme.\nCheck that you have a theme installed in your config.js, and themes folder.');
 			}
 
 			if(app.theme.files){
