@@ -1,20 +1,12 @@
-body{
-	height:100%;
-	width: 100%;
-	position: absolute;
-	overflow: hidden;
-}
-
-.slide-left, .slide-right, .slide-up, .slide-down{
-  -webkit-transition:0.6s ease all;
-  transition:0.6s ease all;
+body.slide-left, body.slide-right, body.slide-up, body.slide-down{
+  -webkit-transition:.6s ease all;
+  transition:.6s ease all;
 }
 
 .slide-left.ng-enter,
 .slide-right.ng-leave.ng-leave-active {
   left:100%;
 }
-
 
 .slide-left.ng-leave,
 .slide-left.ng-enter.ng-enter-active,

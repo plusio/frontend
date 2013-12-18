@@ -86,7 +86,7 @@ angular.module('plus.geo', [])
 							callbacks.splice(i, 1);
 						}
 					});
-					if(callbacks.length == 0 && keepMonitering != true)
+					if(callbacks.length == 0 && keepMonitoring != true)
 						navigator.geolocation.clearWatch(navigatorId);
 				},
 				getWatches : function(){

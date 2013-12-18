@@ -19,8 +19,14 @@ angular.module('plus.pageTransitions', [])
 					var ref = window.open(attrs.go, '_system', 'location=yes');
 				}else{
 					$rootScope.$apply(function(){
-						if(angular.isDefined(attrs.animation))
-							$rootScope.animationClass = attrs.animation;
+						if(angular.isDefined(attrs.animation)){
+							if(attrs.animation == 'none'){
+								$rootScope.animationClass = '';								
+								document.getElementsByTagName('body')[0].style.opacity = 0;
+							}else{
+								$rootScope.animationClass = attrs.animation;								
+							}
+						}
 
 						$location.path(attrs.go);
 
