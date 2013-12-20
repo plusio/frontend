@@ -1,0 +1,16 @@
+.home-page{
+	height: 100%;
+}
+
+.starter-template{
+	padding: 40px 15px;
+	text-align: center;
+	color: #fefefe;
+	background: #222 url('../images/cartographer_@2x.png');
+	background-size: 500px 499px;
+	width: 100%;
+	-webkit-box-shadow:inset 0 0 10px 0 rgba(0,0,0,.7);
+	box-shadow:inset 0 0 10px 0 rgba(0,0,0,.7);
+	border-bottom: #222 5px solid;
+
+}

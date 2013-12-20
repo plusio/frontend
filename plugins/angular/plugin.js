@@ -5,7 +5,7 @@ PluginConfig({
 		'angular.js',
 		'angular-animate.js',
 		'angular-cookies.js',
-		//'angular-csp.css',
+		'angular-csp.css',
 		'angular-loader.js',
 		//'angular-mocks.js',
 		'angular-resource.js',
