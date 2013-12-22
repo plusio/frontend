@@ -3,6 +3,7 @@
  */
 
 var $app,
+	x,
 	defaultViewContent = '<div class="container"><div class="header"><ul class="nav nav-pills pull-right"> <li class="active"><img src="https://dl.dropboxusercontent.com/u/43803367/logo.png" alt="" height="26px"></li> </ul> <h3 class="text-muted">{{ $page.title }}</h3> </div> <div class="jumbotron"> <h1>Need a view?</h1> <p class="lead">This page was created automatically because we couldn\'t find a view for it, the guide below will get you creating views in no time. Read the docs to learn more about creating themes and views.</p> <p><a class="btn btn-lg btn-success" href="http://plus.io/+docs/" target="_blank" role="button">View the docs</a></p> </div> <h4>Create a view for {{ $page.title }}</h4> <p>To create a view for this page simply create <code>{{ $page.templateUrl }}</code>, copy and paste the following code, save it and refresh this page.</p> <pre style="overflow-x:scroll; font-size:11px;"><code style="min-width:544px" ng-non-bindable>&lt;div class="navbar navbar-inverse navbar-fixed-top"&gt;\n  &lt;div class="container"&gt;\n    &lt;div class="navbar-header"&gt;\n      &lt;a class="navbar-brand" href="#"&gt;{{ $app.name }}&lt;/a&gt;\n    &lt;/div&gt;\n  &lt;/div&gt;\n&lt;/div&gt;\n\n&lt;div class="container"&gt;\n  &lt;div class="starter-template" style="padding:40px 15px;text-align:center;"&gt;\n    &lt;h1&gt;{{$page.title}} Page&lt;/h1&gt;\n      &lt;p class="lead"&gt;Congratulations! you created a view! now customize this one or create one from scratch! and don\'t forget &lt;a href="http://plus.io/+docs/" target="_blank"&gt;our docs&lt;/a&gt; if you need any help.&lt;/p&gt;\n  &lt;/div&gt;\n&lt;/div&gt;</code></pre> <div class="footer"> <p>&copy; Plus.io 2013</p></div></div>';
 
 //Remove no-js class from html element
@@ -118,12 +119,15 @@ function generateClass(route){
 	return parts.join('-');
 }
 
-function UrlExists(url)
+function UrlExists(url, cb)
 {
 	var http = new XMLHttpRequest();
-	http.open('HEAD', url, false);
+
+	http.onreadystatechange = cb;
+
+	http.open('HEAD', url, true);
+
 	http.send();
-	return http.status!=404;
 }
 
 
@@ -286,24 +290,38 @@ function UrlExists(url)
 
 			$app.config(['$routeProvider', function($routeProvider){
 				routeDetails.forEach(function(details){ 
-					if(!UrlExists(details.templateUrl)){
-						// Create a view if one doesn't exist instructing the developer on how to create thier own views
-						var view = document.createElement('SCRIPT');
-							view.type = 'text/ng-template';
-							view.id = details.templateUrl;
-							view.appendChild(document.createTextNode(defaultViewContent));
+					var complete = false;
+					UrlExists(details.templateUrl, function(response){
+						if(response.currentTarget.readyState == 4 && response.currentTarget.status != 404){
+							console.log(details);
 
-						document.getElementsByTagName('head')[0].appendChild(view);
-						//details.templateUrl = 'plugins/plus/default.html';
-					}
+							delete x.routes[details.routePath].template;
 
+								// console.log(details.templateUrl + ' View does not exist');
+								// var view = document.createElement('SCRIPT');
+								// 	view.type = 'text/ng-template';
+								// 	view.id = details.templateUrl;
+								// 	view.appendChild(document.createTextNode(defaultViewContent));
+
+								// document.getElementsByTagName('head')[0].appendChild(view);
+						}
+
+					});
+
+					details.template = '<h1>Boo Yah!</h1>';
+					//delete details.templateUrl;
 					$routeProvider.when(details.routePath, details);
+
+					setTimeout(function(){
+						delete x.routes['/home'].template;
+					}, 5000);
 				});
 
 				$routeProvider.otherwise({ redirectTo: routeDetails[0].routePath});
 			}]);
 
 			$app.run(['$rootScope','$route', function($rootScope,$route){
+				x = $route;
 				$rootScope.$on('$routeChangeStart', function(next, current) { 
 				   $rootScope.$page = current.$$route;
 				});
