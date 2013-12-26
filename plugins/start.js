@@ -192,8 +192,20 @@ function generateClass(route){
 			if(themefiles.length == 0)
 				initApp(); // head.js won't run the callback with no files to load
 
-			head.js(themefiles, initApp);
+			head.js(themefiles, loadApp);
 		});
+	}
+
+	function loadApp(){
+		if (typeof app.files != 'undefined'){
+			if(!(app.files instanceof Array))
+				throw Error('Files must be an array of file paths relative from the root of your app.');
+
+			head.js(app.files, initApp);
+		}else{
+			//no files to load
+			initApp();
+		}
 	}
 
 	function initApp(){
