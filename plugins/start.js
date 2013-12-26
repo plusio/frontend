@@ -201,6 +201,9 @@ function generateClass(route){
 			if(!(app.files instanceof Array))
 				throw Error('Files must be an array of file paths relative from the root of your app.');
 
+			if(app.files.length == 0)
+				initApp(); // head.js won't run the callback with no files to load
+
 			head.js(app.files, initApp);
 		}else{
 			//no files to load

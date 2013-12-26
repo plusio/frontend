@@ -5,7 +5,6 @@
 var app = {
 	name : 'Plus.io Frontend',
 	plugins : ['jquery', "angular", "plus", 'hammer', 'overthrow', 'dragend'],
-	files : ['test.js'],
 	theme : 'hello-world',
 	projectId : "revision-3",
 	serverSecret : "529d113f67c4e8ee215e"
