@@ -5,5 +5,5 @@ ThemeConfig({
 		'css/bootstrap.css',
 		'css/style.css'
 	],
-	routes : ['home', 'geo']
+	routes : ['home', 'items', { route : 'items/books', view : 'items'}, 'items/:id']
 });
