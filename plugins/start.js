@@ -197,6 +197,19 @@ function generateClass(route){
 	}
 
 	function loadApp(){
+		var deps = [];
+
+		for(var plugin in app.plugins){
+			if(app.plugins.hasOwnProperty(plugin)){
+				plugin = app.plugins[plugin];
+				if(plugin.hasOwnProperty('angularMod')){
+					deps = deps.concat(plugin.angularMod);
+				}
+			}
+		}
+		
+		$app = angular.module('myApp', deps);
+		
 		if (typeof app.files != 'undefined'){
 			if(!(app.files instanceof Array))
 				throw Error('Files must be an array of file paths relative from the root of your app.');
@@ -212,18 +225,6 @@ function generateClass(route){
 	}
 
 	function initApp(){
-		var deps = [];
-
-		for(var plugin in app.plugins){
-			if(app.plugins.hasOwnProperty(plugin)){
-				plugin = app.plugins[plugin];
-				if(plugin.hasOwnProperty('angularMod')){
-					deps = deps.concat(plugin.angularMod);
-				}
-			}
-		}
-		
-		$app = angular.module('myApp', deps);
 
 		var routeDetails = [];
 
