@@ -1,7 +1,7 @@
 angular.module('plus.api', [])
   .factory('plusCollection', ['$http', function($http){
   	var baseUrl = 'https://' + app.projectId + '.appspot.com/collection/';
-  	var baseStructureUrl = 'https://' + app.projectId + '.appspot.com/structure/';
+  	var baseStructureUrl = 'https://' + app.projectId + '.appspot.com/structure';
   	var callbackKey = '?callback=JSON_CALLBACK&secret_key=' + app.serverSecret;
     return{
 		get: function(collection, filter, callback, error){
@@ -192,7 +192,15 @@ angular.module('plus.api', [])
 			}
 		},
 		structure: function(collection, callback, error){
-			if(!angular.isDefined(collection) || !angular.isString(collection)){
+			if(angular.isFunction(collection)){
+				error = callback;
+				callback = collection;
+				collection = '';
+			}else{
+				collection = '/' + collection;
+			}
+
+			if(angular.isDefined(collection) && !angular.isString(collection)){
 				throw Error('Collection must be specified as a string');
 				return;
 			}

@@ -1,6 +1,6 @@
 angular.module('plus.pageTransitions', [])
   .directive('go', ['$rootScope', '$location', '$timeout', '$route', function($rootScope, $location, $timeout, $route) {
-  	var defaultTransition = 'slide-left';
+  	var defaultTransition = app.pageTransition || 'slide-left';
   	$rootScope.animationClass = defaultTransition;
 
 	return {

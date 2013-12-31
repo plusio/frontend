@@ -7,5 +7,6 @@ var app = {
 	plugins : ['jquery', "angular", "plus", 'hammer', 'overthrow', 'dragend'],
 	theme : 'hello-world',
 	projectId : "revision-3",
-	serverSecret : "529d113f67c4e8ee215e"
+	serverSecret : "529d113f67c4e8ee215e",
+	pageTransition : 'slide-up'
 }
