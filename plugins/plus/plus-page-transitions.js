@@ -9,10 +9,10 @@ angular.module('plus.pageTransitions', [])
 			// check if animation is set and is valid
 			var external = attrs.go.substr(0, 4) == 'http'
 
-			if(!external && angular.isUndefined($route.routes[attrs.go])){
-				throw Error(attrs.go + ' is not a registered route, availible routes: ' + Object.keys($route.routes).join(', '));
-				return;
-			}
+			// if(!external && angular.isUndefined($route.routes[attrs.go])){
+			// 	throw Error(attrs.go + ' is not a registered route, availible routes: ' + Object.keys($route.routes).join(', '));
+			// 	return;
+			// }
 
 			Hammer(element[0]).on("touch", function() {
 			    if(external){
