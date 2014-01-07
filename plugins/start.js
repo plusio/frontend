@@ -298,6 +298,9 @@ function generateClass(route){
 				   $rootScope.$page = current.$$route;
 				});
 				$rootScope.$app = app;
+				$rootScope.$app.theme.view = function(view){
+					return this.path + '/views/' + view + '.html';
+				}
 			}]);
 
 			angular.bootstrap(document, ['myApp']);
