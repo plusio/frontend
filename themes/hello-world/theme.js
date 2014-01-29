@@ -8,11 +8,6 @@ ThemeConfig({
 	],
 	routes : [
 		'home',
-		'items',
-		{
-			route : 'items/books',
-			view : 'items'
-		}, 
-		'items/:id'
+		'no-view'
 	]
 });
