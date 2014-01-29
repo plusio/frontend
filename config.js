@@ -4,9 +4,9 @@
  */
 var app = {
 	name : 'Plus.io Frontend',
-	plugins : ['jquery', "angular", "plus", 'hammer', 'overthrow', 'dragend'],
+	plugins : ['jquery', "angular", "plus", 'hammer', 'overthrow'],
 	theme : 'hello-world',
-	projectId : "revision-3",
-	serverSecret : "529d113f67c4e8ee215e",
-	pageTransition : 'slide-up'
-}
+	projectId : "",
+	serverSecret : "",
+	pageTransition : 'slide-left'
+};
