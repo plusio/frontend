@@ -14,7 +14,7 @@ angular.module('plus.pageTransitions', [])
 			// 	return;
 			// }
 
-			Hammer(element[0]).on("touch", function() {
+			Hammer(element[0]).on("tap", function() {
 			    if(external){
 					var ref = window.open(attrs.go, '_system', 'location=yes');
 				}else{
