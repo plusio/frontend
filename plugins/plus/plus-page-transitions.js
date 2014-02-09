@@ -1,21 +1,24 @@
 angular.module('plus.pageTransitions', [])
   .directive('go', ['$rootScope', '$location', '$timeout', '$route', function($rootScope, $location, $timeout, $route) {
-  	var defaultTransition = app.pageTransition || 'slide-left';
-  	$rootScope.animationClass = defaultTransition;
+	var defaultTransition = app.pageTransition || 'slide-left';
+	$rootScope.animationClass = defaultTransition;
+
+	function resetAnimationClass () {
+		$rootScope.animationClass = defaultTransition;
+		document.getElementsByTagName('body')[0].removeEventListener('webkitAnimationEnd', resetAnimationClass);
+
+		if(!$rootScope.$$phase)
+			$rootScope.$apply();
+	}
 
 	return {
 		restrict: 'ECA',
 		link: function(scope, element, attrs) {
 			// check if animation is set and is valid
-			var external = attrs.go.substr(0, 4) == 'http'
+			var external = attrs.go.substr(0, 4) == 'http';
 
-			// if(!external && angular.isUndefined($route.routes[attrs.go])){
-			// 	throw Error(attrs.go + ' is not a registered route, availible routes: ' + Object.keys($route.routes).join(', '));
-			// 	return;
-			// }
-
-			Hammer(element[0]).on("tap", function() {
-			    if(external){
+			Hammer(element[0]).on("touch", function() {
+				if(external){
 					var ref = window.open(attrs.go, '_system', 'location=yes');
 				}else{
 					$rootScope.$apply(function(){
@@ -28,12 +31,9 @@ angular.module('plus.pageTransitions', [])
 							}
 						}
 
-						$location.path(attrs.go);
+						document.getElementsByTagName('body')[0].addEventListener('webkitAnimationEnd', resetAnimationClass);
 
-						$timeout(function(){
-							//wait for the entering animation to begin then reset
-							$rootScope.animationClass = defaultTransition;
-						}, 100);
+						$location.path(attrs.go);
 					});
 				}
 			});
