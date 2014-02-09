@@ -17,7 +17,7 @@ angular.module('plus.pageTransitions', [])
 			// check if animation is set and is valid
 			var external = attrs.go.substr(0, 4) == 'http';
 
-			Hammer(element[0]).on("touch", function() {
+			Hammer(element[0]).on("tap", function() {
 				if(external){
 					var ref = window.open(attrs.go, '_system', 'location=yes');
 				}else{
