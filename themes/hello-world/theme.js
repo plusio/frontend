@@ -8,6 +8,10 @@ ThemeConfig({
 	],
 	routes : [
 		'home',
-		'no-view'
+		'no-view',
+		{
+			route : 'layout',
+			layout: 'myLayout'
+		}
 	]
 });

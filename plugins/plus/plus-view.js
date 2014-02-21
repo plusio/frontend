@@ -7,8 +7,8 @@ https://github.com/angular/angular.js/blob/master/src/ng/directive/ngInclude.js
 
 */
 
-var plusViewDirective = ['$http', '$templateCache', '$anchorScroll', '$compile', '$animate', '$sce',
-                  function($http,   $templateCache,   $anchorScroll,   $compile,   $animate,   $sce) {
+var plusViewDirective = ['$http', '$templateCache', '$anchorScroll', '$compile', '$animate', '$sce', '$route',
+                  function($http,   $templateCache,   $anchorScroll,   $compile,   $animate,   $sce, $route) {
   return {
     restrict: 'ECA',
     priority: 400,
@@ -17,7 +17,13 @@ var plusViewDirective = ['$http', '$templateCache', '$anchorScroll', '$compile',
     compile: function(element, attr) {
       var srcExp = attr.ngInclude || attr.src,
           onloadExp = attr.onload || '',
-          autoScrollExp = attr.autoscroll;
+          autoScrollExp = attr.autoscroll,
+          currentRoute = $route.current.$$route;
+
+          if(!srcExp && currentRoute.layout && currentRoute.view){
+            srcExp = currentRoute.view.replace('.html', '');
+          }
+
 
       return function(scope, $element, $attr, ctrl, $transclude) {
         var changeCounter = 0,
@@ -35,7 +41,8 @@ var plusViewDirective = ['$http', '$templateCache', '$anchorScroll', '$compile',
           }
         };
 
-        scope.$watch($sce.parseAsResourceUrl(srcExp), function ngIncludeWatchAction(src) {
+        function ngIncludeWatchAction(src) {
+          console.log('src', src);
           var afterAnimation = function() {
             if (angular.isDefined(autoScrollExp) && (!autoScrollExp || scope.$eval(autoScrollExp))) {
               $anchorScroll();
@@ -74,7 +81,8 @@ var plusViewDirective = ['$http', '$templateCache', '$anchorScroll', '$compile',
           } else {
             cleanupLastIncludeContent();
           }
-        });
+        };
+        ngIncludeWatchAction(srcExp);
       };
     }
   };

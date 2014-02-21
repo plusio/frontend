@@ -77,18 +77,19 @@ function ThemeConfig(config){
 	app.theme = config;
 }
 
-function generateView(route){
+function generateView(route, justName){
 	var parts = route.split('/'),
-		view = app.theme.path + '/views/';
+		viewDir = app.theme.path + '/views/',
+		filename = '';
 
 	parts.forEach(function(part, i, arr){
 		if(part.substr(0,1) != ':')
-			view += (i > 0?'.':'') + part;
+			filename += (i > 0?'.':'') + part;
 
-		view += (i == arr.length - 1)?'.html':'';
+		filename += (i == arr.length - 1)?'.html':'';
 	});
 
-	return view;
+	return (justName === true)?filename:viewDir+filename;
 }
 
 function generateController(route){
@@ -244,10 +245,13 @@ function generateClass(route){
 				if(routeConfig.route){
 					route = generateRoute(routeConfig.route)
 					routeOpts.routePath = '/' + route;
-					routeOpts.templateUrl = generateView(routeConfig.view || route);
+					routeOpts.templateUrl = generateView(routeConfig.layout || routeConfig.view || route);
 					routeOpts.controller = (routeConfig.controller)?routeConfig.controller:generateController(route);
 					routeOpts.title = (routeConfig.title)?routeConfig.title:generateTitle(route);
 					routeOpts.class = (routeConfig.class)?routeConfig.class:generateClass(route);
+
+					if(routeConfig.layout)
+						routeOpts.view = generateView(routeConfig.view || route, true);
 
 					delete routeConfig.route;
 					delete routeConfig.view;
