@@ -1,283 +1,473 @@
-#Plus.io Frontend
-The Front-end for plus.io allows developers and designers to quickly create mobile app's using plugins, themes, and plus.io's backend interface.
+<section id="table-of-content">
+##Table of Contents
+- [Getting Started][getting-started]
+- [Creating a theme and theme.js][theme-js]
+- [Creating controllers and app.js][creating-controllers]
+- [Add plugins to your app][add-plugins]
+- [Create plugins to share or sell][create-plugins]
+- [Disabling same origin policy][same-origin]
+- [API reference*][api-link]
+- [Development Environment][development]
+</section>
+<section id="getting-started">
+##Getting Started
 
-##Installation Prerequisites
-###Web server
+First you'll need to [download][repo] and unzip the Plus.io frontend or clone our git repo for the latest build: `git clone https://github.com/plusio/frontend.git`
+	
+It's recommended to open the frontend with a web server like [mamp][mamp-link] (mac) or [xampp][xampp-link] (everything). You can also view your app by double clicking on the index.html in the root of the folder.
 
-Any web server should work. An easy, no setup web server for Mac OSX, Linux & Windows would be XAMPP.
+note: to open the index.html file without a web server you will need to [disable the same origin policy][same-origin] for your browser.
 
-###Modern Web Browser
+###Whats next
+Get started by editing the default app and [customizing the theme's views][custom-views], or follow our guide on [creating a new app][create-new-app] from scratch.
+</section>
 
-Webkit based browsers (Safari/Chrome) recommended.
+<section id="theme-js">
+##Creating a theme and theme.js
+Themes are a collection of html, javascript and css files that create an interface for the app. Themes should be designed to support many different apps, which are changed only by the data provided from the app's controllers in `app.js`.
 
-##Installation
+To begin to create a theme, you can clone our [basic theme starter]() or begin from scratch and make a folder in the themes directory and give it a name (e.g., `my-theme`) with a file named `theme.js` in the root with the following code.
 
-Download the plus.io front-end and place into your server’s htdocs folder. Then navigate to that directory in your browser and you should see the default app.
+	ThemeConfig({
+		name : 'Hello World',
+		version : '1.0',
+		files : [''],
+		routes : ['home']
+	});
+	
+Edit these fields as you please, but let's explain what's going on here.
 
-##Configuration
+- *name* - is the name of your Theme, and is not used for anything other than display purposes.
+- *version* - is the version of your theme.
+- *files* - an Array of filenames (except view html files) to be loaded with your theme relative from the root of your theme folder.
+- *routes* - an Array of string's that will be your route path. View [Routes for more info][route-link]
 
-In the app folder there is a config.json file which contains all of the configuration options for your app. here is an example of an empty config file.
+Now if you navigate your browser to application, http://localhost/myApp, you should see the default view with instructions on how to create your own view.
+
+![screenshot of default route](http://)
+(Screenshot of default route)
+
+To create the view, create `home.html` in `themes/[your theme]/views/` and add the following to the contents of the file.
+
+	<div class="navbar navbar-inverse navbar-fixed-top">
+	  <div class="container">
+	    <div class="navbar-header">
+	      <a class="navbar-brand" href="#">{{ $app.name }}</a>
+	    </div>
+	  </div>
+	</div>
+	
+	<div class="container">
+	  <div class="starter-template" style="padding:40px 15px;text-align:center;">
+	    <h1>{{$page.title}} Page</h1>
+	      <p class="lead">Congratulations! you created a view! now customize this!</p>
+	  </div>
+	</div>
+
+###Adding Styles
+To style our app with some css we're going to create a `css` folder in the root of your folder. Once that is complete create a `style.css` files in the css directory and add the following to the file.
+
+  	.some-css{
+  	
+  	}
+   
+  	.goes-here{
+  	
+ 	{  
+ 	  	
+Next we'll tell Plus.io to load this file with our theme, by opening theme.js and add the path to the files relative to the root of the themes folder to the `files` array.
 
 	{
-		"name" : "",
-		"google_id" : "",
-		"google_secret" : "",
-		"google_scope" : "",
-		"google_redirect" : "",
-		"server_url" : "",
-		"server_secret"" : "",
-		"environment" : "",
-
-		"theme" : "",
-
-		"restEntities" : [""],
-		"syncLoopDelay" : 600000,
-		"data_sync": true,
-
-		"plugins" : [],
-		"scripts" : []
+		files: ['css/styles.css']
 	}
 	
-- name : Your applications name.
-- google_id : your google api console client id.
-- google_secret : your google api console client secret key.
-- google_scope : scopes to request user information when a user log's in through your app. note: that the userinfo.email scope is called already by plus.io
-- google_redirect : is the redirect url after a user logs in, and needs to match the entry it your google api console, and must be the url to your application. i.e.: if your app is in htdocs/plus, then the redirect url will be http://locahost/plus/ (This option **does not** need be changed when deploying to mobile)
-- server_url : the url to the your api's endpoint. i.e.: https://[yourapp].appspot.com/
-- server_secret : the secret key to be passed in as a URL parameter
-- environment : either development or production, current suppresses warning messages while in production
-- theme : the name of theme to use, must match the theme's folder name.
-- restEntitites : the names of the collections for data sync to monitor.
-- syncLoopDelay : how often, in milliseconds, to run data sync.
-- data_sync : true or false, wether or not data sync should run.
-- plugins : an array of plugins to include in the app, the names need to match the plugin's folder title.
-- scripts : any custom scripts to load into the app (i.e.: controllers), relative from app/includes/scripts/. note: you **do not** need to specify the .js file extension here.
+Now refresh your app and you will see your styles applied, if you notice that sometimes things are not changing you may need to [clear your cache][development].
+Create and add as many files as needed, you can even include JavaScript files, but it is recommend to convert them in a [plugin][create-plugins]
 
-##Rest API
 
-The api provides methods to get and send data to your plus.io backend, built into the api is a sync service that will automatically attempt to re-post data that was not successfully sent for any number of reasons.
 
-To set up the sync, find `restEntities` in your app’s config.json, this is an array of collection titles that you would like to data to attempt to re-send when a post fails, most likely because of a lack of internet connection. Secondly is `syncLoopDelay` which is an integer of milliseconds for how often the data should attempt to re-sync. The default is 10 minutes, and cannot be less than 10 seconds.
+<a name="theme-route"></a>
+###Routes
 
-###API reference:
-`plus.collection.structure`
+The routes array can contain strings that will define the pages of the app. When the route is defined this way the name of the controller, and the filename for the template will be assumed.
 
-`plus.collection.get`
+The controller and file names can be predicted using the following method.
+####Views
+- Dashes stay dashes
+- Forward slashes become periods
+- Url parameters preceded with a `:` will be ignored
 
-`plus.collection.add`
 
-`plus.collection.update`
+####Controllers
+- Dashes stay dashes
+- Forward slashes are removed and the next word is capitalized
+- Url parameters preceded with a `:` will be ignored
 
-`plus.collection.delete`
+#####Examples
+Theme.js          | Controller Name | Template filename
+----------------- | --------------- | -----------------
+home              | home            | home.html
+account-info      | account-info    | account-info.html
+users/list        | usersList       | users.list.html
+users/:id         | users           | users.html
+users/:id/history | usersHistory    | users.history.html
 
-**For the Examples below we will use 'foo' as a collection name**
+###Custom route config
+Instead of relying on the auto generated names for controllers and template files, you can pass in an object instead of a string with the options. If a key is omitted it will be auto generated (i.e., if only the controller is named, the template filename will be assumed.)
 
-####Structure
-`plus.collection.structure(collection_name)`
+- *route* - The url path.
+- *controller* - The controller name.
+- *view* - The filename for the view, the **.html** extension will be appended for you.
+- *layout* - NEEDS TO BE DOCUMENTED
 
-This returns an array with two objects of metadata. The first object contains the keys for the collection, the second contains ‘count’ which is the total number of objects in the collection.
+example:
 
-`plus.collection.structure("foo");`
-returns:
-
-	[{
-		0: "id",
-		1: "name",
-		2: "time"
-	},
-	{
-		count: 497
+	routes : ['home', 'users', {
+		route : 'my-route',
+		controller : 'myController',
+		view : 'myView',
+		myKey : 'custom value'
 	}]
-
-####Getting Data
-`plus.collection.get (collection_name[, filter]);`
-
-This function takes the name of a collection and optionally a filter, a filter can be either an Integer which will return the object with that id, or the filter can be an object with the options specified below.
-
-`plus.collection.get(‘foo’);`
-returns:
-
-	[{
-		“id” : 20043,
-        "name" : "bar",
-        "time" : "1372790420482"
-	},
-	{...}
-	]	
 	
-#####Getting one record by id
-`plus.collection.get(‘foo’, 10011);`
-returns:
+If you are familiar with [Angular.js Routes][angular-route] any additional key-value pairs will be added to the Angular route object.
 
+
+###Variables available to views
+When creating views there are two variables that may be helpful to display information or style the page.
+
+Inside of the templating brackets `{{ }}` you can grab `$app` and `$page` which contain the following data. For more information view these in the [API's][app-api] section
+
+	//$app
 	{
-        "name" : "baz",
-        "time" : "1372790420482"
+  		"name": "Plus.io Frontend",
+  		"plugins": {...},
+  		"theme": {...},
+  		"projectId": "",
+  		"serverSecret": "",
+  		"pageTransition": "slide-left"
 	}
 	
-#####Using a filter
-        
-**filter options:**
-- limit (Integer) - the api will return this number of records
-- offset (Integer) - the number of records to omit from 0;
-- filter (String) - A key within the objects in the collection to search by
-- value (String) - the value to search with, this must match the filter's value exactly
+	//$page
+	{
+  		"routePath": "/home",
+  		"templateUrl": "themes/hello-world/views/home.html",
+  		"controller": "home",
+  		"title": "Home",
+  		"class": "home"
+	}
 
-`plus.collection.get('foo', { limit : 50, offset : 150 });` will return up to 50 results skipping the first 150 objects in the collection, you can use any of the options together, where only the `filter` and `value` options to required to be together.
 
-if the `limit` and `offset` options are not specified the api defaults to a limit of `20` and an offset of `0`.
+</section>
 
-####Adding Data
-`plus.collection.add(collection_name, data);`
+<section id="create-controllers">
+##Creating controllers and app.js
+**app.js** is in the root of your application's directory and this file will contain all of the logic for the app. Once you have specified routes in your theme.js, you can immediately navigate to those pages in your web browser. However if there is no html file for the view then it will display a place holder page with instructions on [how to create that routes view][theme-js]. If there is a view for the route to display then you can use a controller to get data, write functions for user interactions and anything else you might need.
+
+When you successfully create a route and have a view, if there is no controller created for the current route, there is still a limited amount of functionality you can achieve. With no controller, in the view you have access to the following variables.
+
+ - *$page* - Contains information about this [page][page-api]
+ - *$app* - Containers information about the [app][app-api]
+ - *$routeParams* - An object containing key/value pairs of the url parameters (if any)
+ - *$window* - A copy of the JavaScript `window` object, because variables not on scope are not available within the template's braces, including Global variables
  
-This function adds a record to the plus.io collection specified. The time of the function call will be added to the data automatically and sent to the collection to represent the created time.
+###Your own controllers
+Most of the time you'll need to create your own controllers for the specific functionality of your app. Open your `app.js	` in the root of the app folder and copy and paste the following into it.
 
-`plus.collection.add('foo', { name : 'barbaz' })`
-
-returns:
-
-	{
-		name : 'barbaz',
-		time : '1372790420482',
-		id	: 20010
-	}
-####Updating Data
-`plus.collection.update(collection_name, id, data)`
-
-This function updates a record with the id in the collection specified.
-
-`plus.collection.update('foo', 20010, { name : 'foobar', modified_time : new Date().getTime() });` 
-
-returns:
+	$app.controller('yourController', function($scope){
+		$scope.randomNumber = Math.floor(Math.random()*11);
+	});
 	
+Replace "yourController" with the actual name of your controller defined in theme.js, and add replace your view with this code.
+
+	<h1>Your randomly generated numner is {{ randomNumber }}</h1>
+	
+Now if you reload your page you should a header with a random number in it.
+
+####$scope?
+You might be asking what that `$scope` variable it that's being passed into the controller function. It's one of Angular's many services and creating variable's or functions on `$scope` make them instantly available in your view through two-way data binding. To learn more about this visit the [Angular Docs][angular-docs], or this fantastic tutorial about [Angular's Scope][angular-scope].
+
+
+</section>
+
+<section id="add-plugins">
+##Add plugins to your app
+Once you have a plugin that you want to install, installation is very easy.
+
+All of the plugin's files should be contained into one folder. To install the plugin simple copy and paste the plugin into the plugins folder inside of your apps directory named in the same format as `my-plusio-plugin`.
+
+Now that the files are in place we need to tell Plus.io, so that it can load it. Open your `config.js` and add the name of the plugin's folder to the plugins array.
+
 	{
-		name : 'foobar',
-		time : '1372790420482',
-		modified_time : 1372792616943,
-		id : 20010
+		plugins: ['jQuery', 'angular', 'my-plusio-plugin']
 	}
-####Deleting Data
+	
+Plus.io will know what files it needs load based on the plugin's `plugin.js`
+</section>
 
-`plus.collection.delete(collection_name, id);`
+<section id="create-plugins">
+##Create plugins to share or sell
+Plugins are just regular JavaScript files that can be included into an app easily through the config.js. Plugins can be custom code, angular modules, jQuery plugins, or even the jQuery library itself.
 
-This function deletes the record with the specified id in the specified collection.
+Even all of our api's are provided through a plugin so that the core is lightweight and minimal.
 
-`plus.collection.delete('foo', 20010);`
+When creating a plugin there are no unique apis to work with in plugins except for the `app` and `plus` [apis][api-link] globally available to the app. 
 
-####Callbacks
-To provide a callback function to run when the api returns data simply chain `.then(fn)` to the end of any of the above functions and pass in `data` where data will be equal to the data returned from the api.
-```javascript
-plus.collection.get('foo').then(function(data){
-	$scope.records = data;
-});
-```
-**Note**:
-While developing on `localhost` you may experience 405 errors (Cross Origin Domain errors) while posting data. This is because the browser security will not allow localhost to post to servers, this can be circumvented by disabling the security in the browser. This is only necessary on localhost, deploying to a mobile app will function as expected.
+###Plugin Structure
+A plugin consists of your files (js or css) in a folder with **plugin.js**, which tells Plus.io what files it needs to load for your plugin.
 
-For Chrome run your OS's respective command in the terminal or command prompt:
+folder structure:
 
-**Mac** : `open -a Google\ Chrome –args –disable-web-security`
-
-**Windows** : `chrome.exe –disable-web-security`
-
-**Linux** : `google-chrome –disable-web-security`
-
-Make sure that all browser windows are closed, or else chrome will not re-start with security disabled.
-
-##Maps
-Insert mapping docs here.
-
-##Themes
-Themes in plus.io Front-end are HTML and CSS, and can optionally contain Javascript depending on complexity.
-
-The folder layout represented by the twentythirteen theme is as follows:
-
-	/twentythirteen
-		twentythirteen.json
-		css/
-			bootstrap.css
-			style.css
-		img/
-			glyphicons-halflings.png
-			(...)
-		js/
-			theme-controllers.js
-		views/
-			list.tpl.html
-			home.tpl.html
-			map.tpl.html
-			(...)
+	my-time
+		theTime.js
+		styles.css
+		plugin.js*
 		
-Only the `[themename].json` is required as well as the `views` folder, the rest are optional and can be titled however you like as these are specified in the theme's json (configuration) file.
+####theTime.js
 
-###Theme configuration
-The configuration file must be the same name as your theme, matching the folder name, with the .json file extension.
+	alert('My plugin has loaded');
+	function myTime(){
+		reruns new Date().getTime();
+	}
+	
+####style.css
+	
+	.clock{
+		display: block;
+		background: #222;
+		color: #c0ffee;
+		font-size: 32px;
+		}
 
-####config options
+####plugin.js
+
+	PluginConfig({
+		name : 'My Time',
+		files : ['theTime.js', 'style.css'],
+		version : '1.0.0'
+	});
+	
+###Putting an angular module into a plugin
+Angular modules are great and the preferred method of creating plugins as Plus.io is built around Angular.js If you've made angular modules before you'll know that it needs to be injected into the angular app like this `var app = angular.module('myApp', ['yourModule'])`
+
+This is abstracted away form the user for an easier experience. To include your module into angular simply provide `angularMod` with an array of your dependencies in plugin.js and they will be auto injected into angular.
+
+Example:
+
+####myDirective.js
+
+	angular.module('myCustomDirective', [])
+  	.directive('go', ['$rootScope', function($rootScope){
+  		// Do some directive stuff
+  	}]);
+
+####plugin.js
+	PluginConfig({
+		name : 'My Angular mod',
+		files : ['myDirective.js'],
+		version : '1.0.0',
+		angularMod : ['myCustomDirective'];
+	});
+
+</section>
+
+<section id="disable-same-origin">
+##Disabling the same origin policy
+If you want to open the fronted with out a web server, by double clicking on index.html, or need to make http post requests to the Plus.io api you'll need to disable the security implemented by your browser.
+
+It is important to note that this not an issue when the app the packaged with PhoneGap.
+
+**For all browsers and operating systems, you need to close all browser windows and use the Terminal or Command Line**
+
+###Google Chrome
+####Mac
+    $ open -a Google\ Chrome --args --disable-web-security
+####Linux
+    $ google-chrome --disable-web-security
+####Windows
+	C:\Program Files\Chrome\Chrome.exe --disable-web-security
+
+---
+###Safari
+
+####Mac
+	open -a '/Applications/Safari.app' --args --disable-web-security
+####Windows
+	C:\Program Files\Safari\Safari.exe --disable-web-security
+---
+###Firefox
+
+Firefox users can install the [Force Cors][force-cors] Add-on to disable the security.
+</section>
+
+
+<section id="apis">
+#APIs
+ - [App][app-api] - Variables and function to access app information
+ - [Page][page-api] - Variables and function to access app information
+ - [Theme][theme-api] - Create a theme that establishes routes and views
+ - [Plugins][plugins-api] - Create a plugin that can add functionality
+ - [Collection][collection-api] - Api reference to get and save data from Plus.io API
+ 
+---
+<section id="app-api">
+##App
+The app's object will contain data on the the name, theme, installed plugins, and help functions.
+
+The object is globally accessible by `app`.
+
+methods:
+
+ - *app.name* - The name of app set in config.js
+ - *app.plugin* - A list of loaded plugins with populated from the plugin's config
+ - *app.theme* - List of settings populated with the theme's config
+ 
+ This object will also contain any custom information set in config.js
+</section>
+<section id="page-api">
+##Page
+"routePath": "/home",
+    "templateUrl": "themes/hello-world/views/home.html",
+    "controller": "home",
+    "title": "Home",
+    "class": "home"
+This variable is available in every view as `$page` within the template curly braces (e.g, `{{ $page.title }}`).
+
+ - *$page.routePath* - The url route for the current Route
+ - *$page.controller* - The of the controller for the current Route
+ - *$page.title* - The generated title (or specified Title from theme.js) for the current Route
+ - *$page.class* - The generated or specified css class for the current Page.
+</section>
+<section id="theme-api">
+##Theme
+The theme determines the routes, controller names, views and supporting files (e.g, css)
+
+methods:
+
+ - *app.theme.name* - The name of the theme
+ - *app.theme.version* - Version of the theme
+ - *app.theme.path* - Path to the root of the theme's folder to include images and elements from theme's folder
+ - *app.theme.routes* - Array of defined routes provided from theme's config
+ - *app.theme.view(viewname)* - Function that returns full path to view including '.html'
+</section>
+<section id="plugins-api">
+##Plugins
+Plugins are nothing more that standard JS file(s) that can be loaded into the app from the `config.js`. Learn how to [package files into a plugin][create-plugins] for easy loading.
+
+Information for loaded plugins is in `app.plugins`. The `app.plugins` object contains a list of the loaded plugins which have information on themselves.
+
+Output from `app.plugins['Angular']` results in:
+
 	{
-		"title" : "",
-		"author" : "",
-		"files" : {
-			"css"  : [],
-			"js" : []
-		},
-		"routes" : [
-			{
-				"path" : "",
-				"layout" : "",
-				"template" : "",
-				"controller" : "",
-				"title" : "",
-				"class" : ""
-			},
-			{
-				"otherwise" : "",
-			}	
+		"name": "Angular",
+		"version": "1.2.4",
+		 "files": [
+			"angular.js",
+			"angular-animate.js",
+			"angular-cookies.js",
+			"angular-csp.css",
+			"angular-loader.js",
+			"angular-resource.js",
+			"angular-route.js",
+			"angular-sanitize.js",
+			"angular-scenario.js",
+			"angular-touch.js"
+		],
+		"angularMod": [
+			"ngAnimate",
+			"ngCookies",
+			"ngTouch",
+			"ngResource",
+			"ngRoute",
+			"ngSanitize",
+			"ngLocale",
+			"ngTouch"
 		]
 	}
-	
-- title : The display (Human readable) title of your theme
-- author : Who created the theme
-- files : An object with the paths to the files included with your theme.
-	- css : an array of paths, relative from the theme folder, to your css files relative from the root of your theme, you **do not** need to include the .css file extension here.
-	- js : an array of paths, relative from the theme folder, to your js files relative form the root of your theme, you **do not** need to include the .js file extension here.
-- routes : An array of objects containing options for their route.
-	- path : The url path relative from the root of the application's directory.
-	- layout : The path to a layout relative from the theme's views folder.
-	- template : The path to a template relative from the theme's views folder.
-	- controller : the name of the controller for this route.
-	- title : used as the link text when using the `<plus-menu>` html tag to dyanicly generate a navigation menu.
-	- class : A css class that will be applied to the `<li>` in the navigation generated by `<plus-menu>`.
-	- otherwise : can be specified in it's own object to tell the application which route to redirect to when an unspecified path is navigated to. This should point to the initial page in your app, as this option will load the first page when the app has be deployed to a mobile phone.
-	
-####Views
+</section>
+<section id="collection-api">
+##Collection
+The collection API allows developers to easily view and manipulate data stored in their Plus.io Google App Engine backend.
 
-Views are html and can be either a layout, a template, or a partial.
+To use this api, projectId and serverSecret must be set in config.js
 
- - **Layouts** are files that can be used os more than one page, i.e. this can contain a header and footer and can be used in several routes. Tip: use `<plus-template />` to include the template specified in the theme's config on a per route basis.
- - **Templates** contain the html unique to and individual page, and are intended to be used for one route.
- - **Partials** are useful to include the same html into multiple views. A good example would a theme that has multiple page layouts but they all still have headers, instead of copying the header's html into multiple files, the header can be in a partial and the partial will be loaded multiple times in different files. Tip: use `<div ng-include="/path/to/partial"></div>` to bring in html partials
+	{
+		projectId: "the-hungry-llama",
+		serverSecret: "yourSuperSerectPassphrase"
+	}
+	
+This api is accessible on the global plus object.
+methods:
+
+ - plus.collection.get(collection [, id], success[, error]);
+
+		plus.collection.get('users', 3452345345, function(user){
+			console.log(user.id); //3452345345
+		});
+ - plus.collection.add(collection, data[, success, error]);
+ 		
+		plus.collection.add('users', {
+			email: 'user@name.com',
+			name : 'Joe Smith'
+		}, success, error);
+ - plus.collection.update(collection, id, data[, success, error]);
+		
+		plus.collection.update('users', 3452345345, {
+			name: 'John Smith'
+		}, success, error);
+		
+ - plus.collection.delete(collection, id[, success, error]);
  
- While all the views can be placed into the views folder, it is recommended to place your layout files in a layouts folder inside the views folder, and assuming all partials will be included in layouts they can be placed into the layouts folder prefixed with an underscore `_partial.tpl.html` or into their own partials folder. 
+ 		plus.collection.delete('users', 3452345345, function(){
+ 			// poof!
+ 		});
+ - plus.collection.structure([collection, success, error]);
+ 
+ 	This function returns the fields that are in a collection data, and the total number of items in that collection. If this function is called without a collection, it will return the  names of the collections.
+ 	
+ 		plus.collection.structure(function(data){
+ 			
+ 			console.log(data); // { 0: 'users'}
+ 			
+ 			plus.collection.structure(data[0], function(userCollection){
+ 				console.log(userCollection);
+ 				/*
+ 					[
+ 						{
+ 							0: 'name',
+ 							1: 'id
+ 						},
+ 						{ count: 1 }
+ 					]
+ 				*/
+ 			})
+ 		});
+</section>
+<section id="geo">
+##Geo
+</section>
+<section id="development">
+##Development environment
+</section>
 
-
-##Plugins
-This is where you can simply drop-in new features & functionality. These are self contained bundles of functionality. 
-Installing a plugin
-Step 1. Copy the plugin folder into the app/plugins folder.
-Step 2. Add the plugin folder name to the “plugins” json key in the application configuration file. 
-         * plugins add to the functionality of Plus.io Frontend
-         */
-        "plugins" : ["leaflet"],
-The example above shows how to add mapping features to your application by using a leaflet plugin simply by dropping in the leaflet plugin folder into the app/plugins folder.
-
-
-##Elements
-These are code snippets that can be shared with many different applications & themes. Anything you use short code snippets for, you can use elements for. It can represent very small bits of javascript and / or html. Anyone could create styled list items, cover flow functionality, Metro UI style selections, etc.  
-How to create an element:
-Step 1. Create an html file in the app/elements folder.
-Step 2. Add the code snippet you wish to use (html/css and or javascript). One example would be of a code snippet that would create a unorder list such as the “loop” element below.
-
-Step 3: Use the ng-include tag and specify the name of the element as shown in the code snippet below:
-
-<ng-include src="app.paths.element('loop')"></ng-include>     
-This 1 line of html below is all a designer or developer would need in order to create a list that loops through all the records of a collection and styles.:
+[development]: #development
+[repo]: https://github.com/plusio/frontend.git
+[getting-started]: #getting-started
+[same-origin]: #disable-same-origin
+[theme-js]:#theme-js
+[creating-controllers]: #create-controllers
+[create-new-app]: #create-new-app
+[add-plugins]: #add-plugins
+[create-plugins]: #create-plugins
+[api-link]: #apis
+[app-api]: #app-api
+[page-api]: #page-api
+[theme-api]: #theme-api
+[plugins-api]: #plugins-api
+[collection-api]: #collection-api
+[route-link]: #theme-route
+[mamp-link]: http://www.mamp.info/en/index.html
+[xampp-link]: http://www.apachefriends.org/index.html
+[force-cors]: https://addons.mozilla.org/en-US/firefox/addon/forcecors/reviews/
+[angular-route]: http://docs.angularjs.org/api/ngRoute.$route
+[angular-docs]: 
+[angular-scope]:
